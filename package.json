@@ -1,0 +1,23 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "npm run watch",
+    "run-dev": "webpack --mode development --watch",
+    "compile-dev": "concurrently --kill-others \"tsc\" \"webpack --mode development\"",
+    "build": "concurrently --kill-others \"tsc -w\" \"webpack --mode development -w\"",
+    "b-w": "tsc-watch --onSuccess \"webpack --mode development\"",
+    "build-tsc": "tsc -w",
+    "build-wp": "webpack --mode development -w"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "ts-loader": "^5.3.3",
+    "tsc-watch": "^2.1.2",
+    "typescript": "^3.3.3333",
+    "webpack": "^4.29.5",
+    "webpack-cli": "^3.2.3"
+  },
+  "dependencies": {
+    "pixi.js": "^4.8.7"
+  }
+}

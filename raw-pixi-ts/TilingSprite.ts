@@ -1,0 +1,351 @@
+import { Sprite } from "./Sprite";
+import { Transform } from "./Transform";
+import { TextureMatrix } from "./TextureMatrix";
+import { Rectangle } from "./Rectangle";
+import { Texture } from "./Texture";
+import { Point } from "./Point";
+import { CacheSettings } from './CacheSettings';
+
+export class TilingSprite extends Sprite
+{
+    static tempPoint$1 = new Point();
+    tileTransform
+    _canvasPattern
+    uvRespectAnchor
+    uvMatrix
+    constructor(texture, width = 100, height = 100)
+    {
+        super(texture);
+        if ( width === void 0 ) { width = 100; }
+        if ( height === void 0 ) { height = 100; }
+
+        
+
+        /**
+         * Tile transform
+         *
+         * @member {PIXI.Transform}
+         */
+        this.tileTransform = new Transform();
+
+        // /// private
+
+        /**
+         * The with of the tiling sprite
+         *
+         * @member {number}
+         * @private
+         */
+        this._width = width;
+
+        /**
+         * The height of the tiling sprite
+         *
+         * @member {number}
+         * @private
+         */
+        this._height = height;
+
+        /**
+         * Canvas pattern
+         *
+         * @type {CanvasPattern}
+         * @private
+         */
+        this._canvasPattern = null;
+
+        /**
+         * matrix that is applied to UV to get the coords in Texture normalized space to coords in BaseTexture space
+         *
+         * @member {PIXI.TextureMatrix}
+         */
+        this.uvMatrix = texture.uvMatrix || new TextureMatrix(texture);
+
+        /**
+         * Plugin that is responsible for rendering this element.
+         * Allows to customize the rendering process without overriding '_render' method.
+         *
+         * @member {string}
+         * @default 'tilingSprite'
+         */
+        this.pluginName = 'tilingSprite';
+
+        /**
+         * Whether or not anchor affects uvs
+         *
+         * @member {boolean}
+         * @default false
+         */
+        this.uvRespectAnchor = false;
+    }
+
+    /**
+     * Changes frame clamping in corresponding textureTransform, shortcut
+     * Change to -0.5 to add a pixel to the edge, recommended for transparent trimmed textures in atlas
+     *
+     * @default 0.5
+     * @member {number}
+     */
+    get clampMargin ()
+    {
+        return this.uvMatrix.clampMargin;
+    };
+
+    set clampMargin(value) // eslint-disable-line require-jsdoc
+    {
+        this.uvMatrix.clampMargin = value;
+        this.uvMatrix.update(true);
+    };
+
+    /**
+     * The scaling of the image that is being tiled
+     *
+     * @member {PIXI.ObservablePoint}
+     */
+    get tileScale ()
+    {
+        return this.tileTransform.scale;
+    };
+
+    set tileScale (value) // eslint-disable-line require-jsdoc
+    {
+        this.tileTransform.scale.copyFrom(value);
+    };
+
+    /**
+     * The offset of the image that is being tiled
+     *
+     * @member {PIXI.ObservablePoint}
+     */
+    get tilePosition ()
+    {
+        return this.tileTransform.position;
+    };
+
+    set tilePosition (value) // eslint-disable-line require-jsdoc
+    {
+        this.tileTransform.position.copyFrom(value);
+    };
+
+    /**
+     * @private
+     */
+    _onTextureUpdate = ()=>
+    {
+        if (this.uvMatrix)
+        {
+            this.uvMatrix.texture = this._texture;
+        }
+        this.cachedTint = 0xFFFFFF;
+    };
+
+    /**
+     * Renders the object using the WebGL renderer
+     *
+     * @protected
+     * @param {PIXI.Renderer} renderer - The renderer
+     */
+    _render  (renderer)
+    {
+        // tweak our texture temporarily..
+        var texture = this._texture;
+
+        if (!texture || !texture.valid)
+        {
+            return;
+        }
+
+        this.tileTransform.updateLocalTransform();
+        this.uvMatrix.update();
+
+        renderer.batch.setObjectRenderer(renderer.plugins[this.pluginName]);
+        renderer.plugins[this.pluginName].render(this);
+    };
+
+    /**
+     * Updates the bounds of the tiling sprite.
+     *
+     * @protected
+     */
+    _calculateBounds  ()
+    {
+        var minX = this._width * -this._anchor._x;
+        var minY = this._height * -this._anchor._y;
+        var maxX = this._width * (1 - this._anchor._x);
+        var maxY = this._height * (1 - this._anchor._y);
+
+        this._bounds.addFrame(this.transform, minX, minY, maxX, maxY);
+    };
+
+    /**
+     * Gets the local bounds of the sprite object.
+     *
+     * @param {PIXI.Rectangle} rect - The output rectangle.
+     * @return {PIXI.Rectangle} The bounds.
+     */
+    getLocalBounds  (rect)
+    {
+        // we can do a fast local bounds if the sprite has no children!
+        if (this.children.length === 0)
+        {
+            this._bounds.minX = this._width * -this._anchor._x;
+            this._bounds.minY = this._height * -this._anchor._y;
+            this._bounds.maxX = this._width * (1 - this._anchor._x);
+            this._bounds.maxY = this._height * (1 - this._anchor._y);
+
+            if (!rect)
+            {
+                if (!this._localBoundsRect)
+                {
+                    this._localBoundsRect = new Rectangle();
+                }
+
+                rect = this._localBoundsRect;
+            }
+
+            return this._bounds.getRectangle(rect);
+        }
+
+        return Sprite.prototype.getLocalBounds.call(this, rect);
+    };
+
+    /**
+     * Checks if a point is inside this tiling sprite.
+     *
+     * @param {PIXI.Point} point - the point to check
+     * @return {boolean} Whether or not the sprite contains the point.
+     */
+    containsPoint (point)
+    {
+        this.worldTransform.applyInverse(point, TilingSprite.tempPoint$1);
+
+        var width = this._width;
+        var height = this._height;
+        var x1 = -width * this.anchor._x;
+
+        if (TilingSprite.tempPoint$1.x >= x1 && TilingSprite.tempPoint$1.x < x1 + width)
+        {
+            var y1 = -height * this.anchor._y;
+
+            if (TilingSprite.tempPoint$1.y >= y1 && TilingSprite.tempPoint$1.y < y1 + height)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+    /**
+     * Destroys this sprite and optionally its texture and children
+     *
+     * @param {object|boolean} [options] - Options parameter. A boolean will act as if all options
+     *  have been set to that value
+     * @param {boolean} [options.children=false] - if set to true, all the children will have their destroy
+     *      method called as well. 'options' will be passed on to those calls.
+     * @param {boolean} [options.texture=false] - Should it destroy the current texture of the sprite as well
+     * @param {boolean} [options.baseTexture=false] - Should it destroy the base texture of the sprite as well
+     */
+    destroy  (options)
+    {
+        super.destroy(options);
+
+        this.tileTransform = null;
+        this.uvMatrix = null;
+    };
+
+    /**
+     * Helper function that creates a new tiling sprite based on the source you provide.
+     * The source can be - frame id, image url, video url, canvas element, video element, base texture
+     *
+     * @static
+     * @param {number|string|PIXI.Texture|HTMLCanvasElement|HTMLVideoElement} source - Source to create texture from
+     * @param {number} width - the width of the tiling sprite
+     * @param {number} height - the height of the tiling sprite
+     * @return {PIXI.TilingSprite} The newly created texture
+     */
+    // static from  (source, width, height)
+    // {
+    //     return new TilingSprite(Texture.from(source), width, height);
+    // };
+
+    /**
+     * Helper function that creates a tiling sprite that will use a texture from the TextureCache based on the frameId
+     * The frame ids are created when a Texture packer file has been loaded
+     *
+     * @static
+     * @param {string} frameId - The frame Id of the texture in the cache
+     * @param {number} width - the width of the tiling sprite
+     * @param {number} height - the height of the tiling sprite
+     * @return {PIXI.TilingSprite} A new TilingSprite using a texture from the texture cache matching the frameId
+     */
+    static fromFrame  (frameId, width, height)
+    {
+        var texture = CacheSettings.TextureCache[frameId];
+
+        if (!texture)
+        {
+            throw new Error(("The frameId \"" + frameId + "\" does not exist in the texture cache " + (this)));
+        }
+
+        return new TilingSprite(texture, width, height);
+    };
+
+    /**
+     * Helper function that creates a sprite that will contain a texture based on an image url
+     * If the image is not in the texture cache it will be loaded
+     *
+     * @static
+     * @param {string} imageId - The image url of the texture
+     * @param {number} width - the width of the tiling sprite
+     * @param {number} height - the height of the tiling sprite
+     * @param {Object} [options] - See {@link PIXI.BaseTexture}'s constructor for options.
+     * @return {PIXI.TilingSprite} A new TilingSprite using a texture from the texture cache matching the image id
+     */
+    static fromImage  (imageId, width, height, options)
+    {
+        // Fallback support for crossorigin, scaleMode parameters
+        if (options && typeof options !== 'object')
+        {
+            options = {
+                scaleMode: arguments[4],
+                resourceOptions: {
+                    crossorigin: arguments[3],
+                },
+            };
+        }
+
+        return new TilingSprite(Texture.from(imageId, options), width, height);
+    };
+
+    /**
+     * The width of the sprite, setting this will actually modify the scale to achieve the value set
+     *
+     * @member {number}
+     */
+    get width ()
+    {
+        return this._width;
+    };
+
+    set width (value) // eslint-disable-line require-jsdoc
+    {
+        this._width = value;
+    };
+
+    /**
+     * The height of the TilingSprite, setting this will actually modify the scale to achieve the value set
+     *
+     * @member {number}
+     */
+    get height ()
+    {
+        return this._height;
+    };
+
+    set height (value) // eslint-disable-line require-jsdoc
+    {
+        this._height = value;
+    };
+}
+
