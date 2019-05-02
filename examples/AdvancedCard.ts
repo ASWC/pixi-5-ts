@@ -20,9 +20,9 @@ export class AdvancedCard extends BaseExample
     protected brush:Graphics;
     protected renderTexture:RenderTexture;
 
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bg_grass.jpg"))
         this.loader.addEventListener(Event.COMPLETE, this.handleGrassLoaded);
         this.loader.load(); 
@@ -36,22 +36,23 @@ export class AdvancedCard extends BaseExample
         this.brush.drawCircle(0, 0, 50);
         this.brush.endFill();
         const background = new Sprite(this.grasstxt);
-        this.app.stage.addChild(background);
-        background.width = this.app.screen.width;
-        background.height = this.app.screen.height;
+        this.stage.addChild(background);
+        background.width = this.sizew;
+        background.height = this.sizeh;
         const imageToReveal = new Sprite(this.rotatetxt);
-        this.app.stage.addChild(imageToReveal);
-        imageToReveal.width = this.app.screen.width;
-        imageToReveal.height = this.app.screen.height;
-        this.renderTexture = RenderTexture.create(this.app.screen.width, this.app.screen.height);
+        this.stage.addChild(imageToReveal);
+        imageToReveal.width = this.sizew;
+        imageToReveal.height = this.sizeh;
+        this.renderTexture = RenderTexture.create(this.sizew, this.sizeh);
         const renderTextureSprite = new Sprite(this.renderTexture);
-        this.app.stage.addChild(renderTextureSprite);
+        this.stage.addChild(renderTextureSprite);
         imageToReveal.mask = renderTextureSprite;
-        this.app.stage.interactive = true;
+        this.stage.interactive = true;
         this.dragging = false;
-        this.app.stage.addEventListener(MouseEvent.POINTER_DOWN, this.pointerDown);
-        this.app.stage.addEventListener(MouseEvent.POINTER_UP, this.pointerUp);
-        this.app.stage.addEventListener(MouseEvent.POINTER_MOVE, this.pointerMove);
+        this.stage.addEventListener(MouseEvent.POINTER_DOWN, this.pointerDown);
+        this.stage.addEventListener(MouseEvent.POINTER_UP, this.pointerUp);
+        this.stage.addEventListener(MouseEvent.POINTER_MOVE, this.pointerMove);
+        this.exampleReady();
     }
 
     protected pointerMove = (event:MouseEvent)=> 
@@ -72,6 +73,16 @@ export class AdvancedCard extends BaseExample
     protected pointerUp = (event:MouseEvent)=> 
     {
         this.dragging = false;
+    }
+
+    public destructor():void
+    {
+        super.destructor();
+        this.stage.removeEventListener(MouseEvent.POINTER_DOWN, this.pointerDown);
+        this.stage.removeEventListener(MouseEvent.POINTER_UP, this.pointerUp);
+        this.stage.removeEventListener(MouseEvent.POINTER_MOVE, this.pointerMove);
+        this.brush.destroy(null);
+        this.grasstxt.destroy(null);
     }
 
     protected handleGrassLoaded = (event:Event)=>

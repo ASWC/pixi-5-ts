@@ -5,9 +5,9 @@ import { Graphics } from "../raw-pixi-ts/Graphics";
 
 export class GraphicsSimple extends BaseExample
 {
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
 
         const graphics = new Graphics();
         graphics.beginFill(0xDE3249);

@@ -8,7 +8,6 @@ import { BaseTexture } from "../raw-pixi-ts/BaseTexture";
 import { Point } from "../raw-pixi-ts/Point";
 import { SimpleRope } from "../raw-pixi-ts/SimpleRope";
 import { BlendModesSettings } from "../raw-pixi-ts/BlendModesSettings";
-import { Graphics } from "../raw-pixi-ts/Graphics";
 
 
 export class AdvancedTrail extends BaseExample
@@ -21,13 +20,10 @@ export class AdvancedTrail extends BaseExample
     protected historySize:number;
     protected points:any[];
 
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
-        let gr:Graphics = new Graphics();
-        gr.beginFill(0);
-        gr.drawRect(0, 0, app.screen.width, app.screen.height);
-        app.stage.addChild(gr);
+        super(app, width, height);
+        this.backColor = 0x000378
         this.loader = new ResourceLoader(new URLRequest("examples/assets/trail.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handleGrassLoaded);
         this.loader.load(); 
@@ -52,7 +48,7 @@ export class AdvancedTrail extends BaseExample
         }
         const rope = new SimpleRope(this.trailTexture, this.points);
         rope.blendMode = BlendModesSettings.BLEND_MODES.ADD;
-        this.app.stage.addChild(rope);
+        this.stage.addChild(rope);
         this.app.ticker.add(this.runExample)
     }
 
@@ -94,5 +90,15 @@ export class AdvancedTrail extends BaseExample
         const t2 = t * t;
         const t3 = t * t2;
         return (2 * t3 - 3 * t2 + 1) * p[0] + (t3 - 2 * t2 + t) * m[0] + (-2 * t3 + 3 * t2) * p[1] + (t3 - t2) * m[1];
+    }
+
+    public destructor():void
+    {
+        super.destructor();
+        this.points = null;
+        this.historyY = null;
+        this.historyX = null
+        this.app.ticker.remove(this.runExample, null)
+        this.trailTexture.destroy(null);
     }
 }

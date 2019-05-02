@@ -18,9 +18,9 @@ export class Spritejet extends BaseExample
     protected txt:Texture;
     protected anim:AnimatedSprite;
     
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.urlloader = new URLLoader();
         this.urlloader.addEventListener(Event.COMPLETE, this.handleJsonLoaded);
         this.urlloader.load(new URLRequest("examples/assets/spritesheet/fighter.json"));

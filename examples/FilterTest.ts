@@ -21,9 +21,9 @@ export class FilterTest extends BaseExample
     protected filter:AdvancedBloomFilter;
     // protected blurFilter2:BlurFilter;
     
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.loader = new ResourceLoader(new URLRequest("examples/assets/pixi-filters/bg_depth_blur.jpg"))
         this.loader.addEventListener(Event.COMPLETE, this.handleDepthLoaded);
         this.loader.load();

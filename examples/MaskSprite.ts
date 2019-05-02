@@ -18,9 +18,9 @@ export class MaskSprite extends BaseExample
     protected target:Point;
     protected mask:Sprite;
 
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bg_plane.jpg"))
         this.loader.addEventListener(Event.COMPLETE, this.handlePlaneLoaded);
         this.loader.load(); 

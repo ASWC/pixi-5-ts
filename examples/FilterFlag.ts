@@ -18,9 +18,9 @@ export class FilterFlag extends BaseExample
     protected repeatTxt:Texture;
     protected displacementSprite:Sprite;
 
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         app.stage.interactive = true;
         this.loader = new ResourceLoader(new URLRequest("examples/assets/pixi-filters/flag.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handleRotateLoaded);

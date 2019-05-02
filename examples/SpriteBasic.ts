@@ -11,11 +11,12 @@ import { Sprite } from '../raw-pixi-ts/Sprite';
 export class SpriteBasic extends BaseExample
 {
     protected loader:ResourceLoader; 
-    protected bunny:Sprite;
+    protected bunny:Sprite;    
 
-    constructor(app:Application)
+    constructor(app:Application, width:number = 100, height:number = 100)
     {
-        super(app);
+        super(app, width, height);
+        this.backColor = 0xFFF000;
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bunny.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handleRotateLoaded);
         this.loader.load(); 
@@ -26,14 +27,22 @@ export class SpriteBasic extends BaseExample
         let texture = new Texture(new BaseTexture(this.loader.imageData)); 
         this.bunny = new Sprite(texture);
         this.bunny.anchor.set(0.5);
-        this.bunny.x = this.app.screen.width / 2;
-        this.bunny.y = this.app.screen.height / 2;
-        this.app.stage.addChild(this.bunny);
-        this.app.ticker.add(this.runExample)
+        this.bunny.x = this.sizew / 2;
+        this.bunny.y = this.sizeh / 2;
+        this.stage.addChild(this.bunny);
+        this.app.ticker.add(this.runExample);
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>
     {
         this.bunny.rotation += 0.1 * delta;
+    }
+
+    public destructor():void
+    {
+        super.destructor();
+        this.app.ticker.remove(this.runExample, null);
+        this.bunny.destroy(null);
     }
 }

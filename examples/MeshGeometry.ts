@@ -21,9 +21,9 @@ export class MeshGeometry extends BaseExample
     protected triangle2:Mesh;
     protected triangle3:Mesh;
     
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bg_scene_rotate.jpg"))
         this.loader.addEventListener(Event.COMPLETE, this.handleTxt1Loaded);
         this.loader.load(); 

@@ -349,7 +349,7 @@ export class Container extends DisplayObject
      * @param {number} [endIndex=this.children.length] - The ending position. Default value is size of the container.
      * @returns {DisplayObject[]} List of removed children
      */
-    removeChildren  (beginIndex, endIndex)
+    removeChildren  (beginIndex = 0, endIndex = Infinity)
     {
         if ( beginIndex === void 0 ) { beginIndex = 0; }
 

@@ -27,9 +27,9 @@ export class FilterCrawlies extends BaseExample
     protected displacementSprite:Sprite;
     protected container:Container;
     
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.count = 0;
         this.maggots = [];
         app.stage.interactive = true;

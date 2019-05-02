@@ -15,9 +15,9 @@ export class TextureRotate extends BaseExample
 {
     protected loader:ResourceLoader; 
     
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.loader = new ResourceLoader(new URLRequest("examples/assets/flowerTop.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handleResourceLoaded);
         this.loader.load();

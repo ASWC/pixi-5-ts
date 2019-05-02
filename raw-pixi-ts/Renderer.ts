@@ -228,7 +228,7 @@ export class Renderer extends AbstractRenderer
 
 	public resize(screenWidth:number, screenHeight:number):void
 	{
-		super.resize(800, 600);
+		super.resize(screenWidth, screenHeight);
 		this.runners.resize.run(screenWidth, screenHeight);
 		// this.dispatchEvent(Event.getEvent("resize"));
 	};

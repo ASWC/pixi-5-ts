@@ -7,9 +7,9 @@ import { BitmapText } from "../raw-pixi-ts/BitmapText";
 
 export class TextBitmap extends BaseExample
 {    
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);        
+        super(app, width, height);        
         let loader = FontManager.loadBitmapFont("examples/assets/bitmap-font/desyrel.xml")
         loader.addEventListener(Event.COMPLETE, this.handleFontLoaded);
     }

@@ -6,9 +6,9 @@ import { Text } from "../raw-pixi-ts/Text";
 
 export class TextWebFont extends BaseExample
 {
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         FontManager.onWebFontloaded = this.handleWebFontLoaded;
         FontManager.WebFontConfig = {
             google: {

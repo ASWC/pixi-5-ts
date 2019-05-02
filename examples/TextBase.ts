@@ -6,9 +6,9 @@ import { TextStyle } from "../raw-pixi-ts/TextStyle";
 
 export class TextBase extends BaseExample
 {
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         const basicText = new Text('Basic text in pixi');
         basicText.x = 50;
         basicText.y = 100;

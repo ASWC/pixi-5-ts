@@ -27,9 +27,9 @@ export class AdvancedSlots extends BaseExample
     protected slotTextures:any[];
     protected tweening:any[];
     
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.tweening = [];
         this.loader = new ResourceLoader(new URLRequest("examples/assets/eggHead.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handleEggLoaded);
@@ -97,16 +97,16 @@ export class AdvancedSlots extends BaseExample
                 rc.addChild(symbol);
             }
             this.reels.push(reel);
-            this.app.stage.addChild(reelContainer);
-            const margin = (this.app.screen.height - this.SYMBOL_SIZE * 3) / 2;
+            this.stage.addChild(reelContainer);
+            const margin = (this.sizeh - this.SYMBOL_SIZE * 3) / 2;
             reelContainer.y = margin;
-            reelContainer.x = Math.round(this.app.screen.width - REEL_WIDTH * 5);
+            reelContainer.x = Math.round(this.sizew - REEL_WIDTH * 5);
             const top = new Graphics();
             top.beginFill(0, 1);
-            top.drawRect(0, 0, this.app.screen.width, margin);
+            top.drawRect(0, 0, this.sizew, margin);
             const bottom = new Graphics();
             bottom.beginFill(0, 1);
-            bottom.drawRect(0, this.SYMBOL_SIZE * 3 + margin, this.app.screen.width, margin);
+            bottom.drawRect(0, this.SYMBOL_SIZE * 3 + margin, this.sizew, margin);
             const style = new TextStyle({
                 fontFamily: 'Arial',
                 fontSize: 36,
@@ -125,14 +125,14 @@ export class AdvancedSlots extends BaseExample
             });
             const playText = new Text('Spin the wheels!', style);
             playText.x = Math.round((bottom.width - playText.width) / 2);
-            playText.y = this.app.screen.height - margin + Math.round((margin - playText.height) / 2);
+            playText.y = this.sizeh - margin + Math.round((margin - playText.height) / 2);
             bottom.addChild(playText);
             const headerText = new Text('PIXI MONSTER SLOTS!', style);
             headerText.x = Math.round((top.width - headerText.width) / 2);
             headerText.y = Math.round((margin - headerText.height) / 2);
             top.addChild(headerText);
-            this.app.stage.addChild(top);
-            this.app.stage.addChild(bottom);
+            this.stage.addChild(top);
+            this.stage.addChild(bottom);
             bottom.interactive = true;
             bottom.buttonMode = true;
             bottom.addEventListener(MouseEvent.POINTER_DOWN, this.startPlay);
@@ -140,6 +140,7 @@ export class AdvancedSlots extends BaseExample
         }
         this.app.ticker.add(this.runExample);
         this.app.ticker.add(this.tween);
+        this.exampleReady();
     }
 
     protected startPlay = ()=>
@@ -181,6 +182,8 @@ export class AdvancedSlots extends BaseExample
             }
         }
     }
+
+    
 
     protected tweenTo(object, property, target, time, easing, onchange, oncomplete) 
     {
@@ -228,5 +231,18 @@ export class AdvancedSlots extends BaseExample
     protected backout(amount) 
     {
         return t => (--t * t * ((amount + 1) * t + amount) + 1);
+    }
+
+    public destructor():void
+    {
+        super.destructor();
+        this.app.ticker.remove(this.runExample, null);
+        this.app.ticker.remove(this.tween, null);
+        this.eggTxt.destroy(null);
+        this.flowerTxt.destroy(null);
+        this.helmTxt.destroy(null);
+        this.skullTxt.destroy(null);
+        this.slotTextures = null;
+        this.tweening = null;
     }
 }

@@ -12,9 +12,9 @@ export class SpriteVideo extends BaseExample
     protected button:Graphics;
     protected video:HTMLVideoElement
 
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.button = new Graphics()
         .beginFill(0x0, 0.5)
         .drawRoundedRect(0, 0, 100, 100, 10)

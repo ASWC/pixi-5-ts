@@ -17,9 +17,9 @@ export class BasicParticles extends BaseExample
     protected maggots:any[];
     protected dudeBounds:Rectangle;
     
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.loader = new ResourceLoader(new URLRequest("examples/assets/maggot_tiny.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handleResourceLoaded);
         this.loader.load(); 

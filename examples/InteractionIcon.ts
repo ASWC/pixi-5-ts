@@ -16,9 +16,9 @@ export class InteractionIcon extends BaseExample
     protected textureButtonOver:Texture;
     protected textureButtonDown:Texture;    
 
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
 
         const defaultIcon = "url('examples/assets/bunny.png'),auto;";
         const hoverIcon = "url('examples/assets/bunny_saturated.png'),auto;";

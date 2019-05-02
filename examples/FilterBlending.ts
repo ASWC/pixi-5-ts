@@ -18,9 +18,9 @@ export class FilterBlending extends BaseExample
     protected backgroundtxt:Texture;
     protected filter:Filter;
 
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bg_grass.jpg"))
         this.loader.addEventListener(Event.COMPLETE, this.handleGrassLoaded);
         this.loader.load(); 

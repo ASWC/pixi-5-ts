@@ -52,12 +52,14 @@ import { MeshGeometry } from './examples/MeshGeometry';
 import { MeshShader } from './examples/MeshShader';
 import { MeshMerging } from './examples/MeshMerging';
 import { FilterTest } from './examples/FilterTest';
+import { Button } from './fl-package/Button';
+import { ExampleDisplay } from './examples/controls/ExampleDisplay';
 
 
 window.addEventListener("load", ()=>{
 
     var options:StageOptions = new StageOptions();
-    options.width = 800;
+    options.width = 1000;
     options.height = 600
     options.autoResize = false
     options.backgroundColor = 0x00000000;
@@ -68,6 +70,18 @@ window.addEventListener("load", ()=>{
     options.antialias = true;
     options.view = <HTMLCanvasElement>document.getElementById("fakecanvas");    
     var app = new Application(options);
+    let display:ExampleDisplay = new ExampleDisplay(app, 1024, 768);
+    app.stage.addChild(display);
+
+
+    // create a view class with frame
+    // create a control class with buttons
+    // each button click change content of class frame
+
+
+    // let button:Button = new Button("Test", 200, 40);
+    // app.stage.addChild(button);
+    // button.x = 800;
 
     // let example:BasicCache = new BasicCache(app); NOT WORKING
 
@@ -119,7 +133,7 @@ window.addEventListener("load", ()=>{
     // let example:MeshTextured = new MeshTextured(app);
     // let example:MeshUniforms = new MeshUniforms(app);
     // let example:MeshGeometry = new MeshGeometry(app);
-    let example:MeshShader = new MeshShader(app);
+    // let example:MeshShader = new MeshShader(app);
     
 })
 

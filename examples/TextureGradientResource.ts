@@ -8,9 +8,9 @@ import { Sprite } from "../raw-pixi-ts/Sprite";
 
 export class TextureGradientResource extends BaseExample
 {
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);        
+        super(app, width, height);        
         const gradBaseTexture = new BaseTexture(new GradientResource());
         gradBaseTexture.setSize(500, 50);        
         const gradTexture = new Texture(gradBaseTexture);        

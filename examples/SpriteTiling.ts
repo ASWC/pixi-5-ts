@@ -14,9 +14,9 @@ export class SpriteTiling extends BaseExample
     protected tilingSprite:TilingSprite;
     protected count:number;
 
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.loader = new ResourceLoader(new URLRequest("examples/assets/p2.jpeg"))
         this.loader.addEventListener(Event.COMPLETE, this.handleRotateLoaded);
         this.loader.load(); 

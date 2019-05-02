@@ -17,9 +17,9 @@ export class TextureRender extends BaseExample
     protected container:Container;
     protected rt:RenderTexture;
 
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bunny.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handleResourceLoaded);
         this.loader.load();

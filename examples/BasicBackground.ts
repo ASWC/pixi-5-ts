@@ -12,10 +12,12 @@ export class BasicBackground extends BaseExample
 {
     protected loader:ResourceLoader;  
     protected bunny:Sprite;
+
     
-    constructor(app:Application)
+    
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bunny.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handleResourceLoaded);
         this.loader.load();  
@@ -35,5 +37,12 @@ export class BasicBackground extends BaseExample
     protected runExample = (delta:number)=>
     {
         this.bunny.rotation += 0.1;
+    }
+
+    public destructor():void
+    {
+        super.destructor();
+        this.app.ticker.remove(this.runExample, null)
+        this.bunny.destroy(null);
     }
 }

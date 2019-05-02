@@ -13,9 +13,9 @@ export class BasicContainer extends BaseExample
     protected container:Container;
     protected loader:ResourceLoader;    
 
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.container = new Container();
         this.app.stage.addChild(this.container);
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bunny.png"))

@@ -17,9 +17,9 @@ export class MeshTextured extends BaseExample
     protected loader:ResourceLoader;  
     protected planeTxt:Texture;
     
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bg_scene_rotate.jpg"))
         this.loader.addEventListener(Event.COMPLETE, this.handlePlaneLoaded);
         this.loader.load(); 

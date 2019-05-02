@@ -10,9 +10,9 @@ export class MeshColoredTriangle extends BaseExample
 {
     protected triangle:Mesh;
     
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         const geometry = new Geometry()
         geometry.addAttribute('aVertexPosition', // the attribute name
             [-100, -50, // x, y

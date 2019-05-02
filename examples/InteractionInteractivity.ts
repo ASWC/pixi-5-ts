@@ -16,9 +16,9 @@ export class InteractionInteractivity extends BaseExample
     protected textureButtonOver:Texture;
     protected textureButtonDown:Texture;    
 
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bg_button.jpg"))
         this.loader.addEventListener(Event.COMPLETE, this.handleRotateLoaded);
         this.loader.load(); 

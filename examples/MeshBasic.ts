@@ -18,9 +18,9 @@ export class MeshBasic extends BaseExample
     protected ropeLength:number;
     protected points:any[];
     
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.loader = new ResourceLoader(new URLRequest("examples/assets/snake.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handlePlaneLoaded);
         this.loader.load(); 

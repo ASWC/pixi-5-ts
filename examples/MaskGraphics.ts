@@ -29,9 +29,9 @@ export class MaskGraphics extends BaseExample
     protected light1:Sprite;
     protected panda:Sprite;
     
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         app.stage.interactive = true;
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bg_rotate.jpg"))
         this.loader.addEventListener(Event.COMPLETE, this.handleRotateLoaded);

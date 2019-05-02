@@ -10,9 +10,9 @@ export class GraphicsDynamic extends BaseExample
     protected count:number;
     protected thing:Graphics;
 
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         app.stage.interactive = true;
         this.graphics = new Graphics();
         this.graphics.beginFill(0xFF3300);

@@ -22,9 +22,9 @@ export class AdvancedWarp extends BaseExample
     protected starBaseSize:number;
     protected starStretch:number;
 
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.loader = new ResourceLoader(new URLRequest("examples/assets/star.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handleGrassLoaded);
         this.loader.load(); 

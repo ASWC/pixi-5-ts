@@ -22,9 +22,9 @@ export class TextureAdvanced extends BaseExample
     protected count:number;
     protected outputSprite:Sprite;
 
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         this.renderTexture = RenderTexture.create(
             app.screen.width,
             app.screen.height,

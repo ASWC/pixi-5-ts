@@ -7,9 +7,9 @@ export class BasicCache extends BaseExample
 {
     protected loader:ResourceLoader;  
     
-    constructor(app:Application)
+    constructor(app:Application, width:number, height:number)
     {
-        super(app);
+        super(app, width, height);
         app.stop();
     }
 }
