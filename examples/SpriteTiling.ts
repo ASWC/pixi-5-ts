@@ -14,6 +14,16 @@ export class SpriteTiling extends BaseExample
     protected tilingSprite:TilingSprite;
     protected count:number;
 
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.tilingSprite.destroy(null)
+        this.tilingSprite = null
+        this.txt1.destroy(null)
+        this.txt1 = null
+    }
+
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
@@ -27,12 +37,13 @@ export class SpriteTiling extends BaseExample
         this.txt1 = new Texture(new BaseTexture(this.loader.imageData)); 
         this.tilingSprite = new TilingSprite(
             this.txt1,
-            this.app.screen.width,
-            this.app.screen.height,
+            this.sizew,
+            this.sizeh,
         );
-        this.app.stage.addChild(this.tilingSprite);        
+        this.stage.addChild(this.tilingSprite);        
         this.count = 0;
         this.app.ticker.add(this.runExample)
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>

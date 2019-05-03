@@ -212,7 +212,7 @@ export class Texture extends EventDispatcher
                 this.baseTexture.destroy();
             }
 
-            this.baseTexture.off('update', this.onBaseTextureUpdated, this);
+            // this.baseTexture.remo('update', this.onBaseTextureUpdated, this);
 
             this.baseTexture = null;
         }

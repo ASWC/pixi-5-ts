@@ -16,19 +16,22 @@ export class InteractionIcon extends BaseExample
     protected textureButtonOver:Texture;
     protected textureButtonDown:Texture;    
 
+    public destructor():void
+    {
+        super.destructor();   
+        this.textureButton.destroy(null)     
+        this.textureButton = null
+        this.textureButtonOver.destroy(null)     
+        this.textureButtonOver = null
+        this.textureButtonDown.destroy(null)     
+        this.textureButtonDown = null
+    }
+
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
-
         const defaultIcon = "url('examples/assets/bunny.png'),auto;";
         const hoverIcon = "url('examples/assets/bunny_saturated.png'),auto;";
-        // let im:InteractionManager = app.renderer.plugins.interaction;
-        // im.cursor = defaultIcon;
-        // im.cursorStyles.default = defaultIcon;
-        // im.cursorStyles.hover = hoverIcon;
-
-        // app.renderer.view.style.cursor = "url('examples/assets/bunny.png'), auto"
-
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bg_button.jpg"))
         this.loader.addEventListener(Event.COMPLETE, this.handleRotateLoaded);
         this.loader.load(); 
@@ -48,11 +51,6 @@ export class InteractionIcon extends BaseExample
         for (let i = 0; i < 5; i++) 
         {
             const button = new ExtendedSprite(this.textureButton);
-
-            // button.cursor = 'hover';
-            // button.interactive = true;
-
-            // button.buttonMode = true;
             button.anchor.set(0.5);
             button.x = buttonPositions[i * 2];
             button.y = buttonPositions[i * 2 + 1];
@@ -72,7 +70,7 @@ export class InteractionIcon extends BaseExample
             // .on('touchstart', onButtonDown)
             // .on('touchend', onButtonUp)
             // .on('touchendoutside', onButtonUp)
-            this.app.stage.addChild(button);
+            this.stage.addChild(button);
             buttons.push(button);
         }
         buttons[0].scale.set(1.2);
@@ -80,6 +78,7 @@ export class InteractionIcon extends BaseExample
         buttons[3].scale.set(0.8);
         buttons[4].scale.set(0.8, 1.2);
         buttons[4].rotation = Math.PI;
+        this.exampleReady();
     }
 
     protected onButtonDown = (event:MouseEvent)=> 
@@ -148,9 +147,9 @@ export class InteractionIcon extends BaseExample
     {
         let txt = new Texture(new BaseTexture(this.loader.imageData));  
         const background = new Sprite(txt);
-        background.width = this.app.screen.width;
-        background.height = this.app.screen.height;
-        this.app.stage.addChild(background);
+        background.width = this.sizew;
+        background.height = this.sizeh;
+        this.stage.addChild(background);
         this.loader = new ResourceLoader(new URLRequest("examples/assets/button.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handleButtonLoaded);
         this.loader.load(); 

@@ -16,11 +16,12 @@ export class SpriteSpeed extends BaseExample
     protected loader:ResourceLoader;  
     protected txt:Texture;
     protected anim:AnimatedSprite;
-    protected spritesheet:Spritesheet;
+    protected spritesheet:Spritesheet;    
 
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
+        this.backColor = 0x57AACC;
         this.urlloader = new URLLoader();
         this.urlloader.addEventListener(Event.COMPLETE, this.handleJsonLoaded);
         this.urlloader.load(new URLRequest("examples/assets/spritesheet/0123456789.json"));
@@ -42,19 +43,19 @@ export class SpriteSpeed extends BaseExample
         slow.anchor.set(0.5);
         slow.scale.set(scaling);
         slow.animationSpeed = 0.5;
-        slow.x = (this.app.screen.width - slow.width) / 2;
-        slow.y = this.app.screen.height / 2;
+        slow.x = (this.sizew - slow.width) / 2;
+        slow.y = this.sizeh / 2;
         slow.play();
         this.app.stage.addChild(slow);
         const fast = new AnimatedSprite(textures);
         fast.anchor.set(0.5);
         fast.scale.set(scaling);
-        fast.x = (this.app.screen.width + fast.width) / 2;
-        fast.y = this.app.screen.height / 2;
+        fast.x = (this.sizew + fast.width) / 2;
+        fast.y = this.sizeh / 2;
         fast.play();
-        this.app.stage.addChild(fast);
-
+        this.stage.addChild(fast);
         // this.app.ticker.add(this.runExample)
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>
@@ -75,5 +76,17 @@ export class SpriteSpeed extends BaseExample
         this.txt = new Texture(new BaseTexture(this.loader.imageData));  
         this.spritesheet = new Spritesheet(this.txt, this.jsondata);
         this.spritesheet.parse(this.onAnimationParsed)        
+    }
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.spritesheet.destroy(null);
+        this.spritesheet = null;
+        this.txt.destroy(null);
+        this.txt = null;
+        this.anim.destroy(null);
+        this.anim = null;
     }
 }

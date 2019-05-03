@@ -20,11 +20,12 @@ export class AdvancedWarp extends BaseExample
     protected stars:any[];
     protected fov:number;
     protected starBaseSize:number;
-    protected starStretch:number;
+    protected starStretch:number;    
 
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
+        this.backColor = 0x000000;
         this.loader = new ResourceLoader(new URLRequest("examples/assets/star.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handleGrassLoaded);
         this.loader.load(); 
@@ -53,13 +54,14 @@ export class AdvancedWarp extends BaseExample
             star.sprite.anchor.x = 0.5;
             star.sprite.anchor.y = 0.7;
             this.randomizeStar(star, true);
-            this.app.stage.addChild(star.sprite);
+            this.stage.addChild(star.sprite);
             this.stars.push(star);
         }
         setInterval(() => {
             this.warpSpeed = this.warpSpeed > 0 ? 0 : 1;
         }, 5000);
         this.app.ticker.add(this.runExample)
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>
@@ -71,14 +73,14 @@ export class AdvancedWarp extends BaseExample
             const star = this.stars[i];
             if (star.z < this.cameraZ) this.randomizeStar(star);
             const z = star.z - this.cameraZ;
-            star.sprite.x = star.x * (this.fov / z) * this.app.renderer.screen.width + this.app.renderer.screen.width / 2;
-            star.sprite.y = star.y * (this.fov / z) * this.app.renderer.screen.width + this.app.renderer.screen.height / 2;
-            const dxCenter = star.sprite.x - this.app.renderer.screen.width / 2;
-            const dyCenter = star.sprite.y - this.app.renderer.screen.height / 2;
+            star.sprite.x = star.x * (this.fov / z) * this.sizew + this.sizew / 2;
+            star.sprite.y = star.y * (this.fov / z) * this.sizew + this.sizeh / 2;
+            const dxCenter = star.sprite.x - this.sizew / 2;
+            const dyCenter = star.sprite.y - this.sizeh / 2;
             const distanceCenter = Math.sqrt(dxCenter * dxCenter + dyCenter + dyCenter);
             const distanceScale = Math.max(0, (2000 - z) / 2000);
             star.sprite.scale.x = distanceScale * this.starBaseSize;
-            star.sprite.scale.y = distanceScale * this.starBaseSize + distanceScale * this.speed * this.starStretch * distanceCenter / this.app.renderer.screen.width;
+            star.sprite.scale.y = distanceScale * this.starBaseSize + distanceScale * this.speed * this.starStretch * distanceCenter / this.sizew;
             star.sprite.rotation = Math.atan2(dyCenter, dxCenter) + Math.PI / 2;
         }
     }
@@ -90,5 +92,13 @@ export class AdvancedWarp extends BaseExample
         const distance = Math.random() * 50 + 1;
         star.x = Math.cos(deg) * distance;
         star.y = Math.sin(deg) * distance;
+    }
+
+    public destructor():void
+    {
+        super.destructor();
+        this.stars = null
+        this.app.ticker.remove(this.runExample, null)
+        this.starTexture.destroy(null);
     }
 }

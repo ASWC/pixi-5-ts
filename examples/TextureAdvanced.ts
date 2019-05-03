@@ -20,29 +20,29 @@ export class TextureAdvanced extends BaseExample
     protected stuffContainer:Container;
     protected items:Sprite[];
     protected count:number;
-    protected outputSprite:Sprite;
+    protected outputSprite:Sprite;    
 
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
         this.renderTexture = RenderTexture.create(
-            app.screen.width,
-            app.screen.height,
+            this.sizew,
+            this.sizeh,
         );
         this.renderTexture2 = RenderTexture.create(
-            app.screen.width,
-            app.screen.height,
+            this.sizew,
+            this.sizeh,
         );
         const currentTexture = this.renderTexture;
         this.outputSprite = new Sprite(currentTexture);
         this.outputSprite.x = 400;
         this.outputSprite.y = 300;
         this.outputSprite.anchor.set(0.5);
-        app.stage.addChild(this.outputSprite);
+        this.stage.addChild(this.outputSprite);
         this.stuffContainer = new Container();
         this.stuffContainer.x = 400;
         this.stuffContainer.y = 300;
-        app.stage.addChild(this.stuffContainer);
+        this.stage.addChild(this.stuffContainer);
         this.fruitslinks = [
             'examples/assets/rt_object_01.png',
             'examples/assets/rt_object_02.png',
@@ -71,11 +71,11 @@ export class TextureAdvanced extends BaseExample
         }
         this.count = 0;
         this.app.ticker.add(this.runExample);
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>
-    {
-        
+    {        
         for (let i = 0; i < this.items.length; i++) 
         {
             const item = this.items[i];
@@ -88,7 +88,7 @@ export class TextureAdvanced extends BaseExample
         this.outputSprite.texture = this.renderTexture;
         this.stuffContainer.rotation -= 0.01;
         this.outputSprite.scale.set(1 + Math.sin(this.count) * 0.2);
-        this.app.renderer.render(this.app.stage, this.renderTexture2, false);
+        this.app.renderer.render(this.stage, this.renderTexture2, false);
     }
 
     protected loadAssets():void
@@ -108,5 +108,18 @@ export class TextureAdvanced extends BaseExample
         let txt:Texture = new Texture(new BaseTexture(this.loader.imageData));   
         this.fruits.push(txt);    
         this.loadAssets();
+    }
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.stuffContainer.destroy(null)
+        this.stuffContainer = null
+        this.outputSprite.destroy(null)
+        this.outputSprite = null
+        this.items = null
+        this.fruitslinks = null
+        this.fruits = null
     }
 }

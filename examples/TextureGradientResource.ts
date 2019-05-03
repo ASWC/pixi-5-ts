@@ -17,7 +17,10 @@ export class TextureGradientResource extends BaseExample
         const sprite = new Sprite(gradTexture);
         sprite.position.set(100, 100);
         sprite.rotation = Math.PI / 8;
-        app.stage.addChild(sprite);
+        this.stage.addChild(sprite);
+        setTimeout(() => {
+            this.exampleReady();
+        }, 1000);
     }
 }
 

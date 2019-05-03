@@ -16,11 +16,12 @@ export class MaskSprite extends BaseExample
     protected cellTxt:Texture;
     protected flowerTxt:Texture;
     protected target:Point;
-    protected mask:Sprite;
+    protected mask:Sprite;    
 
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
+        this.activateMask();
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bg_plane.jpg"))
         this.loader.addEventListener(Event.COMPLETE, this.handlePlaneLoaded);
         this.loader.load(); 
@@ -31,7 +32,9 @@ export class MaskSprite extends BaseExample
         this.flowerTxt = new Texture(new BaseTexture(this.loader.imageData)); 
         this.app.stage.interactive = true;
         const bg = new Sprite(this.planeTxt);
-        this.app.stage.addChild(bg);
+        bg.width = this.sizew;
+        bg.height = this.sizeh;
+        this.stage.addChild(bg);
         const cells = new Sprite(this.cellTxt);
         cells.scale.set(1.5);
         this.mask = new Sprite(this.flowerTxt);
@@ -39,11 +42,12 @@ export class MaskSprite extends BaseExample
         this.mask.x = 310;
         this.mask.y = 190;
         cells.mask = this.mask;
-        this.app.stage.addChild(this.mask);
-        this.app.stage.addChild(cells);
+        this.stage.addChild(this.mask);
+        this.stage.addChild(cells);
         this.target = new Point();
         this.reset();
         this.app.ticker.add(this.runExample);
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>
@@ -76,5 +80,19 @@ export class MaskSprite extends BaseExample
         this.loader = new ResourceLoader(new URLRequest("examples/assets/cells.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handleCellLoaded);
         this.loader.load();  
+    }
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.mask.destroy(null)
+        this.mask = null
+        this.planeTxt.destroy(null)
+        this.planeTxt = null
+        this.cellTxt.destroy(null)
+        this.cellTxt = null
+        this.flowerTxt.destroy(null)
+        this.flowerTxt = null
     }
 }

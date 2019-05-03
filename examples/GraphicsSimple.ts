@@ -8,7 +8,7 @@ export class GraphicsSimple extends BaseExample
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
-
+        this.backColor = 0;
         const graphics = new Graphics();
         graphics.beginFill(0xDE3249);
         graphics.drawRect(50, 50, 100, 100);
@@ -69,6 +69,9 @@ export class GraphicsSimple extends BaseExample
         graphics.beginFill(0x3500FA, 1);
         graphics.drawPolygon(path);
         graphics.endFill();
-        app.stage.addChild(graphics);
+        this.stage.addChild(graphics);
+        setTimeout(() => {
+            this.exampleReady();
+        }, 1000);
     }
 }

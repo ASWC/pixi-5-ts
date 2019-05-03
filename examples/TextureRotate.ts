@@ -47,10 +47,10 @@ export class TextureRotate extends BaseExample
             }
             textures.push(rotatedTexture);
         }    
-        const offsetX = this.app.screen.width / 16 | 0;
-        const offsetY = this.app.screen.height / 8 | 0;
-        const gridW = this.app.screen.width / 4 | 0;
-        const gridH = this.app.screen.height / 5 | 0;
+        const offsetX = this.sizew / 16 | 0;
+        const offsetY = this.sizeh / 8 | 0;
+        const gridW = this.sizew / 4 | 0;
+        const gridH = this.sizeh / 5 | 0;
         for (let i = 0; i < 16; i++) 
         {
             const dude = new Sprite(textures[i < 8 ? i * 2 : (i - 8) * 2 + 1]);
@@ -58,13 +58,14 @@ export class TextureRotate extends BaseExample
             dude.scale.y = 0.5;
             dude.x = offsetX + gridW * (i % 4);
             dude.y = offsetY + gridH * (i / 4 | 0);
-            this.app.stage.addChild(dude);
+            this.stage.addChild(dude);
             const text = new Text(`rotate = ${dude.texture.rotate}`, {
                 fontFamily: 'Courier New', fontSize: '12px', fill: 'white', align: 'left',
             });
             text.x = dude.x;
             text.y = dude.y - 20;
-            this.app.stage.addChild(text);
+            this.stage.addChild(text);
         }
+        this.exampleReady();
     }
 }

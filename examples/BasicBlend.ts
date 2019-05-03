@@ -14,11 +14,13 @@ export class BasicBlend extends BaseExample
 {
     protected loader:ResourceLoader;  
     protected dudeArray:any[];
-    protected dudeBounds:Rectangle;
+    protected dudeBounds:Rectangle;    
     
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
+        this.backColor = 0xFFFFFF;
+        this.activateMask();
         this.loader = new ResourceLoader(new URLRequest("examples/assets/eggHead.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handleResourceLoaded);
         this.loader.load(); 
@@ -28,9 +30,9 @@ export class BasicBlend extends BaseExample
     {
         let txt:Texture = new Texture(new BaseTexture(this.loader.imageData));  
         const background = new Sprite(txt);
-        background.width = this.app.screen.width;
-        background.height = this.app.screen.height;
-        this.app.stage.addChild(background);
+        background.width = this.sizew;
+        background.height = this.sizeh;
+        this.stage.addChild(background);
         this.loader = new ResourceLoader(new URLRequest("examples/assets/flowerTop.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handleFlowerLoaded);
         this.loader.load(); 
@@ -46,23 +48,24 @@ export class BasicBlend extends BaseExample
             const dude = new ExtendedSprite(txt);
             dude.anchor.set(0.5);
             dude.scale.set(0.8 + Math.random() * 0.3);
-            dude.x = Math.floor(Math.random() * this.app.screen.width);
-            dude.y = Math.floor(Math.random() * this.app.screen.height);
+            dude.x = Math.floor(Math.random() * this.sizew);
+            dude.y = Math.floor(Math.random() * this.sizeh);
             dude.blendMode = BlendModesSettings.BLEND_MODES.ADD;
             dude.direction = Math.random() * Math.PI * 2;
             dude.turningSpeed = Math.random() - 0.8;
             dude.speed = 2 + Math.random() * 2;
             this.dudeArray.push(dude);
-            this.app.stage.addChild(dude);
+            this.stage.addChild(dude);
         }
         const dudeBoundsPadding = 100;
         this.dudeBounds = new Rectangle(
             -dudeBoundsPadding,
             -dudeBoundsPadding,
-            this.app.screen.width + dudeBoundsPadding * 2,
-            this.app.screen.height + dudeBoundsPadding * 2,
+            this.sizew + dudeBoundsPadding * 2,
+            this.sizeh + dudeBoundsPadding * 2,
         );
         this.app.ticker.add(this.runExample);
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>
@@ -85,6 +88,13 @@ export class BasicBlend extends BaseExample
                 dude.y -= this.dudeBounds.height;
             }
         }
+    }
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.dudeArray = null
     }
 }
 

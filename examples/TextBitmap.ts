@@ -6,7 +6,7 @@ import { BitmapText } from "../raw-pixi-ts/BitmapText";
 
 
 export class TextBitmap extends BaseExample
-{    
+{        
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);        
@@ -22,6 +22,7 @@ export class TextBitmap extends BaseExample
         bitmapFontText.align = 'left';
         bitmapFontText.x = 50;
         bitmapFontText.y = 200;
-        this.app.stage.addChild(bitmapFontText);        
+        this.stage.addChild(bitmapFontText);    
+        this.exampleReady();    
     }
 }

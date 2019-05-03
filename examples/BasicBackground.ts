@@ -11,9 +11,7 @@ import { Sprite } from "../raw-pixi-ts/Sprite";
 export class BasicBackground extends BaseExample
 {
     protected loader:ResourceLoader;  
-    protected bunny:Sprite;
-
-    
+    protected bunny:Sprite;    
     
     constructor(app:Application, width:number, height:number)
     {
@@ -28,10 +26,11 @@ export class BasicBackground extends BaseExample
         let txt:Texture = new Texture(new BaseTexture(this.loader.imageData));  
         this.bunny = new Sprite(txt);
         this.bunny.anchor.set(0.5);
-        this.bunny.x = this.app.screen.width / 2;
-        this.bunny.y = this.app.screen.height / 2;
+        this.bunny.x = this.sizew / 2;
+        this.bunny.y = this.sizeh / 2;
         this.app.stage.addChild(this.bunny);
         this.app.ticker.add(this.runExample);
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>
@@ -41,8 +40,9 @@ export class BasicBackground extends BaseExample
 
     public destructor():void
     {
-        super.destructor();
+        super.destructor();        
         this.app.ticker.remove(this.runExample, null)
         this.bunny.destroy(null);
+        this.bunny = null
     }
 }

@@ -15,7 +15,10 @@ export class TextureGradientBasic extends BaseExample
         sprite.rotation = Math.PI / 8;
         sprite.width = 500;
         sprite.height = 50;
-        app.stage.addChild(sprite);
+        this.stage.addChild(sprite);
+        setTimeout(() => {
+            this.exampleReady();
+        }, 1000);
     }
 
     protected createGradTexture() 

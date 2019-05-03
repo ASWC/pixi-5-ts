@@ -15,7 +15,7 @@ export class SpriteSwap extends BaseExample
     protected txt1:Texture;
     protected txt2:Texture;
     protected dude:Sprite;
-    protected bol:boolean;
+    protected bol:boolean;    
 
     constructor(app:Application, width:number, height:number)
     {
@@ -38,13 +38,14 @@ export class SpriteSwap extends BaseExample
         this.txt2 = new Texture(new BaseTexture(this.loader.imageData)); 
         this.dude = new Sprite(this.txt1);
         this.dude.anchor.set(0.5);
-        this.dude.x = this.app.screen.width / 2;
-        this.dude.y = this.app.screen.height / 2;
-        this.app.stage.addChild(this.dude);
+        this.dude.x = this.sizew / 2;
+        this.dude.y = this.sizeh / 2;
+        this.stage.addChild(this.dude);
         this.dude.interactive = true;
         this.dude.buttonMode = true;
         this.dude.addEventListener(MouseEvent.POINTER_DOWN, this.handleDown)
         this.app.ticker.add(this.runExample)
+        this.exampleReady();
     }
 
     protected handleDown = (event:MouseEvent)=>
@@ -63,5 +64,17 @@ export class SpriteSwap extends BaseExample
     protected runExample = (delta:number)=>
     {
         this.dude.rotation += 0.1;
+    }
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.dude.destroy(null);
+        this.dude = null
+        this.txt1.destroy(null);
+        this.txt1 = null
+        this.txt2.destroy(null);
+        this.txt2 = null
     }
 }

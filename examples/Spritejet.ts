@@ -16,11 +16,12 @@ export class Spritejet extends BaseExample
     protected jsondata:any;
     protected loader:ResourceLoader;  
     protected txt:Texture;
-    protected anim:AnimatedSprite;
+    protected anim:AnimatedSprite;    
     
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
+        this.backColor = 0x969696;
         this.urlloader = new URLLoader();
         this.urlloader.addEventListener(Event.COMPLETE, this.handleJsonLoaded);
         this.urlloader.load(new URLRequest("examples/assets/spritesheet/fighter.json"));
@@ -35,13 +36,14 @@ export class Spritejet extends BaseExample
             frames.push(textures[`rollSequence00${val}.png`]);
         }
         this.anim = new AnimatedSprite(frames);
-        this.anim.x = this.app.screen.width / 2;
-        this.anim.y = this.app.screen.height / 2;
+        this.anim.x = this.sizew / 2;
+        this.anim.y = this.sizeh / 2;
         this.anim.anchor.set(0.5);
         this.anim.animationSpeed = 0.5;
         this.anim.play();    
-        this.app.stage.addChild(this.anim);
+        this.stage.addChild(this.anim);
         this.app.ticker.add(this.runExample)
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>
@@ -62,5 +64,16 @@ export class Spritejet extends BaseExample
         this.txt = new Texture(new BaseTexture(this.loader.imageData));  
         let spritesheet:Spritesheet = new Spritesheet(this.txt, this.jsondata);
         spritesheet.parse(this.onAnimationParsed)
+    }
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.anim.destroy(null);
+        this.anim = null;
+        this.txt.destroy(null);
+        this.txt = null;
+        this.jsondata = null;
     }
 }

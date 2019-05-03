@@ -16,6 +16,13 @@ export class InteractionClick extends BaseExample
     protected loader:ResourceLoader; 
     protected sprite:Sprite;
 
+    public destructor():void
+    {
+        super.destructor();  
+        this.sprite.destroy(null);      
+        this.sprite = null
+    }
+
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
@@ -30,12 +37,13 @@ export class InteractionClick extends BaseExample
         DisplaySettings.SCALE_MODE = WebGLSettings.SCALE_MODES.NEAREST;
         this.sprite = new Sprite(txt);
         this.sprite.anchor.set(0.5);
-        this.sprite.x = this.app.screen.width / 2;
-        this.sprite.y = this.app.screen.height / 2;
+        this.sprite.x = this.sizew / 2;
+        this.sprite.y = this.sizeh / 2;
         this.sprite.interactive = true;
         this.sprite.buttonMode = true;
         this.sprite.addEventListener(MouseEvent.POINTER_DOWN, this.onClick);
-        this.app.stage.addChild(this.sprite);
+        this.stage.addChild(this.sprite);
+        this.exampleReady();
     }
 
     protected onClick = (event:MouseEvent)=> 

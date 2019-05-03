@@ -12,7 +12,7 @@ export class TextBase extends BaseExample
         const basicText = new Text('Basic text in pixi');
         basicText.x = 50;
         basicText.y = 100;
-        app.stage.addChild(basicText);
+        this.stage.addChild(basicText);
         const style = new TextStyle({
             fontFamily: 'Arial',
             fontSize: 36,
@@ -32,6 +32,9 @@ export class TextBase extends BaseExample
         const richText = new Text('Rich text with a lot of options and across multiple lines', style);
         richText.x = 50;
         richText.y = 250;
-        app.stage.addChild(richText);
+        this.stage.addChild(richText);
+        setTimeout(() => {
+            this.exampleReady();
+        }, 1000);
     }
 }

@@ -8,7 +8,7 @@ export class GraphicsDynamic extends BaseExample
 {
     protected graphics:Graphics;
     protected count:number;
-    protected thing:Graphics;
+    protected thing:Graphics;    
 
     constructor(app:Application, width:number, height:number)
     {
@@ -43,14 +43,18 @@ export class GraphicsDynamic extends BaseExample
         this.graphics.lineStyle(20, 0x33FF00);
         this.graphics.moveTo(30, 30);
         this.graphics.lineTo(600, 300);
-        app.stage.addChild(this.graphics);
+        this.stage.addChild(this.graphics);
         this.thing = new Graphics();
-        app.stage.addChild(this.thing);
+        this.stage.addChild(this.thing);
         this.thing.x = 800 / 2;
         this.thing.y = 600 / 2;
         this.count = 0;
         app.ticker.add(this.runExample);
-        app.stage.addEventListener(MouseEvent.POINTER_DOWN, this.onPointerDown);
+        this.stage.interactive = true;
+        this.stage.addEventListener(MouseEvent.POINTER_DOWN, this.onPointerDown);
+        setTimeout(() => {
+            this.exampleReady();
+        }, 1000);
     }
 
     protected runExample = (delta:number)=>
@@ -74,7 +78,16 @@ export class GraphicsDynamic extends BaseExample
         this.graphics.bezierCurveTo(
         Math.random() * 800, Math.random() * 600,
         Math.random() * 800, Math.random() * 600,
-        Math.random() * 800, Math.random() * 600,
-    );
-}
+        Math.random() * 800, Math.random() * 600)
+    }
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.graphics.destroy(null);
+        this.graphics = null;
+        this.thing.destroy(null);
+        this.thing = null;
+    }
 }

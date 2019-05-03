@@ -26,6 +26,7 @@ export class TextWebFont extends BaseExample
             align: 'left',
         });
         textSample.position.set(50, 200);
-        this.app.stage.addChild(textSample);
+        this.stage.addChild(textSample);
+        this.exampleReady();
     }
 }

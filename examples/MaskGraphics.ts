@@ -14,7 +14,6 @@ import { Text } from "../raw-pixi-ts/Text";
 export class MaskGraphics extends BaseExample
 {
     protected loader:ResourceLoader;  
-
     protected rotateTxt:Texture;
     protected scenerotateTxt:Texture;
     protected lightrotate2Txt:Texture;
@@ -27,11 +26,13 @@ export class MaskGraphics extends BaseExample
     protected bgFront:Sprite;
     protected light2:Sprite;
     protected light1:Sprite;
-    protected panda:Sprite;
+    protected panda:Sprite;    
     
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
+        this.backColor = 0
+        this.activateMask();
         app.stage.interactive = true;
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bg_rotate.jpg"))
         this.loader.addEventListener(Event.COMPLETE, this.handleRotateLoaded);
@@ -43,12 +44,12 @@ export class MaskGraphics extends BaseExample
         this.pandaTxt = new Texture(new BaseTexture(this.loader.imageData)); 
         this.bg = new Sprite(this.rotateTxt);
         this.bg.anchor.set(0.5);
-        this.bg.x = this.app.screen.width / 2;
-        this.bg.y = this.app.screen.height / 2;
-        this.app.stage.addChild(this.bg);
+        this.bg.x = this.sizew / 2;
+        this.bg.y = this.sizeh / 2;
+        this.stage.addChild(this.bg);
         this.container = new Container();
-        this.container.x = this.app.screen.width / 2;
-        this.container.y = this.app.screen.height / 2;
+        this.container.x = this.sizew / 2;
+        this.container.y = this.sizeh / 2;
         this.bgFront = new Sprite(this.scenerotateTxt);
         this.bgFront.anchor.set(0.5);
         this.light2 = new Sprite(this.lightrotate2Txt);
@@ -61,25 +62,26 @@ export class MaskGraphics extends BaseExample
         this.container.addChild(this.light2);
         this.container.addChild(this.light1);
         this.container.addChild(this.panda);
-        this.app.stage.addChild(this.container);
+        this.stage.addChild(this.container);
         this.thing = new Graphics();
-        this.app.stage.addChild(this.thing);
-        this.thing.x = this.app.screen.width / 2;
-        this.thing.y = this.app.screen.height / 2;
+        this.stage.addChild(this.thing);
+        this.thing.x = this.sizew / 2;
+        this.thing.y = this.sizeh / 2;
         this.thing.lineStyle(0);
         this.container.mask = this.thing;
         this.count = 0;
-        this.app.stage.addEventListener(MouseEvent.POINTER_TAP, this.handleStageTap)
+        this.stage.addEventListener(MouseEvent.POINTER_TAP, this.handleStageTap)
         const help = new Text('Click or tap to turn masking on / off.', {
             fontFamily: 'Arial',
             fontSize: 12,
             fontWeight: 'bold',
             fill: 'white',
         });
-        help.y = this.app.screen.height - 26;
-        help.x = 10;
-        this.app.stage.addChild(help);
+        help.y = this.app.screen.height - 35;
+        help.x = 15;
+        this.stage.addChild(help);
         this.app.ticker.add(this.runExample);
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>
@@ -142,5 +144,35 @@ export class MaskGraphics extends BaseExample
         this.loader = new ResourceLoader(new URLRequest("examples/assets/panda.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handlePandaLoaded);
         this.loader.load();  
+    }
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.panda.destroy(null)
+        this.panda = null
+        this.rotateTxt.destroy(null)
+        this.rotateTxt = null
+        this.scenerotateTxt.destroy(null)
+        this.scenerotateTxt = null
+        this.lightrotate2Txt.destroy(null)
+        this.lightrotate2Txt = null
+        this.lightrotate1Txt.destroy(null)
+        this.lightrotate1Txt = null
+        this.pandaTxt.destroy(null)
+        this.pandaTxt = null
+        this.container.destroy(null)
+        this.container = null
+        this.thing.destroy(null)
+        this.thing = null
+        this.bg.destroy(null)
+        this.bg = null
+        this.bgFront.destroy(null)
+        this.bgFront = null
+        this.light2.destroy(null)
+        this.light2 = null
+        this.light1.destroy(null)
+        this.light1 = null
     }
 }

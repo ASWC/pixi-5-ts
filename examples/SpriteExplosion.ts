@@ -14,11 +14,13 @@ export class SpriteExplosion extends BaseExample
     protected urlloader:URLLoader;
     protected jsondata:any;
     protected loader:ResourceLoader;  
-    protected txt:Texture;
+    protected txt:Texture;    
 
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
+        this.backColor = 0x000000;
+        this.activateMask();
         this.urlloader = new URLLoader();
         this.urlloader.addEventListener(Event.COMPLETE, this.handleJsonLoaded);
         this.urlloader.load(new URLRequest("examples/assets/spritesheet/mc.json"));
@@ -36,14 +38,23 @@ export class SpriteExplosion extends BaseExample
         for (i = 0; i < 50; i++) 
         {
             const explosion = new AnimatedSprite(explosionTextures);
-            explosion.x = Math.random() * this.app.screen.width;
-            explosion.y = Math.random() * this.app.screen.height;
+            explosion.x = Math.random() * this.sizew;
+            explosion.y = Math.random() * this.sizeh;
             explosion.anchor.set(0.5);
             explosion.rotation = Math.random() * Math.PI;
             explosion.scale.set(0.75 + Math.random() * 0.5);
             explosion.gotoAndPlay(Math.random() * 27);
-            this.app.stage.addChild(explosion);
+            this.stage.addChild(explosion);
         }
+        this.exampleReady();
+    }
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.txt.destroy(null);
+        this.txt = null
+        this.jsondata = null;
     }
 
     protected handleJsonLoaded = (event:Event)=>

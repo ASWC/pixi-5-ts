@@ -15,11 +15,12 @@ export class BasicParticles extends BaseExample
     protected loader:ResourceLoader;  
     protected tick:number;
     protected maggots:any[];
-    protected dudeBounds:Rectangle;
+    protected dudeBounds:Rectangle;    
     
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
+        this.activateMask();
         this.loader = new ResourceLoader(new URLRequest("examples/assets/maggot_tiny.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handleResourceLoaded);
         this.loader.load(); 
@@ -29,7 +30,7 @@ export class BasicParticles extends BaseExample
     {
         let txt:Texture = new Texture(new BaseTexture(this.loader.imageData));         
         const sprites = new ParticleContainer(10000, {scale: true, position: true, rotation: true, uvs: true, alpha: true,});
-        this.app.stage.addChild(sprites);
+        this.stage.addChild(sprites);
         this.maggots = [];        
         const totalSprites = 10000;        
         for (let i = 0; i < totalSprites; i++) 
@@ -38,8 +39,8 @@ export class BasicParticles extends BaseExample
             dude.tint = Math.random() * 0xE8D4CD;
             dude.anchor.set(0.5);
             dude.scale.set(0.8 + Math.random() * 0.3);
-            dude.x = Math.random() * this.app.screen.width;
-            dude.y = Math.random() * this.app.screen.height;        
+            dude.x = Math.random() * this.sizew;
+            dude.y = Math.random() * this.sizeh;        
             dude.tint = Math.random() * 0x808080;
             dude.direction = Math.random() * Math.PI * 2;
             dude.turningSpeed = Math.random() - 0.8;
@@ -52,11 +53,12 @@ export class BasicParticles extends BaseExample
         this.dudeBounds = new Rectangle(
             -dudeBoundsPadding,
             -dudeBoundsPadding,
-            this.app.screen.width + dudeBoundsPadding * 2,
-            this.app.screen.height + dudeBoundsPadding * 2,
+            this.sizew + dudeBoundsPadding * 2,
+            this.sizeh + dudeBoundsPadding * 2,
         );        
         this.tick = 0;    
         this.app.ticker.add(this.runExample);
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>
@@ -82,6 +84,13 @@ export class BasicParticles extends BaseExample
             }
         }
         this.tick += 0.1;
+    }
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.maggots = null
     }
 }
 

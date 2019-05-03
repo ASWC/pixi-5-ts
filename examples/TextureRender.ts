@@ -15,7 +15,7 @@ export class TextureRender extends BaseExample
 {
     protected loader:ResourceLoader; 
     protected container:Container;
-    protected rt:RenderTexture;
+    protected rt:RenderTexture;    
 
     constructor(app:Application, width:number, height:number)
     {
@@ -29,7 +29,7 @@ export class TextureRender extends BaseExample
     {
         let txt:Texture = new Texture(new BaseTexture(this.loader.imageData)); 
         this.container = new Container();
-        this.app.stage.addChild(this.container);
+        this.stage.addChild(this.container);
         for (let i = 0; i < 25; i++) 
         {
             const bunny = new Sprite(txt);
@@ -43,14 +43,25 @@ export class TextureRender extends BaseExample
         const sprite = new Sprite(this.rt);
         sprite.x = 450;
         sprite.y = 60;
-        this.app.stage.addChild(sprite);
+        this.stage.addChild(sprite);
         this.container.x = 100;
         this.container.y = 60;
         this.app.ticker.add(this.runExample);
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>
     {
         this.app.renderer.render(this.container, this.rt);
+    }
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.container.destroy(null)
+        this.container = null
+        this.rt.destroy(null)
+        this.rt = null
     }
 }

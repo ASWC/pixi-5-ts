@@ -16,6 +16,17 @@ export class InteractionInteractivity extends BaseExample
     protected textureButtonOver:Texture;
     protected textureButtonDown:Texture;    
 
+    public destructor():void
+    {
+        super.destructor();        
+        this.textureButton.destroy(null)
+        this.textureButton = null
+        this.textureButtonOver.destroy(null)
+        this.textureButtonOver = null
+        this.textureButtonDown.destroy(null)
+        this.textureButtonDown = null
+    }
+
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
@@ -58,7 +69,7 @@ export class InteractionInteractivity extends BaseExample
             // .on('touchstart', onButtonDown)
             // .on('touchend', onButtonUp)
             // .on('touchendoutside', onButtonUp)
-            this.app.stage.addChild(button);
+            this.stage.addChild(button);
             buttons.push(button);
         }
         buttons[0].scale.set(1.2);
@@ -66,6 +77,7 @@ export class InteractionInteractivity extends BaseExample
         buttons[3].scale.set(0.8);
         buttons[4].scale.set(0.8, 1.2);
         buttons[4].rotation = Math.PI;
+        this.exampleReady();
     }
 
     protected onButtonDown = (event:MouseEvent)=> 
@@ -132,9 +144,9 @@ export class InteractionInteractivity extends BaseExample
     {
         let txt = new Texture(new BaseTexture(this.loader.imageData));  
         const background = new Sprite(txt);
-        background.width = this.app.screen.width;
-        background.height = this.app.screen.height;
-        this.app.stage.addChild(background);
+        background.width = this.sizew;
+        background.height = this.sizeh;
+        this.stage.addChild(background);
         this.loader = new ResourceLoader(new URLRequest("examples/assets/button.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handleButtonLoaded);
         this.loader.load(); 

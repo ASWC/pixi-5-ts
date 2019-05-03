@@ -10,7 +10,13 @@ import { BaseTexture } from '../raw-pixi-ts/BaseTexture';
 export class SpriteVideo extends BaseExample
 {
     protected button:Graphics;
-    protected video:HTMLVideoElement
+    protected video:HTMLVideoElement;
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.video = null
+    }
 
     constructor(app:Application, width:number, height:number)
     {
@@ -23,16 +29,17 @@ export class SpriteVideo extends BaseExample
         .moveTo(36, 30)
         .lineTo(36, 70)
         .lineTo(70, 50);
-        this.button.x = (app.screen.width - this.button.width) / 2;
-        this.button.y = (app.screen.height - this.button.height) / 2;
+        this.button.x = (this.sizew - this.button.width) / 2;
+        this.button.y = (this.sizeh - this.button.height) / 2;
         this.button.interactive = true;
         this.button.buttonMode = true;
-        app.stage.addChild(this.button);
+        this.stage.addChild(this.button);
         this.video = document.createElement("video");
         this.video['type'] = "video/mp4";
         this.video.src = "examples/assets/video.mp4";
         this.video.addEventListener('canplay', ()=>{
             this.button.addEventListener(MouseEvent.POINTER_TAP, this.onPlayVideo);
+            this.exampleReady();
         });       
     }
 
@@ -42,8 +49,8 @@ export class SpriteVideo extends BaseExample
         this.video.play();
         const texture = new Texture(new BaseTexture(this.video))
         const videoSprite = new Sprite(texture);
-        videoSprite.width = this.app.screen.width;
-        videoSprite.height = this.app.screen.height;    
-        this.app.stage.addChild(videoSprite);
+        videoSprite.width = this.sizew;
+        videoSprite.height = this.sizeh;    
+        this.stage.addChild(videoSprite);
     }
 }

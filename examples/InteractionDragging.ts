@@ -18,6 +18,7 @@ export class InteractionDragging extends BaseExample
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
+        this.activateMask();
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bunny.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handleRotateLoaded);
         this.loader.load(); 
@@ -29,8 +30,9 @@ export class InteractionDragging extends BaseExample
         texture.baseTexture.scaleMode = WebGLSettings.SCALE_MODES.NEAREST;
         for (let i = 0; i < 10; i++) 
         {
-            this.createBunny(Math.floor(Math.random() * this.app.screen.width), Math.floor(Math.random() * this.app.screen.height), texture);
+            this.createBunny(Math.floor(Math.random() * this.sizew), Math.floor(Math.random() * this.sizeh), texture);
         }
+        this.exampleReady();
     }
 
     protected onDragStart = (event:MouseEvent)=> 
@@ -83,7 +85,7 @@ export class InteractionDragging extends BaseExample
         // .on('touchmove', onDragMove);
         bunny.x = x;
         bunny.y = y;
-        this.app.stage.addChild(bunny);
+        this.stage.addChild(bunny);
     }
 }
 

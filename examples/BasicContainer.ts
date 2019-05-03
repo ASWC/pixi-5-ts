@@ -11,13 +11,21 @@ import { BaseTexture } from "../raw-pixi-ts/BaseTexture";
 export class BasicContainer extends BaseExample
 {
     protected container:Container;
-    protected loader:ResourceLoader;    
+    protected loader:ResourceLoader; 
+    
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.container.destroy(null)
+        this.container = null
+    }
 
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
         this.container = new Container();
-        this.app.stage.addChild(this.container);
+        this.stage.addChild(this.container);
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bunny.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handleResourceLoaded);
         this.loader.load();        
@@ -33,11 +41,12 @@ export class BasicContainer extends BaseExample
             bunny.y = Math.floor(i / 5) * 40;
             this.container.addChild(bunny);
         }
-        this.container.x = this.app.screen.width / 2;
-        this.container.y = this.app.screen.height / 2;
+        this.container.x = this.sizew / 2;
+        this.container.y = this.sizeh / 2;
         this.container.pivot.x = this.container.width / 2;
         this.container.pivot.y = this.container.height / 2;
         this.app.ticker.add(this.runExample);
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>
