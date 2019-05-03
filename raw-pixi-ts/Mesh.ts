@@ -336,12 +336,12 @@ export class Mesh extends Container
         var geometry = this.geometry;
         var vertices = geometry.buffers[0].data;
 
-        if (geometry.vertexDirtyId === this.vertexDirty && this._transformID === this.transform._worldID)
+        if (geometry.vertexDirtyId === this.vertexDirty && this._transformID === this.transform.worldID)
         {
             return;
         }
 
-        this._transformID = this.transform._worldID;
+        this._transformID = this.transform.worldID;
 
         if (this.vertexData.length !== vertices.length)
         {

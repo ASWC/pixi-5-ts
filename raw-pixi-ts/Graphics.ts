@@ -1072,12 +1072,12 @@ export class Graphics extends Container
      */
     calculateVertices  ()
     {
-        if (this._transformID === this.transform._worldID)
+        if (this._transformID === this.transform.worldID)
         {
             return;
         }
 
-        this._transformID = this.transform._worldID;
+        this._transformID = this.transform.worldID;
         
 
         var wt = this.transform.worldTransform;

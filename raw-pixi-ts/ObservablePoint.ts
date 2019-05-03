@@ -1,43 +1,16 @@
+import { Point } from "../flash/geom/Point";
+import { FlashBaseObject } from "./FlashBaseObject";
 
 
-export class ObservablePoint
-{
-    _x
-    cb
-    scope
-    _y
-    constructor(cb, scope, x = 0, y = 0)
+export class ObservablePoint extends Point
+{    
+    public callback:Function;
+    public scope:FlashBaseObject;
+    
+    constructor(x = 0, y = 0)
     {
-        if ( x === void 0 ) { x = 0; }
-	    if ( y === void 0 ) { y = 0; }
-
-	    this._x = x;
-	    this._y = y;
-
-	    this.cb = cb;
-	    this.scope = scope;
+		super(x, y);	    
     }
-
-    /**
-	 * Creates a clone of this point.
-	 * The callback and scope params can be overidden otherwise they will default
-	 * to the clone object's values.
-	 *
-	 * @override
-	 * @param {Function} [cb=null] - callback when changed
-	 * @param {object} [scope=null] - owner of callback
-	 * @return {PIXI.ObservablePoint} a copy of the point
-	 */
-	clone  (cb, scope)
-	{
-	        if ( cb === void 0 ) { cb = null; }
-	        if ( scope === void 0 ) { scope = null; }
-
-	    var _cb = cb || this.cb;
-	    var _scope = scope || this.scope;
-
-	    return new ObservablePoint(_cb, _scope, this._x, this._y);
-	};
 
 	/**
 	 * Sets the point to a new x and y position.
@@ -46,16 +19,20 @@ export class ObservablePoint
 	 * @param {number} [x=0] - position of the point on the x axis
 	 * @param {number} [y=0] - position of the point on the y axis
 	 */
-	set  (x, y)
+	set  (x:number = 0, y:number = NaN)
 	{
-	    var _x = x || 0;
-	    var _y = y || ((y !== 0) ? _x : 0);
+	    var _x = x;
+		var _y = y;
+		if(isNaN(_y))
+		{
+			_y = _x;
+		}
 
 	    if (this._x !== _x || this._y !== _y)
 	    {
 	        this._x = _x;
 	        this._y = _y;
-	        this.cb.call(this.scope);
+	        this.callback.call(this.scope);
 	    }
 	};
 
@@ -71,7 +48,7 @@ export class ObservablePoint
 	    {
 	        this._x = p.x;
 	        this._y = p.y;
-	        this.cb.call(this.scope);
+	        this.callback.call(this.scope);
 	    }
 
 	    return this;
@@ -116,7 +93,7 @@ export class ObservablePoint
 	    if (this._x !== value)
 	    {
 	        this._x = value;
-	        this.cb.call(this.scope);
+	        this.callback.call(this.scope);
 	    }
 	};
 
@@ -135,7 +112,7 @@ export class ObservablePoint
 	    if (this._y !== value)
 	    {
 	        this._y = value;
-	        this.cb.call(this.scope);
+	        this.callback.call(this.scope);
 	    }
 	};
 }

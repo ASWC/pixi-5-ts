@@ -1,8 +1,9 @@
 
 import { Point } from "../flash/geom/Point";
 import { MathSettings } from './MathSettings';
+import { FlashBaseObject } from "./FlashBaseObject";
 
-export class Matrix
+export class Matrix extends FlashBaseObject
 {
     a
     b
@@ -13,6 +14,7 @@ export class Matrix
     array
     constructor(a = 1, b = 0, c = 0, d = 1, tx = 0, ty = 0)
     {
+        super();
         if ( a === void 0 ) { a = 1; }
 	    if ( b === void 0 ) { b = 0; }
 	    if ( c === void 0 ) { c = 0; }

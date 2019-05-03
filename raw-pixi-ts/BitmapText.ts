@@ -44,7 +44,9 @@ export class BitmapText extends Container
         this._maxWidth = 0;
         this._maxLineHeight = 0;
         this._letterSpacing = 0;
-        this._anchor = new ObservablePoint(function () { this.dirty = true; }, this, 0, 0);
+        this._anchor = new ObservablePoint(0, 0);
+        this._anchor.scope = this;
+        this._anchor.callback = function () { this.dirty = true; }
         this.dirty = false;
         this.roundPixels = DisplaySettings.ROUND_PIXELS;
         this.updateText();

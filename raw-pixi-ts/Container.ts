@@ -154,7 +154,7 @@ export class Container extends DisplayObject
             this.sortDirty = true;
 
             // ensure child transform will be recalculated
-            child.transform._parentID = -1;
+            child.transform.parentID = -1;
 
             this.children.push(child);
 

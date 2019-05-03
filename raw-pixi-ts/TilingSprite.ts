@@ -1,5 +1,5 @@
 import { Sprite } from "./Sprite";
-import { Transform } from "./Transform";
+import { Transform } from "../flash/geom/Transform";
 import { TextureMatrix } from "./TextureMatrix";
 import { Rectangle } from "../flash/geom/Rectangle";
 import { Texture } from "./Texture";
@@ -170,10 +170,10 @@ export class TilingSprite extends Sprite
      */
     _calculateBounds  ()
     {
-        var minX = this._width * -this._anchor._x;
-        var minY = this._height * -this._anchor._y;
-        var maxX = this._width * (1 - this._anchor._x);
-        var maxY = this._height * (1 - this._anchor._y);
+        var minX = this._width * -this._anchor.x;
+        var minY = this._height * -this._anchor.y;
+        var maxX = this._width * (1 - this._anchor.x);
+        var maxY = this._height * (1 - this._anchor.y);
 
         this._bounds.addFrame(this.transform, minX, minY, maxX, maxY);
     };
@@ -189,10 +189,10 @@ export class TilingSprite extends Sprite
         // we can do a fast local bounds if the sprite has no children!
         if (this.children.length === 0)
         {
-            this._bounds.minX = this._width * -this._anchor._x;
-            this._bounds.minY = this._height * -this._anchor._y;
-            this._bounds.maxX = this._width * (1 - this._anchor._x);
-            this._bounds.maxY = this._height * (1 - this._anchor._y);
+            this._bounds.minX = this._width * -this._anchor.x;
+            this._bounds.minY = this._height * -this._anchor.y;
+            this._bounds.maxX = this._width * (1 - this._anchor.x);
+            this._bounds.maxY = this._height * (1 - this._anchor.y);
 
             if (!rect)
             {
@@ -224,11 +224,11 @@ export class TilingSprite extends Sprite
 
         var width = this._width;
         var height = this._height;
-        var x1 = -width * this.anchor._x;
+        var x1 = -width * this.anchor.x;
 
         if (defaultpoint.x >= x1 && defaultpoint.x < x1 + width)
         {
-            var y1 = -height * this.anchor._y;
+            var y1 = -height * this.anchor.y;
 
             if (defaultpoint.y >= y1 && defaultpoint.y < y1 + height)
             {

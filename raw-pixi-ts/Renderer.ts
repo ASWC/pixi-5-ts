@@ -26,7 +26,7 @@ import { ParticleRenderer } from './ParticleRenderer';
 import { Prepare } from './Prepare';
 import { DisplayObject } from './DisplayObject';
 import { RenderTexture } from './RenderTexture';
-import { Transform } from './Transform';
+import { Transform } from '../flash/geom/Transform';
 import { DestroyOptions } from './DestroyOptions';
 import { Runner } from './Runner';
 

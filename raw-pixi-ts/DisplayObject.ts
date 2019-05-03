@@ -5,7 +5,7 @@ import { RenderTexture } from "./RenderTexture";
 import { BaseTexture } from "./BaseTexture";
 import { Texture } from "./Texture";
 import { Bounds } from "./Bounds";
-import { Transform } from "./Transform";
+import { Transform } from "../flash/geom/Transform";
 import { Point } from "../flash/geom/Point";
 import { MathSettings } from './MathSettings';
 import { DisplaySettings } from './DisplaySettings';
@@ -1083,7 +1083,7 @@ export class DisplayObject extends EventDispatcher
 	        return;
 	    }
 	    this._initCachedDisplayObject(renderer);
-	    this._cacheData.sprite.transform._worldID = this.transform._worldID;
+	    this._cacheData.sprite.transform._worldID = this.transform.worldID;
 	    this._cacheData.sprite.worldAlpha = this.worldAlpha;
 	    this._cacheData.sprite._render(renderer);
     }
@@ -1184,7 +1184,7 @@ export class DisplayObject extends EventDispatcher
 
 	    this._cacheData.sprite = cachedSprite;
 
-	    this.transform._parentID = -1;
+	    this.transform.parentID = -1;
 	    // restore the transform of the cached sprite to avoid the nasty flicker..
 	    if (!this.parent)
 	    {
@@ -1299,7 +1299,7 @@ export class DisplayObject extends EventDispatcher
 
 	    this._cacheData.sprite = cachedSprite;
 
-	    this.transform._parentID = -1;
+	    this.transform.parentID = -1;
 	    // restore the transform of the cached sprite to avoid the nasty flicker..
 	    if (!this.parent)
 	    {
@@ -1327,7 +1327,7 @@ export class DisplayObject extends EventDispatcher
 	_calculateCachedBounds ()
 	{
 	    this._bounds.clear();
-	    this._cacheData.sprite.transform._worldID = this.transform._worldID;
+	    this._cacheData.sprite.transform._worldID = this.transform.worldID;
 	    this._cacheData.sprite._calculateBounds();
 	    this._lastBoundsID = this._boundsID;
     };

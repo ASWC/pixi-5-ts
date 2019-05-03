@@ -15,7 +15,7 @@ export class Sprite extends Container
 {
     static indices = new Uint16Array([0, 1, 2, 0, 2, 3]);
     // EMPTY > 
-    _anchor
+    protected _anchor:ObservablePoint;
     _tint
     _tintRGB
     
@@ -80,12 +80,13 @@ export class Sprite extends Container
          * @member {PIXI.ObservablePoint}
          * @private
          */
-        this._anchor = new ObservablePoint(
-            this._onAnchorUpdate,
-            this,
-            (texture ? texture.defaultAnchor.x : 0),
-            (texture ? texture.defaultAnchor.y : 0)
-        );
+        this._anchor = new ObservablePoint(0, 0);
+        if(texture)
+        {
+            this._anchor.setTo(texture.defaultAnchor.x, texture.defaultAnchor.y);
+        }
+        this._anchor.scope = this;
+        this._anchor.callback = this._onAnchorUpdate;;
 
         /**
          * The texture that the sprite is using
@@ -247,12 +248,12 @@ export class Sprite extends Container
     {
         var texture = this._texture;
 
-        if (this._transformID === this.transform._worldID && this._textureID === texture._updateID)
+        if (this._transformID === this.transform.worldID && this._textureID === texture._updateID)
         {
             return;
         }
 
-        this._transformID = this.transform._worldID;
+        this._transformID = this.transform.worldID;
         this._textureID = texture._updateID;
 
         // set the vertex data
@@ -278,18 +279,18 @@ export class Sprite extends Container
         {
             // if the sprite is trimmed and is not a tilingsprite then we need to add the extra
             // space before transforming the sprite coords.
-            w1 = trim.x - (anchor._x * orig.width);
+            w1 = trim.x - (anchor.x * orig.width);
             w0 = w1 + trim.width;
 
-            h1 = trim.y - (anchor._y * orig.height);
+            h1 = trim.y - (anchor.y * orig.height);
             h0 = h1 + trim.height;
         }
         else
         {
-            w1 = -anchor._x * orig.width;
+            w1 = -anchor.x * orig.width;
             w0 = w1 + orig.width;
 
-            h1 = -anchor._y * orig.height;
+            h1 = -anchor.y * orig.height;
             h0 = h1 + orig.height;
         }
 
@@ -328,12 +329,12 @@ export class Sprite extends Container
         {
             this.vertexTrimmedData = new Float32Array(8);
         }
-        else if (this._transformTrimmedID === this.transform._worldID && this._textureTrimmedID === this._texture._updateID)
+        else if (this._transformTrimmedID === this.transform.worldID && this._textureTrimmedID === this._texture._updateID)
         {
             return;
         }
 
-        this._transformTrimmedID = this.transform._worldID;
+        this._transformTrimmedID = this.transform.worldID;
         this._textureTrimmedID = this._texture._updateID;
 
         // lets do some special trim code!
@@ -351,10 +352,10 @@ export class Sprite extends Container
         var tx = wt.tx;
         var ty = wt.ty;
 
-        var w1 = -anchor._x * orig.width;
+        var w1 = -anchor.x * orig.width;
         var w0 = w1 + orig.width;
 
-        var h1 = -anchor._y * orig.height;
+        var h1 = -anchor.y * orig.height;
         var h0 = h1 + orig.height;
 
         // xy
@@ -425,10 +426,10 @@ export class Sprite extends Container
         // we can do a fast local bounds if the sprite has no children!
         if (this.children.length === 0)
         {
-            this._bounds.minX = this._texture.orig.width * -this._anchor._x;
-            this._bounds.minY = this._texture.orig.height * -this._anchor._y;
-            this._bounds.maxX = this._texture.orig.width * (1 - this._anchor._x);
-            this._bounds.maxY = this._texture.orig.height * (1 - this._anchor._y);
+            this._bounds.minX = this._texture.orig.width * -this._anchor.x;
+            this._bounds.minY = this._texture.orig.height * -this._anchor.y;
+            this._bounds.maxX = this._texture.orig.width * (1 - this._anchor.x);
+            this._bounds.maxY = this._texture.orig.height * (1 - this._anchor.y);
 
             if (!rect)
             {
