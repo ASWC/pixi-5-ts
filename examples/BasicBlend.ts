@@ -6,7 +6,7 @@ import { Event } from "../raw-pixi-ts/Event";
 import { Texture } from "../raw-pixi-ts/Texture";
 import { BaseTexture } from "../raw-pixi-ts/BaseTexture";
 import { Sprite } from "../raw-pixi-ts/Sprite";
-import { Rectangle } from "../raw-pixi-ts/Rectangle";
+import { Rectangle } from "../flash/geom/Rectangle";
 import { BlendModesSettings } from "../raw-pixi-ts/BlendModesSettings";
 
 

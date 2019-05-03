@@ -1,5 +1,5 @@
 
-import { Rectangle } from "./Rectangle";
+import { Rectangle } from "../flash/geom/Rectangle";
 import { Texture } from "./Texture";
 import { NetworkSettings } from './NetworkSettings';
 import { trace } from "./Logger";

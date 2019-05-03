@@ -7,7 +7,7 @@ import { Texture } from "../raw-pixi-ts/Texture";
 import { BaseTexture } from "../raw-pixi-ts/BaseTexture";
 import { Sprite } from "../raw-pixi-ts/Sprite";
 import { Container } from "../raw-pixi-ts/Container";
-import { Rectangle } from "../raw-pixi-ts/Rectangle";
+import { Rectangle } from "../flash/geom/Rectangle";
 import { Filter } from "../raw-pixi-ts/Filter";
 import { Point } from "../flash/geom/Point";
 

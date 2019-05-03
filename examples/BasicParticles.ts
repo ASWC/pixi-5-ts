@@ -7,7 +7,7 @@ import { Texture } from "../raw-pixi-ts/Texture";
 import { BaseTexture } from "../raw-pixi-ts/BaseTexture";
 import { ParticleContainer } from "../raw-pixi-ts/ParticleContainer";
 import { Sprite } from "../raw-pixi-ts/Sprite";
-import { Rectangle } from "../raw-pixi-ts/Rectangle";
+import { Rectangle } from "../flash/geom/Rectangle";
 
 
 export class BasicParticles extends BaseExample

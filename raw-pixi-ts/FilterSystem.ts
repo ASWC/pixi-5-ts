@@ -1,7 +1,7 @@
 import { System } from "./System";
 import { Quad } from "./Quad";
 import { QuadUv } from "./QuadUv";
-import { Rectangle } from "./Rectangle";
+import { Rectangle } from "../flash/geom/Rectangle";
 import { UniformGroup } from "./UniformGroup";
 import { RenderTexture } from "./RenderTexture";
 import { Matrix } from './Matrix';

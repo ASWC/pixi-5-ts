@@ -2,7 +2,7 @@ import { Container } from "./Container";
 import { Renderer } from "./Renderer";
 import { StageOptions } from './StageOptions';
 import { Ticker } from './Ticker';
-import { Rectangle } from './Rectangle';
+import { Rectangle } from '../flash/geom/Rectangle';
 import { DestroyOptions } from './DestroyOptions';
 import { AccessibilityManager } from "./AccessibilityManager";
 import { Extract } from "./Extract";

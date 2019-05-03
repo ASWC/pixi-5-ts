@@ -1,4 +1,4 @@
-import { Rectangle } from './Rectangle';
+import { Rectangle } from '../flash/geom/Rectangle';
 import { trace } from './Logger';
 import { InstanceCounter } from './InstanceCounter';
 

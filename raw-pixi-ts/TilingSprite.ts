@@ -1,7 +1,7 @@
 import { Sprite } from "./Sprite";
 import { Transform } from "./Transform";
 import { TextureMatrix } from "./TextureMatrix";
-import { Rectangle } from "./Rectangle";
+import { Rectangle } from "../flash/geom/Rectangle";
 import { Texture } from "./Texture";
 import { Point } from "../flash/geom/Point";
 import { CacheSettings } from './CacheSettings';

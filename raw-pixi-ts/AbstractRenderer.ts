@@ -1,6 +1,6 @@
 import { EventDispatcher } from "./EventDispatcher";
 import { Matrix } from "./Matrix";
-import { Rectangle } from "./Rectangle";
+import { Rectangle } from "../flash/geom/Rectangle";
 import { RenderTexture } from "./RenderTexture";
 import { Container } from "./Container";
 import { DisplaySettings } from './DisplaySettings';

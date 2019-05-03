@@ -1,7 +1,7 @@
 import { Container } from "./Container";
 import { ObservablePoint } from "./ObservablePoint";
 import { Texture } from "./Texture";
-import { Rectangle } from "./Rectangle";
+import { Rectangle } from "../flash/geom/Rectangle";
 import { Point } from "../flash/geom/Point";
 import { BlendModesSettings } from './BlendModesSettings';
 import { DisplaySettings } from './DisplaySettings';

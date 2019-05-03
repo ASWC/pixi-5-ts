@@ -1,5 +1,5 @@
 import { EventDispatcher } from "./EventDispatcher";
-import { Rectangle } from "./Rectangle";
+import { Rectangle } from "../flash/geom/Rectangle";
 import { Point } from "../flash/geom/Point";
 import { Event } from "./Event";
 import { TextureUvs } from "./TextureUvs";

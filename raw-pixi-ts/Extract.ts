@@ -1,5 +1,5 @@
 import { RenderTexture } from "./RenderTexture";
-import { Rectangle } from './Rectangle';
+import { Rectangle } from '../flash/geom/Rectangle';
 import { CanvasRenderTarget } from './CanvasRenderTarget';
 import { trace } from "./Logger";
 import { InstanceCounter } from "./InstanceCounter";

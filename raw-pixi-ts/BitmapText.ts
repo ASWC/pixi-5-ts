@@ -4,7 +4,7 @@ import { Sprite } from "./Sprite";
 import { Texture } from "./Texture";
 import { DisplaySettings } from './DisplaySettings';
 import { UtilsSettings } from './UtilsSettings';
-import { Rectangle } from "./Rectangle";
+import { Rectangle } from "../flash/geom/Rectangle";
 import { Point } from "../flash/geom/Point";
 import { FlashBaseObject } from "./FlashBaseObject";
 import { NumberDic } from "./Dictionary";

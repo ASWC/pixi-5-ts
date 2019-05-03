@@ -6,7 +6,7 @@ import { Event } from "../raw-pixi-ts/Event";
 import { Texture } from "../raw-pixi-ts/Texture";
 import { BaseTexture } from "../raw-pixi-ts/BaseTexture";
 import { GroupD8 } from "../raw-pixi-ts/GroupD8";
-import { Rectangle } from "../raw-pixi-ts/Rectangle";
+import { Rectangle } from "../flash/geom/Rectangle";
 import { Sprite } from "../raw-pixi-ts/Sprite";
 import { Text } from "../raw-pixi-ts/Text";
 

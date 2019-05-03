@@ -1,6 +1,6 @@
 import { Sprite } from "./Sprite";
 import { Texture } from "./Texture";
-import { Rectangle } from "./Rectangle";
+import { Rectangle } from "../flash/geom/Rectangle";
 import { TextMetrics } from "./TextMetrics";
 import { TextStyle } from "./TextStyle";
 import { DisplaySettings } from './DisplaySettings';

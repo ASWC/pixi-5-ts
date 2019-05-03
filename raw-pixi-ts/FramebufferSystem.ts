@@ -1,6 +1,6 @@
 import { System } from "./System";
 import { Framebuffer } from "./Framebuffer";
-import { Rectangle } from "./Rectangle";
+import { Rectangle } from "../flash/geom/Rectangle";
 import { DisplaySettings } from './DisplaySettings';
 import { trace } from "./Logger";
 import { InstanceCounter } from "./InstanceCounter";

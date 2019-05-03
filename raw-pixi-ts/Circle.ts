@@ -1,5 +1,5 @@
 
-import { Rectangle } from "./Rectangle";
+import { Rectangle } from "../flash/geom/Rectangle";
 import { ShapeSettings } from './ShapeSettings';
 import { trace } from "./Logger";
 import { InstanceCounter } from "./InstanceCounter";

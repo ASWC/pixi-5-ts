@@ -7,7 +7,7 @@ import { Event } from '../raw-pixi-ts/Event';
 import { BaseTexture } from '../raw-pixi-ts/BaseTexture';
 import { Graphics } from '../raw-pixi-ts/Graphics';
 import { BlurFilter } from '../raw-pixi-ts/BlurFilter';
-import { Rectangle } from '../raw-pixi-ts/Rectangle';
+import { Rectangle } from '../flash/geom/Rectangle';
 import { WebGLSettings } from '../raw-pixi-ts/WebGLSettings';
 import { Sprite } from '../raw-pixi-ts/Sprite';
 import { MouseEvent } from '../raw-pixi-ts/MouseEvent';

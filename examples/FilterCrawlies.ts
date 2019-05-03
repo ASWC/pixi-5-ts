@@ -3,7 +3,7 @@ import { Application } from "../raw-pixi-ts/Application";
 import { ResourceLoader } from "../raw-pixi-ts/ResourceLoader";
 import { Texture } from "../raw-pixi-ts/Texture";
 import { Container } from "../raw-pixi-ts/Container";
-import { Rectangle } from "../raw-pixi-ts/Rectangle";
+import { Rectangle } from "../flash/geom/Rectangle";
 import { MouseEvent } from "../raw-pixi-ts/MouseEvent";
 import { Sprite } from "../raw-pixi-ts/Sprite";
 import { URLRequest } from "../raw-pixi-ts/URLRequest";

@@ -3,7 +3,7 @@ import { State } from "./State";
 import { FillStyle } from "./FillStyle";
 // import { settings } from "./settings";
 import { Texture } from "./Texture";
-import { Rectangle } from "./Rectangle";
+import { Rectangle } from "../flash/geom/Rectangle";
 import { Matrix } from "./Matrix";
 import { UniformGroup } from "./UniformGroup";
 import { Shader } from "./Shader";

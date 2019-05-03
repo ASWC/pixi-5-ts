@@ -1,5 +1,5 @@
 import { Container } from "../../raw-pixi-ts/Container";
-import { Rectangle } from "../../raw-pixi-ts/Rectangle";
+import { Rectangle } from "../../flash/geom/Rectangle";
 
 
 export class List extends Container

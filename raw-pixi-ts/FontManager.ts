@@ -10,7 +10,7 @@ import { XMLParser } from "./XMLParser";
 import { NetworkSettings } from "./NetworkSettings";
 import { DisplaySettings } from "./DisplaySettings";
 import { NumberDic } from "./Dictionary";
-import { Rectangle } from "./Rectangle";
+import { Rectangle } from "../flash/geom/Rectangle";
 import { BaseTexture } from './BaseTexture';
 import { ResourceLoader } from "./ResourceLoader";
 import { trace } from "./Logger";

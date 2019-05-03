@@ -12,7 +12,7 @@ import { Container } from "./Container";
 import { TilingSprite } from "./TilingSprite";
 import { Sprite } from "./Sprite";
 import { DestroyOptions } from "./DestroyOptions";
-import { Rectangle } from "./Rectangle";
+import { Rectangle } from "../flash/geom/Rectangle";
 import { EventDispatcher } from "./EventDispatcher";
 import { NativeEvent } from "./NativeEvent";
 import { trace } from "./Logger";
