@@ -19,9 +19,19 @@ export class MaskFilter extends BaseExample
     protected flagTxt:Texture;
     protected focus:Sprite;
 
+    public destructor():void
+    {
+        super.destructor();    
+        this.flagTxt.destroy(null)
+        this.flagTxt = null
+        this.focus.destroy(null)
+        this.focus = null
+    }
+
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
+        this.backColor = 0;
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bg_grass.jpg"))
         this.loader.addEventListener(Event.COMPLETE, this.handleRotateLoaded);
         this.loader.load(); 
@@ -33,9 +43,9 @@ export class MaskFilter extends BaseExample
         const radius = 100;
         const blurSize = 32;
         const background = new Sprite(this.flagTxt);
-        this.app.stage.addChild(background);
-        background.width = this.app.screen.width;
-        background.height = this.app.screen.height;
+        this.stage.addChild(background);
+        background.width = this.sizew;
+        background.height = this.sizeh;
         const circle = new Graphics()
             .beginFill(0xFF0000)
             .drawCircle(radius + blurSize, radius + blurSize, radius)
@@ -44,10 +54,11 @@ export class MaskFilter extends BaseExample
         const bounds = new Rectangle(0, 0, (radius + blurSize) * 2, (radius + blurSize) * 2);
         const texture = this.app.renderer.generateTexture(circle, WebGLSettings.SCALE_MODES.NEAREST, 1, bounds);
         this.focus = new Sprite(texture);
-        this.app.stage.addChild(this.focus);
+        this.stage.addChild(this.focus);
         background.mask = this.focus;
-        this.app.stage.interactive = true;
-        this.app.stage.addEventListener(MouseEvent.MOUSE_MOVE, this.pointerMove);
+        this.stage.interactive = true;
+        this.stage.addEventListener(MouseEvent.MOUSE_MOVE, this.pointerMove);
+        this.exampleReady();
     }
 
     protected pointerMove = (event:MouseEvent)=> 

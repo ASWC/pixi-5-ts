@@ -18,10 +18,22 @@ export class FilterFlag extends BaseExample
     protected repeatTxt:Texture;
     protected displacementSprite:Sprite;
 
+    public destructor():void
+    {
+        super.destructor();    
+        this.flagTxt.destroy(null)
+        this.flagTxt = null
+        this.repeatTxt.destroy(null)
+        this.repeatTxt = null
+        this.displacementSprite.destroy(null)
+        this.displacementSprite = null 
+        this.app.ticker.remove(this.runExample, null)
+    }
+
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
-        app.stage.interactive = true;
+        this.stage.interactive = true;
         this.loader = new ResourceLoader(new URLRequest("examples/assets/pixi-filters/flag.png"))
         this.loader.addEventListener(Event.COMPLETE, this.handleRotateLoaded);
         this.loader.load(); 
@@ -31,7 +43,7 @@ export class FilterFlag extends BaseExample
     {
         this.repeatTxt = new Texture(new BaseTexture(this.loader.imageData));  
         const container = new Container();
-        this.app.stage.addChild(container);
+        this.stage.addChild(container);
         const flag = new Sprite(this.flagTxt);
         container.addChild(flag);
         flag.x = 100;
@@ -41,11 +53,12 @@ export class FilterFlag extends BaseExample
         const displacementFilter = new DisplacementFilter(this.displacementSprite);
         displacementFilter.padding = 10;
         this.displacementSprite.position = flag.position;
-        this.app.stage.addChild(this.displacementSprite);
+        this.stage.addChild(this.displacementSprite);
         flag.filters = [displacementFilter];
         displacementFilter.scale.x = 30;
         displacementFilter.scale.y = 60;
         this.app.ticker.add(this.runExample)
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>

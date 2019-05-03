@@ -18,6 +18,16 @@ export class FilterBlending extends BaseExample
     protected backgroundtxt:Texture;
     protected filter:Filter;
 
+    public destructor():void
+    {
+        super.destructor();    
+        this.backgroundtxt.destroy(null)
+        this.backgroundtxt = null
+        this.filter.destroy()
+        this.filter = null 
+        this.app.ticker.remove(this.runExample, null)
+    }
+
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
@@ -30,9 +40,9 @@ export class FilterBlending extends BaseExample
     {
         this.backgroundtxt = new Texture(new BaseTexture(this.loader.imageData)); 
         const background = new Sprite(this.backgroundtxt);
-        background.width = this.app.screen.width;
-        background.height = this.app.screen.height;
-        this.app.stage.addChild(background);
+        background.width = this.sizew;
+        background.height = this.sizeh;
+        this.stage.addChild(background);
         const shaderFrag:string = `
             precision highp float;
             varying vec2 vTextureCoord;
@@ -50,13 +60,14 @@ export class FilterBlending extends BaseExample
             }
             `;
         const container = new Container();
-        container.filterArea = new Rectangle(100, 100, this.app.screen.width - 200, this.app.screen.height - 200);
-        this.app.stage.addChild(container);
+        container.filterArea = new Rectangle(100, 100, this.sizew - 200, this.sizeh - 200);
+        this.stage.addChild(container);
         this.filter = new Filter(null, shaderFrag, {
             mouse: new Point()
         });
         container.filters = [this.filter];
         this.app.ticker.add(this.runExample)
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>

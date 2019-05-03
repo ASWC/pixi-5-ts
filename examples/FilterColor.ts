@@ -28,11 +28,41 @@ export class FilterColor extends BaseExample
     protected filter:ColorMatrixFilter;
     protected count:number;
     protected enabled:boolean;
+
+    public destructor():void
+    {
+        super.destructor();    
+        this.bg.destroy(null)
+        this.bg = null
+        this.bgFront.destroy(null)
+        this.bgFront = null
+        this.light2.destroy(null)
+        this.light2 = null
+        this.panda.destroy(null)
+        this.panda = null
+        this.light1.destroy(null)
+        this.light1 = null
+        this.filter.destroy()
+        this.filter = null    
+        this.app.ticker.remove(this.runExample, null)
+        this.rotateTxt.destroy(null)
+        this.rotateTxt = null
+        this.scenerotateTxt.destroy(null)
+        this.scenerotateTxt = null
+        this.lightrotate2Txt.destroy(null)
+        this.lightrotate2Txt = null
+        this.lightrotate1Txt.destroy(null)
+        this.lightrotate1Txt = null
+        this.pandaTxt.destroy(null)
+        this.pandaTxt = null
+    }
     
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
-        app.stage.interactive = true;
+        this.backColor = 0;
+        this.activateMask();
+        this.stage.interactive = true;
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bg_rotate.jpg"))
         this.loader.addEventListener(Event.COMPLETE, this.handleRotateLoaded);
         this.loader.load(); 
@@ -43,12 +73,12 @@ export class FilterColor extends BaseExample
         this.pandaTxt = new Texture(new BaseTexture(this.loader.imageData)); 
         this.bg = new Sprite(this.rotateTxt);
         this.bg.anchor.set(0.5);
-        this.bg.x = this.app.screen.width / 2;
-        this.bg.y = this.app.screen.height / 2;
+        this.bg.x = this.sizew / 2;
+        this.bg.y = this.sizeh / 2;
         this.filter = new ColorMatrixFilter();
         const container = new Container();
-        container.x = this.app.screen.width / 2;
-        container.y = this.app.screen.height / 2;
+        container.x = this.sizew / 2;
+        container.y = this.sizeh / 2;
         this.bgFront = new Sprite(this.scenerotateTxt);
         this.bgFront.anchor.set(0.5);
         container.addChild(this.bgFront);
@@ -61,21 +91,22 @@ export class FilterColor extends BaseExample
         this.panda = new Sprite(this.pandaTxt);
         this.panda.anchor.set(0.5);
         container.addChild(this.panda);
-        this.app.stage.addChild(container);
-        this.app.stage.filters = [this.filter];
+        this.stage.addChild(container);
+        this.stage.filters = [this.filter];
         this.count = 0;
         this.enabled = true;
-        this.app.stage.addEventListener(MouseEvent.POINTER_TAP, this.handlePointer);
+        this.stage.addEventListener(MouseEvent.POINTER_TAP, this.handlePointer);
         const help = new Text('Click or tap to turn filters on / off.', {
             fontFamily: 'Arial',
             fontSize: 12,
             fontWeight: 'bold',
             fill: 'white',
         });
-        help.y = this.app.screen.height - 25;
+        help.y = this.sizeh - 25;
         help.x = 10;
-        this.app.stage.addChild(help);
+        this.stage.addChild(help);
         this.app.ticker.add(this.runExample);
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>
@@ -99,7 +130,7 @@ export class FilterColor extends BaseExample
     protected handlePointer = (event:MouseEvent)=>
     {
         this.enabled = !this.enabled;
-        this.app.stage.filters = this.enabled ? [this.filter] : null;
+        this.stage.filters = this.enabled ? [this.filter] : null;
     }
 
     protected handleLightRotate1Loaded = (event:Event)=>

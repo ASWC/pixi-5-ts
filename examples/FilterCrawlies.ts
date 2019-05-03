@@ -26,14 +26,35 @@ export class FilterCrawlies extends BaseExample
     protected ring:Sprite;
     protected displacementSprite:Sprite;
     protected container:Container;
+
+    public destructor():void
+    {
+        super.destructor();    
+        this.maggotTxt.destroy(null)
+        this.maggotTxt = null
+        this.displacementTxt.destroy(null)
+        this.displacementTxt = null
+        this.ringTxt.destroy(null)
+        this.ringTxt = null
+        this.grassTxt.destroy(null)
+        this.grassTxt = null
+        this.maggots = null
+        this.ring.destroy(null)
+        this.ring = null    
+        this.app.ticker.remove(this.runExample, null)
+        this.displacementSprite.destroy(null)
+        this.displacementSprite = null
+        this.container.destroy(null)
+        this.container = null
+    }
     
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
+        this.activateMask();
         this.count = 0;
         this.maggots = [];
-        app.stage.interactive = true;
-        
+        this.stage.interactive = true;        
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bg_rotate.jpg"))
         this.loader.addEventListener(Event.COMPLETE, this.handleRotateLoaded);
         this.loader.load(); 
@@ -43,13 +64,13 @@ export class FilterCrawlies extends BaseExample
     {
         this.grassTxt = new Texture(new BaseTexture(this.loader.imageData));
         this.container = new Container();
-        this.app.stage.addChild(this.container);
+        this.stage.addChild(this.container);
         const padding = 100;
         this.bounds = new Rectangle(
             -padding,
             -padding,
-            this.app.screen.width + padding * 2,
-            this.app.screen.height + padding * 2,
+            this.sizew + padding * 2,
+            this.sizeh + padding * 2,
         ); 
         for (let i = 0; i < 20; i++) 
         {
@@ -68,7 +89,7 @@ export class FilterCrawlies extends BaseExample
         }        
         this.displacementSprite = new Sprite(this.displacementTxt);
         const displacementFilter = new DisplacementFilter(this.displacementSprite);
-        this.app.stage.addChild(this.displacementSprite);
+        this.stage.addChild(this.displacementSprite);
         this.container.filters = [displacementFilter];
         displacementFilter.scale.x = 110;
         displacementFilter.scale.y = 110;
@@ -76,15 +97,16 @@ export class FilterCrawlies extends BaseExample
         this.ring = new Sprite(this.ringTxt);
         this.ring.anchor.set(0.5);
         this.ring.visible = false;
-        this.app.stage.addChild(this.ring);
+        this.stage.addChild(this.ring);
         const bg = new Sprite(this.grassTxt);
-        bg.width = this.app.screen.width;
-        bg.height = this.app.screen.height;
+        bg.width = this.sizew;
+        bg.height = this.sizeh;
         bg.alpha = 0.4;
         this.container.addChild(bg);        
-        this.app.stage.addEventListener(MouseEvent.MOUSE_MOVE, this.onPointerMove)
-        this.app.stage.addEventListener(MouseEvent.TOUCH_MOVE, this.onPointerMove)
+        this.stage.addEventListener(MouseEvent.MOUSE_MOVE, this.onPointerMove)
+        this.stage.addEventListener(MouseEvent.TOUCH_MOVE, this.onPointerMove)
         this.app.ticker.add(this.runExample)
+        this.exampleReady();
     }
 
     protected handleMaggotLoaded = (event:Event)=>

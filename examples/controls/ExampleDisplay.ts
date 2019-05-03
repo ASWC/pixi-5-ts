@@ -130,12 +130,13 @@ export class ExampleDisplay extends Container
         this.list.addExample("Texture Rotate", TextureRotate);
         this.list.addExample("Texture Render", TextureRender);
         this.list.addExample("Filter Blur", FilterBlur);
-
-        this.list.addExample("Filter Colormatrix", FilterColor);
+        this.list.addExample("Filter ColorMatrix", FilterColor);
         this.list.addExample("Filter Displacement", FilterCrawlies);
         this.list.addExample("Filter Displacement 2", FilterFlag);
         this.list.addExample("Filter Blur 2", MaskFilter);        
+
         this.list.addExample("Filter Blending", FilterBlending);
+        
         this.list.addExample("Filter Custom", FilterCustom);
         this.list.addExample("Filter Shadow", FilterShadow);
         this.list.addExample("Mesh Basic", MeshBasic);
