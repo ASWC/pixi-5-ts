@@ -48,12 +48,23 @@ export class MeshColoredTriangle extends BaseExample
         this.triangle = new Mesh(geometry, shader);
         this.triangle.position.set(400, 300);
         this.triangle.scale.set(2);
-        app.stage.addChild(this.triangle);
+        this.stage.addChild(this.triangle);
         this.app.ticker.add(this.runExample);
+        setTimeout(() => {
+            this.exampleReady();
+        }, 1000);
     }
 
     protected runExample = (delta:number)=>
     {
         this.triangle.rotation += 0.01;
+    }
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.triangle.destroy(null);
+        this.triangle = null
     }
 }

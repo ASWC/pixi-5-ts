@@ -17,7 +17,7 @@ export class FilterCustom extends BaseExample
     protected grasstxt:Texture;
     protected background:Sprite;
     protected urlloader:URLLoader;
-    protected filter:Filter;
+    protected filter:Filter;  
     
     constructor(app:Application, width:number, height:number)
     {
@@ -31,9 +31,9 @@ export class FilterCustom extends BaseExample
     {
         this.grasstxt = new Texture(new BaseTexture(this.loader.imageData)); 
         this.background = new Sprite(this.grasstxt);
-        this.background.width = this.app.screen.width;
-        this.background.height = this.app.screen.height;
-        this.app.stage.addChild(this.background); 
+        this.background.width = this.sizew;
+        this.background.height = this.sizeh;
+        this.stage.addChild(this.background); 
         this.urlloader = new URLLoader();
         this.urlloader.addEventListener(Event.COMPLETE, this.handleFragLoaded);
         this.urlloader.load(new URLRequest("examples/assets/pixi-filters/shader.frag"));
@@ -41,17 +41,29 @@ export class FilterCustom extends BaseExample
 
     protected handleFragLoaded = (event:Event)=>
     {
-        let fragdata:string = this.urlloader.data;
-        trace(fragdata)
+        let fragdata:string = this.urlloader.data;       
         this.filter = new Filter(null, fragdata, {
             customUniform: 0.0
         });
         this.background.filters = [this.filter];
         this.app.ticker.add(this.runExample)
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>
     {
         this.filter.uniforms.customUniform += 0.04 * delta;
+    }
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.grasstxt.destroy(null);
+        this.grasstxt = null
+        this.background.destroy(null);
+        this.background = null
+        this.filter.destroy();
+        this.filter = null
     }
 }

@@ -15,11 +15,12 @@ export class MeshShader extends BaseExample
     protected loader:ResourceLoader;  
     protected txt1:Texture;
     protected triangle:Mesh;
-    protected triangle2:Mesh;
+    protected triangle2:Mesh;    
     
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
+        this.activateMask();
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bg_scene_rotate.jpg"))
         this.loader.addEventListener(Event.COMPLETE, this.handleTxt1Loaded);
         this.loader.load(); 
@@ -58,7 +59,6 @@ export class MeshShader extends BaseExample
             `;
         let program:Program = new Program(vx, fx);
         const shader = new Shader(program, {uSampler2: this.txt1});
-
         let vx2:string = `
             precision mediump float;    
             attribute vec2 aVertexPosition;
@@ -87,14 +87,27 @@ export class MeshShader extends BaseExample
         this.triangle.scale.set(2);
         this.triangle2.position.set(500, 400);
         this.triangle2.scale.set(3);
-        this.app.stage.addChild(this.triangle2);
-        this.app.stage.addChild(this.triangle);
+        this.stage.addChild(this.triangle2);
+        this.stage.addChild(this.triangle);
         this.app.ticker.add(this.runExample);
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>
     {
         this.triangle.rotation += 0.01;
         this.triangle2.rotation -= 0.005;
+    }
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.txt1.destroy(null);
+        this.txt1 = null
+        this.triangle.destroy(null);
+        this.triangle = null
+        this.triangle2.destroy(null);
+        this.triangle2 = null
     }
 }

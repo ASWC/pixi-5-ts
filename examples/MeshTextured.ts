@@ -15,7 +15,7 @@ export class MeshTextured extends BaseExample
 {
     protected triangle:Mesh;
     protected loader:ResourceLoader;  
-    protected planeTxt:Texture;
+    protected planeTxt:Texture;    
     
     constructor(app:Application, width:number, height:number)
     {
@@ -72,12 +72,23 @@ export class MeshTextured extends BaseExample
         this.triangle = new Mesh(geometry, shader);
         this.triangle.position.set(400, 300);
         this.triangle.scale.set(2);
-        this.app.stage.addChild(this.triangle);
+        this.stage.addChild(this.triangle);
         this.app.ticker.add(this.runExample);
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>
     {
         this.triangle.rotation += 0.01;
+    }
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.triangle.destroy(null);
+        this.triangle = null
+        this.planeTxt.destroy(null);
+        this.planeTxt = null
     }
 }

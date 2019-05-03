@@ -18,7 +18,7 @@ export class FilterShadow extends BaseExample
     protected loader:ResourceLoader;  
     protected txt:Texture;
     protected anim:AnimatedSprite;
-    protected filter:Filter;
+    protected filter:Filter;    
     
     constructor(app:Application, width:number, height:number)
     {
@@ -30,9 +30,7 @@ export class FilterShadow extends BaseExample
 
     protected onAnimationParsed = (textures:Texture[])=>
     {
-        this.app.stage.interactive = true;
-
-        
+        this.stage.interactive = true;        
         const frames = [];
         for (let i = 0; i < 30; i++) 
         {
@@ -40,18 +38,19 @@ export class FilterShadow extends BaseExample
             frames.push(textures[`rollSequence00${val}.png`]);
         }
         this.anim = new AnimatedSprite(frames);
-        this.anim.x = this.app.screen.width / 2;
-        this.anim.y = this.app.screen.height / 2;
+        this.anim.x = this.sizew / 2;
+        this.anim.y = this.sizeh / 2;
         this.anim.anchor.set(0.5);
         this.anim.animationSpeed = 0.5;
         this.anim.play();    
-        this.app.stage.addChild(this.anim);
+        this.stage.addChild(this.anim);
         this.filter = new Filter(FilterShadow.myVertex, FilterShadow.myFragment);
         this.filter.uniforms.shadowDirection = [0.1, 0.5];
         this.filter.uniforms.floorY = this.anim.height * 2;
         this.filter.padding = 200;
         this.anim.filters = [this.filter];
         this.app.ticker.add(this.runExample)
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>
@@ -72,6 +71,19 @@ export class FilterShadow extends BaseExample
         this.txt = new Texture(new BaseTexture(this.loader.imageData));  
         let spritesheet:Spritesheet = new Spritesheet(this.txt, this.jsondata);
         spritesheet.parse(this.onAnimationParsed)
+    }
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.txt.destroy(null);
+        this.txt = null
+        this.anim.destroy(null);
+        this.anim = null
+        this.filter.destroy();
+        this.filter = null
+        this.jsondata = null;
     }
 
     private static myVertex:string = `

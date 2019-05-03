@@ -17,7 +17,7 @@ export class MeshAdvanced extends BaseExample
     protected g:Graphics;
     protected count:number;
     protected points:any[];
-    protected ropeLength:number;
+    protected ropeLength:number;    
 
     constructor(app:Application, width:number, height:number)
     {
@@ -59,20 +59,32 @@ export class MeshAdvanced extends BaseExample
     {
         this.planeTxt = new Texture(new BaseTexture(this.loader.imageData)); 
         this.count = 0;
-        this.ropeLength = 45;
+        this.ropeLength = 30;
         this.points = [];
         for (let i = 0; i < 25; i++) 
         {
             this.points.push(new Point(i * this.ropeLength, 0));
         }
         const strip = new SimpleRope(this.planeTxt, this.points);
-        strip.x = -40;
+        strip.x = 20;
         strip.y = 300;
-        this.app.stage.addChild(strip);
+        this.stage.addChild(strip);
         this.g = new Graphics();
         this.g.x = strip.x;
         this.g.y = strip.y;
-        this.app.stage.addChild(this.g);
+        this.stage.addChild(this.g);
         this.app.ticker.add(this.runExample);
+        this.exampleReady();
+    }
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.planeTxt.destroy(null);
+        this.planeTxt = null
+        this.g.destroy(null);
+        this.g = null
+        this.points = null;
     }
 }

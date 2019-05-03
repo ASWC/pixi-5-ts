@@ -19,11 +19,12 @@ export class MeshGeometry extends BaseExample
     protected txt3:Texture;
     protected triangle:Mesh;
     protected triangle2:Mesh;
-    protected triangle3:Mesh;
+    protected triangle3:Mesh;    
     
     constructor(app:Application, width:number, height:number)
     {
         super(app, width, height);
+        this.activateMask();
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bg_scene_rotate.jpg"))
         this.loader.addEventListener(Event.COMPLETE, this.handleTxt1Loaded);
         this.loader.load(); 
@@ -75,10 +76,11 @@ export class MeshGeometry extends BaseExample
         this.triangle2.position.set(200, 100);    
         this.triangle3.position.set(500, 400);
         this.triangle3.scale.set(3);    
-        this.app.stage.addChild(this.triangle3);
-        this.app.stage.addChild(this.triangle2);
-        this.app.stage.addChild(this.triangle);
+        this.stage.addChild(this.triangle3);
+        this.stage.addChild(this.triangle2);
+        this.stage.addChild(this.triangle);
         this.app.ticker.add(this.runExample);
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>
@@ -102,5 +104,23 @@ export class MeshGeometry extends BaseExample
         this.loader = new ResourceLoader(new URLRequest("examples/assets/bg_rotate.jpg"))
         this.loader.addEventListener(Event.COMPLETE, this.handleTxt2Loaded);
         this.loader.load(); 
+    }
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.txt1.destroy(null);
+        this.txt1 = null
+        this.triangle3.destroy(null);
+        this.triangle3 = null
+        this.triangle2.destroy(null);
+        this.triangle2 = null
+        this.triangle.destroy(null);
+        this.triangle = null
+        this.txt3.destroy(null);
+        this.txt3 = null
+        this.txt2.destroy(null);
+        this.txt2 = null
     }
 }

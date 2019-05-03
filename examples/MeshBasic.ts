@@ -16,7 +16,7 @@ export class MeshBasic extends BaseExample
     protected planeTxt:Texture;
     protected count:number;
     protected ropeLength:number;
-    protected points:any[];
+    protected points:any[];   
     
     constructor(app:Application, width:number, height:number)
     {
@@ -52,8 +52,18 @@ export class MeshBasic extends BaseExample
         snakeContainer.x = 400;
         snakeContainer.y = 300;
         snakeContainer.scale.set(800 / 1100);
-        this.app.stage.addChild(snakeContainer);
+        this.stage.addChild(snakeContainer);
         snakeContainer.addChild(strip);
         this.app.ticker.add(this.runExample);
+        this.exampleReady();
+    }
+
+    public destructor():void
+    {
+        super.destructor();        
+        this.app.ticker.remove(this.runExample, null)
+        this.planeTxt.destroy(null);
+        this.planeTxt = null
+        this.points = null
     }
 }
