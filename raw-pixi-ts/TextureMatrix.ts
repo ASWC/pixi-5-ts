@@ -131,7 +131,7 @@ export class TextureMatrix
 
 	    if (trim)
 	    {
-	        TextureMatrix.tempMat.set(orig.width / trim.width, 0, 0, orig.height / trim.height,
+	        TextureMatrix.tempMat.setTo(orig.width / trim.width, 0, 0, orig.height / trim.height,
 	            -trim.x / trim.width, -trim.y / trim.height);
 	        this.mapCoord.append(TextureMatrix.tempMat);
 	    }

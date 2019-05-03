@@ -168,7 +168,7 @@ export class GroupD8
 	    {
 	        var mat = new Matrix();
 
-	        mat.set(GroupD8.ux[i$1], GroupD8.uy[i$1], GroupD8.vx[i$1], GroupD8.vy[i$1], 0, 0);
+	        mat.setTo(GroupD8.ux[i$1], GroupD8.uy[i$1], GroupD8.vx[i$1], GroupD8.vy[i$1], 0, 0);
 	        GroupD8.tempMatrices.push(mat);
 	    }
 	}

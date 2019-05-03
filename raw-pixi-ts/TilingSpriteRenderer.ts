@@ -92,7 +92,7 @@ export class TilingSpriteRenderer extends ObjectRenderer
         var W = ts._width;
         var H = ts._height;
 
-        TilingSpriteRenderer.tempMat$1.set(lt.a * w / W,
+        TilingSpriteRenderer.tempMat$1.setTo(lt.a * w / W,
             lt.b * w / H,
             lt.c * h / W,
             lt.d * h / H,
