@@ -4,7 +4,7 @@ import { InteractionEvent } from "./InteractionEvent";
 import { MouseEvent } from "./MouseEvent";
 import { InteractionTrackingData } from "./InteractionTrackingData";
 import { Ticker } from "./Ticker";
-import { Point } from "./Point";
+import { Point } from "../flash/geom/Point";
 import { Renderer } from "./Renderer";
 import { NumberDic } from "./Dictionary";
 import { DisplayObject } from "./DisplayObject";
@@ -15,6 +15,8 @@ import { DestroyOptions } from "./DestroyOptions";
 import { Rectangle } from "./Rectangle";
 import { EventDispatcher } from "./EventDispatcher";
 import { NativeEvent } from "./NativeEvent";
+import { trace } from "./Logger";
+import { InstanceCounter } from "./InstanceCounter";
 
 export class InteractionManager extends EventDispatcher
 {
@@ -40,6 +42,15 @@ export class InteractionManager extends EventDispatcher
 	public moveWhenInside:boolean;
 	public supportsTouchEvents:boolean;
 	public supportsPointerEvents:boolean;
+
+	public destructor():void
+	{
+		if(this._tempPoint)
+		{
+			this._tempPoint.destructor();
+		}
+		this._tempPoint = null;
+	}
 
     constructor(renderer:Renderer)
     {
@@ -68,7 +79,7 @@ export class InteractionManager extends EventDispatcher
         };
         this.currentCursorMode = null;
         this.cursor = null;
-        this._tempPoint = new Point();
+        this._tempPoint = Point.getPoint();
         this.resolution = 1;
         this.setTargetElement(this.renderer.view, this.renderer.resolution);
 	}
@@ -163,7 +174,8 @@ export class InteractionManager extends EventDispatcher
 		let rect:Rectangle|ClientRect;
 		if (!this.interactionDOMElement.parentElement)
 		{
-			rect = new Rectangle();
+			InstanceCounter.addCall("Rectangle.getRectangle", "Interactionmanager mapPositionToPoint")
+			rect = Rectangle.getRectangle();
 		}
 		else
 		{
@@ -172,6 +184,10 @@ export class InteractionManager extends EventDispatcher
 		let resolutionMultiplier:number = 1.0 / this.resolution;
 		point.x = ((x - rect.left) * (this.interactionDOMElement.width / rect.width)) * resolutionMultiplier;
 		point.y = ((y - rect.top) * (this.interactionDOMElement.height / rect.height)) * resolutionMultiplier;
+		if(rect instanceof Rectangle)
+		{
+			rect.recycle();
+		}
 	};
 
 	public configureInteractionEventForDOMEvent(interactionEvent:InteractionEvent, pointerEvent:NativeEvent, interactionData:InteractionData):InteractionEvent

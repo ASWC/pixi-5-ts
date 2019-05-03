@@ -13,6 +13,8 @@ import { NumberDic } from "./Dictionary";
 import { Rectangle } from "./Rectangle";
 import { BaseTexture } from './BaseTexture';
 import { ResourceLoader } from "./ResourceLoader";
+import { trace } from "./Logger";
+import { InstanceCounter } from "./InstanceCounter";
 
 export class FontManager
 {
@@ -103,13 +105,9 @@ export class FontManager
         {
             let letter:Element = letters[i$1];
             let charCode:number = parseInt(letter.getAttribute('id'), 10);
-            let page:number = parseInt(letter.getAttribute('page')) || 0;
-            let textureRect:Rectangle = new Rectangle(
-                (parseInt(letter.getAttribute('x'), 10) / res) + (base.frame.x / res),
-                (parseInt(letter.getAttribute('y'), 10) / res) + (base.frame.y / res),
-                parseInt(letter.getAttribute('width'), 10) / res,
-                parseInt(letter.getAttribute('height'), 10) / res
-            );
+			let page:number = parseInt(letter.getAttribute('page')) || 0;
+			InstanceCounter.addCall("Rectangle.getRectangle", "FontManager parseBitmapFontData")
+            let textureRect:Rectangle = Rectangle.getRectangle((parseInt(letter.getAttribute('x'), 10) / res) + (base.frame.x / res), (parseInt(letter.getAttribute('y'), 10) / res) + (base.frame.y / res), parseInt(letter.getAttribute('width'), 10) / res, parseInt(letter.getAttribute('height'), 10) / res);
             let fontchar:FontCharacterData = new FontCharacterData();
             fontchar.xOffset = parseInt(letter.getAttribute('xoffset'), 10) / res;
             fontchar.yOffset = parseInt(letter.getAttribute('yoffset'), 10) / res;

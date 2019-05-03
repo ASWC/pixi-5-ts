@@ -17,7 +17,10 @@ export class BasicContainer extends BaseExample
     {
         super.destructor();        
         this.app.ticker.remove(this.runExample, null)
-        this.container.destroy(null)
+        if(this.container)
+        {
+            this.container.destructor()
+        }    
         this.container = null
     }
 

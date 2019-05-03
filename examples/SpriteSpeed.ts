@@ -46,7 +46,7 @@ export class SpriteSpeed extends BaseExample
         slow.x = (this.sizew - slow.width) / 2;
         slow.y = this.sizeh / 2;
         slow.play();
-        this.app.stage.addChild(slow);
+        this.stage.addChild(slow);
         const fast = new AnimatedSprite(textures);
         fast.anchor.set(0.5);
         fast.scale.set(scaling);
@@ -82,11 +82,20 @@ export class SpriteSpeed extends BaseExample
     {
         super.destructor();        
         this.app.ticker.remove(this.runExample, null)
-        this.spritesheet.destroy(null);
+        if(this.spritesheet)
+        {
+            this.spritesheet.destructor();
+        }
         this.spritesheet = null;
-        this.txt.destroy(null);
+        if(this.txt)
+        {
+            this.txt.destructor();
+        }
         this.txt = null;
-        this.anim.destroy(null);
+        if(this.anim)
+        {
+            this.anim.destructor();
+        }
         this.anim = null;
     }
 }

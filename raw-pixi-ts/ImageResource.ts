@@ -1,6 +1,5 @@
 import { BaseImageResource } from "./BaseImageResource";
 import { DisplaySettings } from './DisplaySettings';
-import { trace, reveal } from "./Logger";
 
 
 export class ImageResource extends BaseImageResource
@@ -101,7 +100,6 @@ export class ImageResource extends BaseImageResource
         }
 
         this._load = new Promise((resolve)=> {
-            trace("source " + this.source)
             this.url = this.source.src;
             var ref = this;
             var source = ref.source;
@@ -180,7 +178,7 @@ export class ImageResource extends BaseImageResource
     {
         baseTexture.premultiplyAlpha = this.premultiplyAlpha;
 
-        // reveal(this.bitmap)
+       
         if (!this.createBitmap)
         {
             return super.upload(renderer, baseTexture, glTexture);
@@ -196,7 +194,6 @@ export class ImageResource extends BaseImageResource
                 return false;
             }
         }
-        trace("uploading")
         super.upload(renderer, baseTexture, glTexture, this.bitmap);
 
         if (!this.preserveBitmap)
@@ -222,7 +219,6 @@ export class ImageResource extends BaseImageResource
                 {
                     this.bitmap.close();
                 }
-                trace("bitmap flagged")
                 this.bitmap = null;
             }
         }

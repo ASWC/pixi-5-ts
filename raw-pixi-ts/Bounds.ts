@@ -1,7 +1,10 @@
 import { Rectangle } from "./Rectangle";
+import { trace } from "./Logger";
+import { InstanceCounter } from "./InstanceCounter";
+import { FlashBaseObject } from "./FlashBaseObject";
 
 
-export class Bounds
+export class Bounds extends FlashBaseObject
 {
     minX
     maxX
@@ -11,6 +14,7 @@ export class Bounds
     updateID
     constructor()
     {
+		super();
         /**
 	     * @member {number}
 	     * @default 0
@@ -73,10 +77,17 @@ export class Bounds
 	{
 	    if (this.minX > this.maxX || this.minY > this.maxY)
 	    {
-	        return Rectangle.EMPTY;
+			InstanceCounter.addCall("Rectangle.getRectangle", "Bounds getRectangle")
+	        return Rectangle.getRectangle();
 	    }
-
-	    rect = rect || new Rectangle(0, 0, 1, 1);
+		
+		rect = rect;
+		if(!rect)
+		{
+			InstanceCounter.addCall("Rectangle.getRectangle", "Bounds getRectangle")
+			rect = Rectangle.getRectangle(0, 0, 1, 1);
+		}
+		
 
 	    rect.x = this.minX;
 	    rect.y = this.minY;

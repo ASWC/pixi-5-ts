@@ -159,7 +159,6 @@ export class BatchRenderer extends ObjectRenderer
      */
     render  (element)
     {
-        // trace("rendering element: " + element._texture.valid)
         if (!element._texture.valid)
         {
             return;
@@ -178,7 +177,6 @@ export class BatchRenderer extends ObjectRenderer
 
         this.currentSize += element.vertexData.length / 2;
 
-        // trace("currentSize: " + this.currentSize)
         this.currentIndexSize += element.indices.length;
 
     };
@@ -233,7 +231,6 @@ export class BatchRenderer extends ObjectRenderer
      */
     flush  ()
     {
-        // trace("BatchRender flush " + this.currentSize)
         if (this.currentSize === 0)
         {
             return;
@@ -250,20 +247,20 @@ export class BatchRenderer extends ObjectRenderer
   
 
         var buffer = this.getAttributeBuffer(this.currentSize);
-        // reveal(buffer);
+        
 
 
         var indexBuffer = this.getIndexBuffer(this.currentIndexSize);
-// reveal(indexBuffer);
+
         var elements = this.elements;
         
         var groups = this.groups;
         
 
         var float32View = buffer.float32View;
-        // reveal(float32View);
+      
         var uint32View = buffer.uint32View;
-        // reveal(uint32View);
+       
 
         var touch = this.renderer.textureGC.count;
         
@@ -276,7 +273,7 @@ export class BatchRenderer extends ObjectRenderer
 
         var textureCount = 0;
         var currentGroup = groups[0];
-        // reveal(currentGroup);
+        
 
         var blendMode = -1;// premultiplyBlendMode[elements[0]._texture.baseTexture.premultiplyAlpha ? 0 : ][elements[0].blendMode];
 
@@ -303,7 +300,7 @@ export class BatchRenderer extends ObjectRenderer
             elements[i] = null;
 
             nextTexture = sprite._texture.baseTexture;
-            // reveal(nextTexture);
+            
 
             var spriteBlendMode = BlendModesSettings.premultiplyBlendMode[nextTexture.premultiplyAlpha ? 1 : 0][sprite.blendMode];
 
@@ -348,8 +345,7 @@ export class BatchRenderer extends ObjectRenderer
                     nextTexture._id = textureCount;
 
                     currentGroup.textures[currentGroup.textureCount++] = nextTexture;
-                    // reveal(currentGroup);
-                    // reveal(nextTexture);
+                    
                     textureCount++;
                 }
             }
@@ -433,10 +429,8 @@ export class BatchRenderer extends ObjectRenderer
         // e.log(groupCount);
         // / render the groups..
 
-    //    trace("groupcount: " + groupCount)
 
 
-        // trace("BatchRenderer count: " + groupCount)
         for (i = 0; i < groupCount; i++)
         {
             var group = groups[i];
@@ -445,8 +439,6 @@ export class BatchRenderer extends ObjectRenderer
 
             for (var j = 0; j < groupTextureCount; j++)
             {
-                // trace("possible textureSystem bind call (BathRenderer)")
-                // trace("binding: " + group.textures[j] + " to " + j)
                 textureSystem.bind(group.textures[j], j);
 
                

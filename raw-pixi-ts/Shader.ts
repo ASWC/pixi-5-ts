@@ -1,13 +1,15 @@
 import { UniformGroup } from "./UniformGroup";
 import { Program } from "./Program";
+import { FlashBaseObject } from "./FlashBaseObject";
 
 
-export class Shader
+export class Shader extends FlashBaseObject
 {
     program
     uniformGroup
     constructor(program, uniforms)
     {
+		super();
         this.program = program;
 
 	    // lets see whats been passed in

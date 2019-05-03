@@ -2,9 +2,12 @@
 import { Rectangle } from "./Rectangle";
 import { Texture } from "./Texture";
 import { NetworkSettings } from './NetworkSettings';
+import { trace } from "./Logger";
+import { InstanceCounter } from "./InstanceCounter";
+import { FlashBaseObject } from "./FlashBaseObject";
 
 
-export class Spritesheet
+export class Spritesheet extends FlashBaseObject
 {
     baseTexture
     animations
@@ -17,6 +20,7 @@ export class Spritesheet
     data
     constructor(baseTexture, data, resolutionFilename = null)
     {
+		super();
 
 	    /**
 	     * Reference to ths source texture
@@ -170,54 +174,30 @@ export class Spritesheet
 	        {
 	            var frame = null;
 	            var trim = null;
-	            var sourceSize = data.trimmed !== false && data.sourceSize
-	                ? data.sourceSize : data.frame;
+	            var sourceSize = data.trimmed !== false && data.sourceSize ? data.sourceSize : data.frame;
 
-	            var orig = new Rectangle(
-	                0,
-	                0,
-	                Math.floor(sourceSize.w) / this.resolution,
-	                Math.floor(sourceSize.h) / this.resolution
-	            );
+				InstanceCounter.addCall("Rectangle.getRectangle", "SpriteSheet _processFrames")
+	            var orig = Rectangle.getRectangle(0, 0, Math.floor(sourceSize.w) / this.resolution, Math.floor(sourceSize.h) / this.resolution);
 
 	            if (data.rotated)
 	            {
-	                frame = new Rectangle(
-	                    Math.floor(rect.x) / this.resolution,
-	                    Math.floor(rect.y) / this.resolution,
-	                    Math.floor(rect.h) / this.resolution,
-	                    Math.floor(rect.w) / this.resolution
-	                );
+					InstanceCounter.addCall("Rectangle.getRectangle", "SpriteSheet _processFrames")
+	                frame = Rectangle.getRectangle(Math.floor(rect.x) / this.resolution, Math.floor(rect.y) / this.resolution, Math.floor(rect.h) / this.resolution, Math.floor(rect.w) / this.resolution);
 	            }
 	            else
 	            {
-	                frame = new Rectangle(
-	                    Math.floor(rect.x) / this.resolution,
-	                    Math.floor(rect.y) / this.resolution,
-	                    Math.floor(rect.w) / this.resolution,
-	                    Math.floor(rect.h) / this.resolution
-	                );
+					InstanceCounter.addCall("Rectangle.getRectangle", "SpriteSheet _processFrames")
+	                frame = Rectangle.getRectangle(Math.floor(rect.x) / this.resolution, Math.floor(rect.y) / this.resolution, Math.floor(rect.w) / this.resolution, Math.floor(rect.h) / this.resolution);
 	            }
 
 	            //  Check to see if the sprite is trimmed
 	            if (data.trimmed !== false && data.spriteSourceSize)
 	            {
-	                trim = new Rectangle(
-	                    Math.floor(data.spriteSourceSize.x) / this.resolution,
-	                    Math.floor(data.spriteSourceSize.y) / this.resolution,
-	                    Math.floor(rect.w) / this.resolution,
-	                    Math.floor(rect.h) / this.resolution
-	                );
+					InstanceCounter.addCall("Rectangle.getRectangle", "SpriteSheet _processFrames")
+	                trim = Rectangle.getRectangle(Math.floor(data.spriteSourceSize.x) / this.resolution, Math.floor(data.spriteSourceSize.y) / this.resolution, Math.floor(rect.w) / this.resolution, Math.floor(rect.h) / this.resolution);
 	            }
 
-	            this.textures[i] = new Texture(
-	                this.baseTexture,
-	                frame,
-	                orig,
-	                trim,
-	                data.rotated ? 2 : 0,
-	                data.anchor
-	            );
+	            this.textures[i] = new Texture(this.baseTexture, frame, orig, trim, data.rotated ? 2 : 0, data.anchor);
 
 	            // lets also add the frame to pixi's global cache for fromFrame and fromImage functions
 	            Texture.addToCache(this.textures[i], i);

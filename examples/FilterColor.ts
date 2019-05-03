@@ -32,28 +32,61 @@ export class FilterColor extends BaseExample
     public destructor():void
     {
         super.destructor();    
-        this.bg.destroy(null)
+        if(this.bg)
+        {
+            this.bg.destructor();
+        }
         this.bg = null
-        this.bgFront.destroy(null)
+        if(this.bgFront)
+        {
+            this.bgFront.destructor();
+        }
         this.bgFront = null
-        this.light2.destroy(null)
+        if(this.light2)
+        {
+            this.light2.destructor();
+        }
         this.light2 = null
-        this.panda.destroy(null)
+        if(this.panda)
+        {
+            this.panda.destructor();
+        }
         this.panda = null
-        this.light1.destroy(null)
+        if(this.light1)
+        {
+            this.light1.destructor();
+        }
         this.light1 = null
-        this.filter.destroy()
+        if(this.filter)
+        {
+            this.filter.destructor();
+        }
         this.filter = null    
         this.app.ticker.remove(this.runExample, null)
-        this.rotateTxt.destroy(null)
+        if(this.rotateTxt)
+        {
+            this.rotateTxt.destructor();
+        }
         this.rotateTxt = null
-        this.scenerotateTxt.destroy(null)
+        if(this.scenerotateTxt)
+        {
+            this.scenerotateTxt.destructor();
+        }
         this.scenerotateTxt = null
-        this.lightrotate2Txt.destroy(null)
+        if(this.lightrotate2Txt)
+        {
+            this.lightrotate2Txt.destructor();
+        }
         this.lightrotate2Txt = null
-        this.lightrotate1Txt.destroy(null)
+        if(this.lightrotate1Txt)
+        {
+            this.lightrotate1Txt.destructor();
+        }
         this.lightrotate1Txt = null
-        this.pandaTxt.destroy(null)
+        if(this.pandaTxt)
+        {
+            this.pandaTxt.destructor();
+        }
         this.pandaTxt = null
     }
     

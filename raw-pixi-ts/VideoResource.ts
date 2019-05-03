@@ -1,6 +1,5 @@
 import { BaseImageResource } from "./BaseImageResource";
 import { Ticker } from "./Ticker";
-import { trace } from './Logger';
 
 export class VideoResource extends BaseImageResource
 {
@@ -111,12 +110,12 @@ export class VideoResource extends BaseImageResource
         {
             // account for if video has had its playbackRate changed
             var elapsedMS = Ticker.shared.elapsedMS * this.source.playbackRate;
-            // trace("elapsed: " + elapsedMS)
+         
 
             this._msToNextUpdate = Math.floor(this._msToNextUpdate - elapsedMS);
             if (!this._updateFPS || this._msToNextUpdate <= 0)
             {
-                // trace("super update: " + deltaTime)
+                
                 super.update(deltaTime);
                 this._msToNextUpdate = this._updateFPS ? Math.floor(1000 / this._updateFPS) : 0;
             }
@@ -131,7 +130,6 @@ export class VideoResource extends BaseImageResource
      */
     load ()
     {
-        trace("loading video")
         var this$1 = this;
 
         if (this._load)

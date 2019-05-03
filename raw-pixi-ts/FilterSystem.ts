@@ -8,6 +8,8 @@ import { Matrix } from './Matrix';
 import { FilterState } from './FilterState';
 import { DrawModeSettings } from './DrawModeSettings';
 import { MathSettings } from './MathSettings';
+import { trace } from "./Logger";
+import { InstanceCounter } from "./InstanceCounter";
 
 export class FilterSystem extends System
 {
@@ -61,7 +63,8 @@ export class FilterSystem extends System
          * Temporary rect for maths
          * @type {PIXI.Rectangle}
          */
-        this.tempRect = new Rectangle();
+        InstanceCounter.addCall("Rectangle.getRectangle", "FilterSystem")
+        this.tempRect = Rectangle.getRectangle();
 
         /**
          * Active state

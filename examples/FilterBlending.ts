@@ -9,7 +9,7 @@ import { Sprite } from "../raw-pixi-ts/Sprite";
 import { Container } from "../raw-pixi-ts/Container";
 import { Rectangle } from "../raw-pixi-ts/Rectangle";
 import { Filter } from "../raw-pixi-ts/Filter";
-import { Point } from "../raw-pixi-ts/Point";
+import { Point } from "../flash/geom/Point";
 
 
 export class FilterBlending extends BaseExample
@@ -60,10 +60,10 @@ export class FilterBlending extends BaseExample
             }
             `;
         const container = new Container();
-        container.filterArea = new Rectangle(100, 100, this.sizew - 200, this.sizeh - 200);
+        container.filterArea = Rectangle.getRectangle(100, 100, this.sizew - 200, this.sizeh - 200);
         this.stage.addChild(container);
         this.filter = new Filter(null, shaderFrag, {
-            mouse: new Point()
+            mouse: Point.getPoint()
         });
         container.filters = [this.filter];
         this.app.ticker.add(this.runExample)

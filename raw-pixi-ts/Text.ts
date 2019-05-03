@@ -9,6 +9,8 @@ import { CanvasSettings } from './CanvasSettings';
 import { TextSettings } from './TextSettings';
 import { CleanUpSettings } from './CleanUpSettings';
 import { ColorSettings } from "./ColorSettings";
+import { trace } from "./Logger";
+import { InstanceCounter } from "./InstanceCounter";
 
 export class Text extends Sprite
 {
@@ -32,10 +34,12 @@ export class Text extends Sprite
         canvas.width = 3;
         canvas.height = 3;
 
-        var texture = Texture.from(canvas);
+        var texture:Texture = Texture.from(canvas);
 
-        texture.orig = new Rectangle();
-        texture.trim = new Rectangle();
+        InstanceCounter.addCall("Rectangle.getRectangle", "Text")
+        texture.orig = Rectangle.getRectangle();
+        InstanceCounter.addCall("Rectangle.getRectangle", "Text")
+        texture.trim = Rectangle.getRectangle();
         super(texture);
 
         /**

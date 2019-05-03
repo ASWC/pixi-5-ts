@@ -1,5 +1,5 @@
 import { Filter } from "./Filter";
-import { Point } from "./Point";
+import { Point } from "../flash/geom/Point";
 
 
 export class KawaseBlurFilter extends Filter
@@ -56,19 +56,30 @@ export class KawaseBlurFilter extends Filter
             color *= 0.25;
             gl_FragColor = color;
         }`
-        _pixelSize
+        _pixelSize:Point;
         _clamp
         _kernels
         _quality
         _blur
+
+    public destructor():void
+    {
+        super.destructor();
+        if(this._pixelSize)
+        {
+            this._pixelSize.recycle();
+        }
+        this._pixelSize = null;
+    }
+
     constructor(blur = 4, quality = 3, clamp = false) 
     {
         super(KawaseBlurFilter.vertex, clamp ? KawaseBlurFilter.fragmentClamp : KawaseBlurFilter.fragment);
 
         this.uniforms.uOffset = new Float32Array(2);
 
-        this._pixelSize = new Point();
-        this.pixelSize = 1;
+        this._pixelSize = Point.getPoint();
+        this.pixelSize.x = 1;
         this._clamp = clamp;
         this._kernels = null;
 

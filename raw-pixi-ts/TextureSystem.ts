@@ -3,7 +3,6 @@ import { BaseTexture } from "./BaseTexture";
 import { GLTexture } from "./GLTexture";
 import { UtilsSettings } from './UtilsSettings';
 import { WebGLSettings } from './WebGLSettings';
-import { trace, reveal } from "./Logger";
 
 
 export class TextureSystem extends System
@@ -319,11 +318,11 @@ export class TextureSystem extends System
         //     }
 
         //     source = source.source
-        //     reveal(source)
+      
         // }
         else
         {
-            reveal(source)
+            
         }
         
 

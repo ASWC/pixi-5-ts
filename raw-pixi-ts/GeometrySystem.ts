@@ -193,7 +193,7 @@ export class GeometrySystem extends System
         
         var ref = this;
         var gl = ref.gl;
-        // reveal(gl);
+       
         for (var i = 0; i < geometry.buffers.length; i++)
         {
             var buffer = geometry.buffers[i];

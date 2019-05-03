@@ -2,6 +2,8 @@ import { System } from "./System";
 import { Framebuffer } from "./Framebuffer";
 import { Rectangle } from "./Rectangle";
 import { DisplaySettings } from './DisplaySettings';
+import { trace } from "./Logger";
+import { InstanceCounter } from "./InstanceCounter";
 
 
 export class FramebufferSystem extends System
@@ -30,7 +32,9 @@ export class FramebufferSystem extends System
          * @readonly
          */
         this.unknownFramebuffer = new Framebuffer(10, 10);
-        this.viewport = new Rectangle();
+        
+        InstanceCounter.addCall("Rectangle.getRectangle", "FrameBufferSystem")
+        this.viewport = Rectangle.getRectangle();
     }
 
     /**
@@ -42,7 +46,8 @@ export class FramebufferSystem extends System
 
         this.CONTEXT_UID = this.renderer.CONTEXT_UID;
         this.current = this.unknownFramebuffer;
-        this.viewport = new Rectangle();
+        InstanceCounter.addCall("Rectangle.getRectangle", "FrameBufferSystem contextChange")
+        this.viewport = Rectangle.getRectangle();
         this.hasMRT = true;
         this.writeDepthTexture = true;
 
@@ -435,7 +440,8 @@ export class FramebufferSystem extends System
     reset  ()
     {
         this.current = this.unknownFramebuffer;
-        this.viewport = new Rectangle();
+        InstanceCounter.addCall("Rectangle.getRectangle", "FrameBufferSystem reset")
+        this.viewport = Rectangle.getRectangle();
     };
 }
 

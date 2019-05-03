@@ -1,6 +1,8 @@
 
 import { Rectangle } from "./Rectangle";
 import { ShapeSettings } from './ShapeSettings';
+import { trace } from "./Logger";
+import { InstanceCounter } from "./InstanceCounter";
 
 
 export class Ellipse
@@ -93,7 +95,8 @@ export class Ellipse
 	 */
 	getBounds  ()
 	{
-	    return new Rectangle(this.x - this.width, this.y - this.height, this.width, this.height);
+		InstanceCounter.addCall("Rectangle.getRectangle", "Ellipse getBounds")
+	    return Rectangle.getRectangle(this.x - this.width, this.y - this.height, this.width, this.height);
 	};
 }
 

@@ -1,6 +1,5 @@
 import { Resource } from "./Resource";
 import { NetworkSettings } from "./NetworkSettings";
-import { trace, reveal } from "./Logger";
 
 
 export class BaseImageResource extends Resource
@@ -48,23 +47,18 @@ export class BaseImageResource extends Resource
 
         source = source || this.source;
 
-
-        trace("update upload " + baseTexture.type)
-
         
 
         gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, baseTexture.premultiplyAlpha);
 
         if (baseTexture.target === gl.TEXTURE_2D && glTexture.width === width && glTexture.height === height)
         {
-            // trace("update upload " + glTexture.width + ":" + glTexture.height)
             gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, baseTexture.format, baseTexture.type, source);
         }
         else
         {
             glTexture.width = width;
             glTexture.height = height;
-            trace("first upload " + width + ":" + height)
 
             gl.texImage2D(baseTexture.target, 0, baseTexture.format, baseTexture.format, baseTexture.type, source);
         }

@@ -33,7 +33,7 @@ export class TextureRotate extends BaseExample
             const h = D8.isVertical(rotate) ? txt.frame.width : txt.frame.height;
             const w = D8.isVertical(rotate) ? txt.frame.height : txt.frame.width;    
             const { frame } = txt;
-            const crop = new Rectangle(txt.frame.x, txt.frame.y, w, h);
+            const crop = Rectangle.getRectangle(txt.frame.x, txt.frame.y, w, h);
             const trim = crop;
             let rotatedTexture;
             if (rotate % 2 === 0) 

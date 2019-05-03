@@ -1,4 +1,6 @@
 import { Rectangle } from './Rectangle';
+import { trace } from './Logger';
+import { InstanceCounter } from './InstanceCounter';
 
 export class FilterState
 {
@@ -46,14 +48,16 @@ export class FilterState
 	     * @member {PIXI.Rectangle}
 	     * @private
 	     */
-	    this.sourceFrame = new Rectangle();
+		InstanceCounter.addCall("Rectangle.getRectangle", "FilterState")
+	    this.sourceFrame = Rectangle.getRectangle();
 
 	    /**
 	     * Destination frame
 	     * @member {PIXI.Rectangle}
 	     * @private
 	     */
-	    this.destinationFrame = new Rectangle();
+		InstanceCounter.addCall("Rectangle.getRectangle", "FilterState")
+	    this.destinationFrame = Rectangle.getRectangle();
 
 	    /**
 	     * Collection of filters

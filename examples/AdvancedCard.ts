@@ -77,10 +77,10 @@ export class AdvancedCard extends BaseExample
 
     public destructor():void
     {
-        super.destructor();
         this.stage.removeEventListener(MouseEvent.POINTER_DOWN, this.pointerDown);
         this.stage.removeEventListener(MouseEvent.POINTER_UP, this.pointerUp);
         this.stage.removeEventListener(MouseEvent.POINTER_MOVE, this.pointerMove);
+        super.destructor();        
         this.brush.destroy(null);
         this.grasstxt.destroy(null);
     }

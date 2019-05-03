@@ -2,16 +2,17 @@ import { Container } from "./Container";
 import { ObservablePoint } from "./ObservablePoint";
 import { Texture } from "./Texture";
 import { Rectangle } from "./Rectangle";
-import { Point } from "./Point";
+import { Point } from "../flash/geom/Point";
 import { BlendModesSettings } from './BlendModesSettings';
 import { DisplaySettings } from './DisplaySettings';
 import { MathSettings } from './MathSettings';
-import { trace, reveal } from "./Logger";
+import { trace } from "./Logger";
+import { InstanceCounter } from "./InstanceCounter";
+import { DisplayObject } from "./DisplayObject";
 
 
 export class Sprite extends Container
 {
-    static tempPoint = new Point();
     static indices = new Uint16Array([0, 1, 2, 0, 2, 3]);
     // EMPTY > 
     _anchor
@@ -35,6 +36,35 @@ export class Sprite extends Container
     _texture
     size
     _textureTrimmedID
+
+    public destructor():void
+    {
+        super.destructor();
+        // this._anchor observablepoint
+        // this._texture = null;
+        this._width = null;
+        this._height = null;
+        this._tint = null;
+        this._tintRGB = null;
+        this.blendMode = null;
+        // this.shader = null; Shader
+        this.cachedTint = null;
+        // this.uvs = null;
+        this.vertexData = null;
+        this.vertexTrimmedData = null;
+        this._transformID = null;
+        this._textureID = null;
+        this._transformTrimmedID = null;
+        this._textureTrimmedID = null;
+        this.indices = null;
+        this.size = null;
+        this.start = null;
+        this.pluginName = null;
+        this.isSprite = null;
+        this._roundPixels = null;        
+    }
+
+
     constructor(texture)
     {
         super();
@@ -181,12 +211,10 @@ export class Sprite extends Container
      */
     _onTextureUpdate = ()=>
     {
-        trace("Sprite update")
         this._textureID = -1;
         this._textureTrimmedID = -1;
         this.cachedTint = 0xFFFFFF;
 
-        // reveal(this._texture)
 
         this.uvs = this._texture._uvs.uvsFloat32;
         // so if _width is 0 then width was not set..
@@ -406,12 +434,13 @@ export class Sprite extends Container
             {
                 if (!this._localBoundsRect)
                 {
-                    this._localBoundsRect = new Rectangle();
+                    InstanceCounter.addCall("Rectangle.getRectangle", "Sprite getLocalBounds")
+                    this._localBoundsRect = Rectangle.getRectangle();
                 }
 
                 rect = this._localBoundsRect;
             }
-
+            InstanceCounter.addCall("Rectangle.getRectangle", "Sprite getLocalBounds")
             return this._bounds.getRectangle(rect);
         }
 
@@ -426,18 +455,19 @@ export class Sprite extends Container
      */
     containsPoint (point)
     {
-        this.worldTransform.applyInverse(point, Sprite.tempPoint);
+        let defulatpoint:Point = Point.DEFAULT
+        this.worldTransform.applyInverse(point, defulatpoint);
 
         var width = this._texture.orig.width;
         var height = this._texture.orig.height;
         var x1 = -width * this.anchor.x;
         var y1 = 0;
 
-        if (Sprite.tempPoint.x >= x1 && Sprite.tempPoint.x < x1 + width)
+        if (defulatpoint.x >= x1 && defulatpoint.x < x1 + width)
         {
             y1 = -height * this.anchor.y;
 
-            if (Sprite.tempPoint.y >= y1 && Sprite.tempPoint.y < y1 + height)
+            if (defulatpoint.y >= y1 && defulatpoint.y < y1 + height)
             {
                 return true;
             }

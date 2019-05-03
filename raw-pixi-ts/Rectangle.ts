@@ -1,234 +1,213 @@
 
 import { ShapeSettings } from './ShapeSettings';
+import { FlashBaseObject } from './FlashBaseObject';
+import { trace } from './Logger';
+import { InstanceCounter } from './InstanceCounter';
 
-export class Rectangle
+export class Rectangle extends FlashBaseObject
 {
-    x
-    y
-    width
-    height
-    type
-    constructor(x = 0, y = 0, width = 0, height = 0)
+	protected static _Rect:Rectangle;
+	protected static cachedInstances:Rectangle[] = [];
+	protected static instanceCount:number = 0;
+    protected _x:number;
+    protected _y:number;
+    protected _width:number;
+	protected _height:number;	
+	protected type:number;
+	
+    protected constructor(x:number = 0, y:number = 0, width:number = 0, height:number = 0)
     {
-        if ( x === void 0 ) { x = 0; }
-	    if ( y === void 0 ) { y = 0; }
-	    if ( width === void 0 ) { width = 0; }
-	    if ( height === void 0 ) { height = 0; }
+		super();
+		Rectangle.instanceCount++;
+		this.reset(x, y, width, height);
+		this.type = ShapeSettings.SHAPES.RECT;
+		InstanceCounter.count(this);		
+	}
 
-	    /**
-	     * @member {number}
-	     * @default 0
-	     */
-	    this.x = Number(x);
+	public destructor():void
+	{
+		InstanceCounter.destructorCount(this);		
+	}
 
-	    /**
-	     * @member {number}
-	     * @default 0
-	     */
-	    this.y = Number(y);
+	public recycle():void
+	{
+		InstanceCounter.recycleCount(this);	
+		let index:number = Rectangle.cachedInstances.indexOf(this);
+		if(index < 0)
+		{
+			Rectangle.cachedInstances.unshift(this);
+		}
+	}
 
-	    /**
-	     * @member {number}
-	     * @default 0
-	     */
-	    this.width = Number(width);
+	public reset(x:number = 0, y:number = 0, width:number = 0, height:number = 0):void
+	{
+		this._x = Number(x);
+	    this._y = Number(y);
+	    this._width = Number(width);
+        this._height = Number(height);
+	}
 
-	    /**
-	     * @member {number}
-	     * @default 0
-	     */
-        this.height = Number(height);
-        /**
-	     * The type of the object, mainly used to avoid `instanceof` checks
-	     *
-	     * @member {number}
-	     * @readOnly
-	     * @default PIXI.SHAPES.RECT
-	     * @see PIXI.SHAPES
-	     */
-	    this.type = ShapeSettings.SHAPES.RECT;
-    }
-    /**
-	 * returns the left edge of the rectangle
-	 *
-	 * @member {number}
-	 */
-	get left ()
+	public static get DEFAULT():Rectangle
 	{
-	    return this.x;
-    };
-    /**
-	 * returns the right edge of the rectangle
-	 *
-	 * @member {number}
-	 */
-	get right ()
+		if(!Rectangle._Rect)
+		{
+			Rectangle._Rect = new Rectangle();
+		}
+		Rectangle._Rect.reset();
+		return Rectangle._Rect;
+	}
+
+	public static getRectangle(x:number = 0, y:number = 0, width:number = 0, height:number = 0):Rectangle
 	{
-	    return this.x + this.width;
-    };
-    /**
-	 * returns the top edge of the rectangle
-	 *
-	 * @member {number}
-	 */
-	get top ()
+		if(Rectangle.cachedInstances.length)
+		{
+			let r:Rectangle = Rectangle.cachedInstances[Rectangle.cachedInstances.length - 1];
+			Rectangle.cachedInstances.length -= 1;
+			r.reset(x, y, width, height);
+			return r;
+		}
+		return new Rectangle(x, y, width, height);
+	}
+	
+	public get x():number
 	{
-	    return this.y;
-    };
-    /**
-	 * returns the bottom edge of the rectangle
-	 *
-	 * @member {number}
-	 */
-	get bottom ()
+	    return this._x;
+	};
+
+	public set x(value:number)
 	{
-	    return this.y + this.height;
+	    this._x = value;
+	};
+
+	public get y():number
+	{
+	    return this._y;
+	};
+
+	public set y(value:number)
+	{
+	    this._y = value;
+	};
+
+	public get width():number
+	{
+	    return this._width;
+	};
+
+	public set width(value:number)
+	{
+	    this._width = value;
+	};
+
+	public get height():number
+	{
+	    return this._height;
+	};
+
+	public set height(value:number)
+	{
+	    this._height = value;
+	};
+    
+	public get left():number
+	{
+	    return this._x;
     };
     
-    /**
-	 * A constant empty rectangle.
-	 *
-	 * @static
-	 * @constant
-	 * @member {PIXI.Rectangle}
-	 */
-	static get EMPTY ()
+	public get right():number
 	{
-	    return new Rectangle(0, 0, 0, 0);
+	    return this._x + this._width;
     };
-    /**
-	 * Creates a clone of this Rectangle
-	 *
-	 * @return {PIXI.Rectangle} a copy of the rectangle
-	 */
-	clone ()
+   
+	public get top():number
 	{
-	    return new Rectangle(this.x, this.y, this.width, this.height);
+	    return this._y;
     };
-    /**
-	 * Copies another rectangle to this one.
-	 *
-	 * @param {PIXI.Rectangle} rectangle - The rectangle to copy from.
-	 * @return {PIXI.Rectangle} Returns itself.
-	 */
-	copyFrom(rectangle)
+    
+	public get bottom():number
 	{
-	    this.x = rectangle.x;
-	    this.y = rectangle.y;
-	    this.width = rectangle.width;
-	    this.height = rectangle.height;
-
+	    return this._y + this._height;
+    };
+    
+	public clone():Rectangle
+	{
+	    return new Rectangle(this._x, this._y, this._width, this._height);
+    };
+    
+	public copyFrom(rectangle:Rectangle):Rectangle
+	{
+	    this._x = rectangle._x;
+	    this._y = rectangle._y;
+	    this._width = rectangle._width;
+	    this._height = rectangle._height;
 	    return this;
     };
-    /**
-	 * Copies this rectangle to another one.
-	 *
-	 * @param {PIXI.Rectangle} rectangle - The rectangle to copy to.
-	 * @return {PIXI.Rectangle} Returns given parameter.
-	 */
-	copyTo(rectangle)
+  
+	public copyTo(rectangle:Rectangle):Rectangle
 	{
-	    rectangle.x = this.x;
-	    rectangle.y = this.y;
-	    rectangle.width = this.width;
-	    rectangle.height = this.height;
-
+	    rectangle._x = this._x;
+	    rectangle._y = this._y;
+	    rectangle._width = this._width;
+	    rectangle._height = this._height;
 	    return rectangle;
     };
-    /**
-	 * Checks whether the x and y coordinates given are contained within this Rectangle
-	 *
-	 * @param {number} x - The X coordinate of the point to test
-	 * @param {number} y - The Y coordinate of the point to test
-	 * @return {boolean} Whether the x/y coordinates are within this Rectangle
-	 */
-	contains(x, y)
+ 
+	public contains(x:number, y:number):boolean
 	{
-	    if (this.width <= 0 || this.height <= 0)
+	    if (this._width <= 0 || this._height <= 0)
 	    {
 	        return false;
 	    }
-
-	    if (x >= this.x && x < this.x + this.width)
+	    if (x >= this._x && x < this._x + this._width)
 	    {
-	        if (y >= this.y && y < this.y + this.height)
+	        if (y >= this._y && y < this._y + this._height)
 	        {
 	            return true;
 	        }
 	    }
-
 	    return false;
     };
-    /**
-	 * Pads the rectangle making it grow in all directions.
-	 *
-	 * @param {number} paddingX - The horizontal padding amount.
-	 * @param {number} paddingY - The vertical padding amount.
-	 */
-	pad(paddingX, paddingY)
+   
+	public pad(paddingX:number = 0, paddingY:number = 0):void
 	{
-	    paddingX = paddingX || 0;
-	    paddingY = paddingY || ((paddingY !== 0) ? paddingX : 0);
-
-	    this.x -= paddingX;
-	    this.y -= paddingY;
-
-	    this.width += paddingX * 2;
-	    this.height += paddingY * 2;
+	    this._x -= paddingX;
+	    this._y -= paddingY;
+	    this._width += paddingX * 2;
+	    this._height += paddingY * 2;
     };
-    /**
-	 * Fits this rectangle around the passed one.
-	 *
-	 * @param {PIXI.Rectangle} rectangle - The rectangle to fit.
-	 */
-	fit(rectangle)
+  
+	public fit(rectangle:Rectangle):void
 	{
-	    var x1 = Math.max(this.x, rectangle.x);
-	    var x2 = Math.min(this.x + this.width, rectangle.x + rectangle.width);
-	    var y1 = Math.max(this.y, rectangle.y);
-	    var y2 = Math.min(this.y + this.height, rectangle.y + rectangle.height);
-
-	    this.x = x1;
-	    this.width = Math.max(x2 - x1, 0);
-	    this.y = y1;
-	    this.height = Math.max(y2 - y1, 0);
+	    let x1:number = Math.max(this._x, rectangle._x);
+	    let x2:number = Math.min(this._x + this._width, rectangle._x + rectangle._width);
+	    let y1:number = Math.max(this._y, rectangle._y);
+	    let y2:number = Math.min(this._y + this._height, rectangle._y + rectangle._height);
+	    this._x = x1;
+	    this._width = Math.max(x2 - x1, 0);
+	    this._y = y1;
+	    this._height = Math.max(y2 - y1, 0);
     };
-    /**
-	 * Enlarges rectangle that way its corners lie on grid
-	 *
-	 * @param {number} [resolution=1] resolution
-	 * @param {number} [eps=0.001] precision
-	 */
-	ceil (resolution, eps)
+ 
+	public ceil(resolution:number = 1, eps:number = 0.001):void
 	{
-	        if ( resolution === void 0 ) { resolution = 1; }
-	        if ( eps === void 0 ) { eps = 0.001; }
-
-	    var x2 = Math.ceil((this.x + this.width - eps) * resolution) / resolution;
-	    var y2 = Math.ceil((this.y + this.height - eps) * resolution) / resolution;
-
-	    this.x = Math.floor((this.x + eps) * resolution) / resolution;
-	    this.y = Math.floor((this.y + eps) * resolution) / resolution;
-
-	    this.width = x2 - this.x;
-	    this.height = y2 - this.y;
+	    let x2:number = Math.ceil((this._x + this._width - eps) * resolution) / resolution;
+	    let y2:number = Math.ceil((this._y + this._height - eps) * resolution) / resolution;
+	    this._x = Math.floor((this._x + eps) * resolution) / resolution;
+	    this._y = Math.floor((this._y + eps) * resolution) / resolution;
+	    this._width = x2 - this._x;
+	    this._height = y2 - this._y;
     };
-    /**
-	 * Enlarges this rectangle to include the passed rectangle.
-	 *
-	 * @param {PIXI.Rectangle} rectangle - The rectangle to include.
-	 */
-	enlarge (rectangle)
+  
+	public enlarge(rectangle:Rectangle):void
 	{
-	    var x1 = Math.min(this.x, rectangle.x);
-	    var x2 = Math.max(this.x + this.width, rectangle.x + rectangle.width);
-	    var y1 = Math.min(this.y, rectangle.y);
-	    var y2 = Math.max(this.y + this.height, rectangle.y + rectangle.height);
-
-	    this.x = x1;
-	    this.width = x2 - x1;
-	    this.y = y1;
-	    this.height = y2 - y1;
+	    let x1:number = Math.min(this._x, rectangle._x);
+	    let x2:number = Math.max(this._x + this._width, rectangle._x + rectangle._width);
+	    let y1:number = Math.min(this._y, rectangle._y);
+	    let y2:number = Math.max(this._y + this._height, rectangle._y + rectangle._height);
+	    this._x = x1;
+	    this._width = x2 - x1;
+	    this._y = y1;
+	    this._height = y2 - y1;
 	};
 }
 	

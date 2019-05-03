@@ -13,6 +13,24 @@ export class Container extends DisplayObject
     sortableChildren
     _height
     containerUpdateTransform
+
+    public destructor():void
+    {
+        super.destructor();
+        if(this.children)
+        {
+            while(this.children.length)
+            {
+                let child:DisplayObject = this.children.shift();
+                child.destructor();
+            }
+        }
+        this.children = null;
+        this.sortDirty = null;
+        this.sortableChildren = null;
+        this.containerUpdateTransform = null;
+    }
+    
     constructor()
     {
         super();

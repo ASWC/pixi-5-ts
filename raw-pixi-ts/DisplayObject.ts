@@ -6,16 +6,19 @@ import { BaseTexture } from "./BaseTexture";
 import { Texture } from "./Texture";
 import { Bounds } from "./Bounds";
 import { Transform } from "./Transform";
-import { Point } from "./Point";
+import { Point } from "../flash/geom/Point";
 import { MathSettings } from './MathSettings';
 import { DisplaySettings } from './DisplaySettings';
+import { trace } from "./Logger";
+import { InstanceCounter } from "./InstanceCounter";
+import { Filter } from "./Filter";
 
 
 export class DisplayObject extends EventDispatcher
 {
     static _tempMatrix = new Matrix();
     tempDisplayObjectParent
-    transform
+    public transform:Transform;
     visible
     _enabledFilters
     _localBoundsRect
@@ -167,7 +170,65 @@ export class DisplayObject extends EventDispatcher
     _cacheAsBitmap
     _cacheData
 
-
+    public destructor():void
+    {
+        super.destructor();
+        this._cacheAsBitmap = null;
+	    this._cacheData = null;
+        this.displayObjectUpdateTransform = null;
+        this.tempDisplayObjectParent = null;
+        if(this.transform)
+        {
+            this.transform.recycle()
+        }
+        this.transform = null;
+        this.alpha = null;
+        this.visible = null;
+        this.renderable = null;
+        this.parent = null;
+        this.worldAlpha = null;
+        this._lastSortedIndex = null;
+        this._zIndex = null;
+        if(this.filterArea)
+        {
+            this.filterArea.recycle()
+        }
+        this.filterArea = null;
+        if(this.filters && this.filters.length)
+        {
+            while(this.filters.length)
+            {
+                let filter:Filter = this.filters.shift();
+                filter.destructor();
+            }
+        }
+        this.filters = null;
+        this._enabledFilters = null;
+        if(this._bounds)
+        {
+            this._bounds.recycle()
+        }
+        this._bounds = null;
+        this._boundsID = null;
+        this._lastBoundsID = null;
+        this._boundsRect = null;
+        this._localBoundsRect = null;
+        if(this._mask)
+        {
+            this._mask.destructor()
+        }
+        this._mask = null;
+        this._destroyed = true;
+        this.isSprite = null;
+        this._trackedPointers = null;
+        
+        this.tempDisplayObjectParent = null;
+        if(this._localBoundsRect)
+        {
+            this._localBoundsRect.recycle()
+        }
+        this._localBoundsRect = null;
+    }
         
     constructor()
     {
@@ -335,10 +396,12 @@ export class DisplayObject extends EventDispatcher
 	 *  nice performance boost.
 	 * @return {Point} The updated point.
 	 */
-	getGlobalPosition (point, skipUpdate)
+	getGlobalPosition (point = null, skipUpdate = false)
 	{
-	    if ( point === void 0 ) { point = new Point(); }
-	    if ( skipUpdate === void 0 ) { skipUpdate = false; }
+        if(!point)
+        {
+            point = Point.getPoint();
+        }
 
 	    if (this.parent)
 	    {
@@ -482,12 +545,12 @@ export class DisplayObject extends EventDispatcher
         {
             if (!this._boundsRect)
             {
-                this._boundsRect = new Rectangle();
+                InstanceCounter.addCall("Rectangle.getRectangle", "DisplayObject getBounds")
+                this._boundsRect = Rectangle.getRectangle();
             }
 
             rect = this._boundsRect;
         }
-
         return this._bounds.getRectangle(rect);
     };
 
@@ -514,7 +577,8 @@ export class DisplayObject extends EventDispatcher
         {
             if (!this._localBoundsRect)
             {
-                this._localBoundsRect = new Rectangle();
+                InstanceCounter.addCall("Rectangle.getRectangle", "DisplayObject getlocalBounds")
+                this._localBoundsRect = Rectangle.getRectangle();
             }
 
             rect = this._localBoundsRect;

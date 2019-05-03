@@ -9,6 +9,8 @@ import { StageOptions } from './StageOptions';
 import { DisplayObject } from './DisplayObject';
 import { Texture } from './Texture';
 import { ColorSettings } from "./ColorSettings";
+import { trace } from "./Logger";
+import { InstanceCounter } from "./InstanceCounter";
 
 
 export class AbstractRenderer extends EventDispatcher
@@ -40,7 +42,9 @@ export class AbstractRenderer extends EventDispatcher
         }
         this.options = options;
         this.type = DisplaySettings.RENDERER_TYPE.UNKNOWN;
-        this.screen = new Rectangle(0, 0, options.width, options.height);
+        InstanceCounter.addCall("Rectangle.getRectangle", "AbstractRenderer")
+        
+        this.screen = Rectangle.getRectangle(0, 0, options.width, options.height);
         this.view = options.view || document.createElement('canvas');
         this.resolution = options.resolution || DisplaySettings.RESOLUTION;
         this.transparent = options.transparent;

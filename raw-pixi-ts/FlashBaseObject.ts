@@ -28,6 +28,16 @@ export class FlashBaseObject
         
     }
 
+    public recycle():void
+    {
+        
+    }
+
+    public dispose():void
+    {
+        
+    }
+
     public get hasChanged():boolean
     {
         return this._hasChanged;

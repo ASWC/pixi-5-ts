@@ -1,10 +1,12 @@
 import { RenderTexture } from "./RenderTexture";
 import { Rectangle } from './Rectangle';
 import { CanvasRenderTarget } from './CanvasRenderTarget';
+import { trace } from "./Logger";
+import { InstanceCounter } from "./InstanceCounter";
 
 export class Extract
 {
-	static TEMP_RECT = new Rectangle();
+	// static TEMP_RECT = new Rectangle();
 	static BYTES_PER_PIXEL = 4;
     renderer
     constructor(renderer)
@@ -91,7 +93,8 @@ export class Extract
 
 	        flipY = true;
 
-	        frame = Extract.TEMP_RECT;
+			InstanceCounter.addCall("Rectangle.getRectangle", "Extract canvas")
+	        frame = Rectangle.getRectangle();
 	        frame.width = this.renderer.width;
 	        frame.height = this.renderer.height;
 
@@ -182,7 +185,8 @@ export class Extract
 	    {
 	        resolution = renderer.resolution;
 
-	        frame = Extract.TEMP_RECT;
+			InstanceCounter.addCall("Rectangle.getRectangle", "Extract pixels")
+	        frame = Rectangle.getRectangle();
 	        frame.width = renderer.width;
 	        frame.height = renderer.height;
 

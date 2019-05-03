@@ -7,7 +7,6 @@ import { MathSettings } from "./MathSettings";
 import { WebGLSettings } from './WebGLSettings';
 import { CacheSettings } from './CacheSettings';
 import { ResourceSettings } from './ResourceSettings';
-import { trace, reveal } from "./Logger";
 
 export class BaseTexture extends EventDispatcher
 {
@@ -67,7 +66,7 @@ export class BaseTexture extends EventDispatcher
         {
             
             resource = ResourceSettings.autoDetectResource(resource, resourceOptions);
-            reveal(resource)
+          
             resource.internal = true;
         }
         /**

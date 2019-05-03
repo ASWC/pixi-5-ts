@@ -1,9 +1,10 @@
-import { Point } from "./Point";
+import { Point } from "../flash/geom/Point";
 import { Sprite } from "./Sprite";
 import { DisplayObject } from "./DisplayObject";
 import { NativeEvent } from "./NativeEvent";
+import { FlashBaseObject } from "./FlashBaseObject";
 
-export class InteractionData
+export class InteractionData extends FlashBaseObject
 {
     public global:Point;
     public buttons:number;
@@ -21,11 +22,21 @@ export class InteractionData
     public twist:number;
     public pressure:number;
 	public tangentialPressure:number;	
-	public which:number;
+    public which:number;
+    
+    public destructor():void
+    {
+        if(this.global)
+        {
+            this.global.recycle();
+        }
+        this.global = null;
+    }
 
     constructor()
     {
-        this.global = new Point();
+        super();
+        this.global = Point.getPoint();
         this.target = null;
         this.originalEvent = null;
         this.identifier = null;

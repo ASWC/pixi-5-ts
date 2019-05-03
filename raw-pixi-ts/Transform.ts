@@ -1,8 +1,9 @@
 import { Matrix } from "./Matrix";
 import { ObservablePoint } from "./ObservablePoint";
+import { FlashBaseObject } from "./FlashBaseObject";
 
 
-export class Transform
+export class Transform extends FlashBaseObject
 {
     worldTransform
     localTransform
@@ -23,6 +24,7 @@ export class Transform
     _parentID
     constructor()
     {
+		super();
 /**
 	     * The global matrix transform. It can be swapped temporarily by some functions like getLocalBounds()
 	     *
@@ -84,18 +86,13 @@ export class Transform
 	    this._localID++;
 	};
 
-	/**
-	 * Called when skew or rotation changes
-	 *
-	 * @private
-	 */
-	updateSkew  ()
+	
+	protected updateSkew():void
 	{
 	    this._cx = Math.cos(this._rotation + this.skew._y);
 	    this._sx = Math.sin(this._rotation + this.skew._y);
-	    this._cy = -Math.sin(this._rotation - this.skew._x); // cos, added PI/2
-	    this._sy = Math.cos(this._rotation - this.skew._x); // sin, added PI/2
-
+	    this._cy = -Math.sin(this._rotation - this.skew._x); 
+	    this._sy = Math.cos(this._rotation - this.skew._x); 
 	    this._localID++;
 	};
 
@@ -179,17 +176,13 @@ export class Transform
 	    this._localID++;
 	};
 
-	/**
-	 * The rotation of the object in radians.
-	 *
-	 * @member {number}
-	 */
-	get rotation ()
+	
+	public get rotation():number
 	{
 	    return this._rotation;
 	};
 
-	set rotation(value) // eslint-disable-line require-jsdoc
+	public set rotation(value:number) 
 	{
 	    if (this._rotation !== value)
 	    {

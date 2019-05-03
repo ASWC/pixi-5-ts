@@ -4,6 +4,7 @@ import { Graphics } from '../raw-pixi-ts/Graphics';
 import { Container } from "../raw-pixi-ts/Container";
 import { EventDispatcher } from "../raw-pixi-ts/EventDispatcher";
 import { Event } from "../raw-pixi-ts/Event";
+import { DisplayObject } from "../raw-pixi-ts/DisplayObject";
 
 
 export class BaseExample extends EventDispatcher
@@ -35,7 +36,15 @@ export class BaseExample extends EventDispatcher
 
     public destructor():void
     {
-        this.stage.removeChildren();
+        if(this.stage.children.length)
+        {
+            while(this.stage.children.length)
+            {
+                let child:DisplayObject = this.stage.children.shift();
+                child.destructor();
+            }
+        }
+        this.stage = null;
         if(this.stageMask)
         {
             this.stageMask.destroy(null);

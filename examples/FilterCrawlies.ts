@@ -9,7 +9,7 @@ import { Sprite } from "../raw-pixi-ts/Sprite";
 import { URLRequest } from "../raw-pixi-ts/URLRequest";
 import { Event } from "../raw-pixi-ts/Event";
 import { BaseTexture } from "../raw-pixi-ts/BaseTexture";
-import { Point } from "../raw-pixi-ts/Point";
+import { Point } from "../flash/geom/Point";
 import { DisplacementFilter } from "../raw-pixi-ts/DisplacementFilter";
 
 
@@ -38,6 +38,14 @@ export class FilterCrawlies extends BaseExample
         this.ringTxt = null
         this.grassTxt.destroy(null)
         this.grassTxt = null
+        if(this.maggots && this.maggots.length)
+        {
+            while(this.maggots.length)
+            {
+                let maggot:ExtendedSprite = this.maggots.shift();
+                maggot.destructor();
+            }
+        }
         this.maggots = null
         this.ring.destroy(null)
         this.ring = null    
@@ -66,12 +74,7 @@ export class FilterCrawlies extends BaseExample
         this.container = new Container();
         this.stage.addChild(this.container);
         const padding = 100;
-        this.bounds = new Rectangle(
-            -padding,
-            -padding,
-            this.sizew + padding * 2,
-            this.sizeh + padding * 2,
-        ); 
+        this.bounds = Rectangle.getRectangle(-padding, -padding, this.sizew + padding * 2, this.sizeh + padding * 2); 
         for (let i = 0; i < 20; i++) 
         {
             const maggot = new ExtendedSprite(this.maggotTxt);
@@ -83,7 +86,7 @@ export class FilterCrawlies extends BaseExample
             maggot.x = Math.random() * this.bounds.width;
             maggot.y = Math.random() * this.bounds.height;
             maggot.scale.set(1 + Math.random() * 0.3);
-            maggot.original = new Point();
+            maggot.original = Point.getPoint();
             maggot.original.copyFrom(maggot.scale);
             this.maggots.push(maggot);
         }        
@@ -185,4 +188,14 @@ class ExtendedSprite extends Sprite
     public speed:number;
     public turnSpeed:number;
     public original:Point;
+
+    public destructor():void
+    {
+        super.destructor();
+        if(this.original)
+        {
+            this.original.recycle();
+        }
+        this.original = null;
+    }
 }

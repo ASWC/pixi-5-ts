@@ -53,6 +53,7 @@ import { MeshUniforms } from "../MeshUniforms";
 import { MeshGeometry } from "../MeshGeometry";
 import { MeshShader } from "../MeshShader";
 import { Event } from "../../raw-pixi-ts/Event";
+import { InstanceCounter } from "../../raw-pixi-ts/InstanceCounter";
 
 
 export class ExampleDisplay extends Container
@@ -143,7 +144,8 @@ export class ExampleDisplay extends Container
         this.list.addExample("Mesh Advanced", MeshAdvanced);
         this.list.addExample("Mesh Uniforms", MeshUniforms);
         this.list.addExample("Mesh Geometry", MeshGeometry);
-        this.list.addExample("Mesh Shader", MeshShader);        
+        this.list.addExample("Mesh Shader", MeshShader);      
+        InstanceCounter.enable();  
         this.setExample(SpriteBasic);
     }
 
@@ -161,7 +163,6 @@ export class ExampleDisplay extends Container
         }
         this.currentExample = new keyclass(this.app, this.exampleWidth, this.exampleheight);
         this.currentExample.addEventListener(Event.COMPLETE, this.handleComplete)
-        // this.currentExample.stage.x = this.currentExample.stage.y = this.framesize;
         this.stageLayer.removeChildren();
         this.stageLayer.addChild(this.currentExample.stage);
         this.refreshBackground(this.currentExample.backColor);

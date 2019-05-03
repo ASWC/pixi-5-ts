@@ -4,7 +4,6 @@ import { Event } from "./Event";
 import { ProgressEvent } from "./ProgressEvent";
 import { NumberDic, StringDic } from "./Dictionary";
 import { URLRequest, RequestMetaData } from "./URLRequest";
-import { trace, reveal } from "./Logger";
 
 export class ResourceLoader extends EventDispatcher
 {
@@ -292,7 +291,6 @@ export class ResourceLoader extends EventDispatcher
 
     protected _loadElement (type:string):void 
     {
-        trace("_loadElement " + type)
         this._imageElement = <HTMLImageElement>document.createElement("img");
         if (this.crossOrigin) 
         {
@@ -319,7 +317,6 @@ export class ResourceLoader extends EventDispatcher
 
     protected complete = (event)=>
     {
-        trace("complete")
         let promise:Promise<ImageBitmap> = window.createImageBitmap(this._imageElement, 0, 0, this._imageElement.width, this._imageElement.height);
         promise.then(this.onImageBitmapCreated).catch();
 
@@ -334,7 +331,6 @@ export class ResourceLoader extends EventDispatcher
 
     protected onImageBitmapCreated = (image:ImageBitmap)=>
     {
-        trace("onImageBitmapCreated")
         this._imageData = image;
         this._clearEvents();
         this._finish();

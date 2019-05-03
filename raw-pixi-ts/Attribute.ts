@@ -1,5 +1,4 @@
 import { DestroyOptions } from "./DestroyOptions";
-import { trace } from ".//Logger";
 
 
 export class Attribute
@@ -34,7 +33,6 @@ export class Attribute
 
 	public set stride(value:number)
 	{
-		trace("set to " + value)
 		this._stride = value;
 	}
 	

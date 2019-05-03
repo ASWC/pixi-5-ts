@@ -6,7 +6,7 @@ import { Event } from "../raw-pixi-ts/Event";
 import { Texture } from "../raw-pixi-ts/Texture";
 import { BaseTexture } from "../raw-pixi-ts/BaseTexture";
 import { Sprite } from "../raw-pixi-ts/Sprite";
-import { Point } from "../raw-pixi-ts/Point";
+import { Point } from "../flash/geom/Point";
 
 
 export class MaskSprite extends BaseExample
@@ -44,7 +44,7 @@ export class MaskSprite extends BaseExample
         cells.mask = this.mask;
         this.stage.addChild(this.mask);
         this.stage.addChild(cells);
-        this.target = new Point();
+        this.target = Point.getPoint();
         this.reset();
         this.app.ticker.add(this.runExample);
         this.exampleReady();
@@ -94,5 +94,10 @@ export class MaskSprite extends BaseExample
         this.cellTxt = null
         this.flowerTxt.destroy(null)
         this.flowerTxt = null
+        if(this.target)
+        {
+            this.target.recycle();
+        }
+        this.target = null;
     }
 }

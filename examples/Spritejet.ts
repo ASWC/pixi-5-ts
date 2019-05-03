@@ -70,9 +70,15 @@ export class Spritejet extends BaseExample
     {
         super.destructor();        
         this.app.ticker.remove(this.runExample, null)
-        this.anim.destroy(null);
+        if(this.anim)
+        {
+            this.anim.destructor()
+        }        
         this.anim = null;
-        this.txt.destroy(null);
+        if(this.txt)
+        {
+            this.txt.destructor()
+        }  
         this.txt = null;
         this.jsondata = null;
     }

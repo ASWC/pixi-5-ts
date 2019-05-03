@@ -1,5 +1,5 @@
 
-import { Point } from "./Point";
+import { Point } from "../flash/geom/Point";
 import { MathSettings } from './MathSettings';
 
 export class Matrix
@@ -159,8 +159,11 @@ export class Matrix
      */
     apply(pos, newPos)
     {
-        newPos = newPos || new Point();
-
+        newPos = newPos;
+        if(!newPos)
+        {
+            newPos = Point.getPoint();
+        }
         var x = pos.x;
         var y = pos.y;
 
@@ -177,9 +180,13 @@ export class Matrix
      * @param {PIXI.Point} [newPos] - The point that the new position is assigned to (allowed to be same as input)
      * @return {PIXI.Point} The new point, inverse-transformed through this matrix
      */
-    applyInverse(pos, newPos)
+    applyInverse(pos, newPos):Point
     {
-        newPos = newPos || new Point();
+        newPos = newPos
+        if(!newPos)
+        {
+            newPos = Point.getPoint();
+        }
 
         var id = 1 / ((this.a * this.d) + (this.c * -this.b));
 

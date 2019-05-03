@@ -1,6 +1,6 @@
 import { Filter } from "./Filter";
 import { Matrix } from "./Matrix";
-import { Point } from "./Point";
+import { Point } from "../flash/geom/Point";
 
 export class DisplacementFilter extends Filter
 {
@@ -11,6 +11,16 @@ export class DisplacementFilter extends Filter
     maskSprite
     scale
     maskMatrix
+
+    public destructor():void
+    {
+        if(this.scale)
+        {
+            this.scale.recycle();
+        }
+        this.scale = null;
+    }
+
     constructor(sprite, scale = 1)
     {
         var maskMatrix = new Matrix();
@@ -29,7 +39,7 @@ export class DisplacementFilter extends Filter
          * scaleX, scaleY for displacements
          * @member {PIXI.Point}
          */
-        this.scale = new Point(scale, scale);
+        this.scale = Point.getPoint(scale, scale);
     }
 
     /**

@@ -5,7 +5,7 @@ import { URLRequest } from "../raw-pixi-ts/URLRequest";
 import { Event } from "../raw-pixi-ts/Event";
 import { Texture } from "../raw-pixi-ts/Texture";
 import { BaseTexture } from "../raw-pixi-ts/BaseTexture";
-import { Point } from "../raw-pixi-ts/Point";
+import { Point } from "../flash/geom/Point";
 import { SimpleRope } from "../raw-pixi-ts/SimpleRope";
 import { BlendModesSettings } from "../raw-pixi-ts/BlendModesSettings";
 
@@ -44,12 +44,13 @@ export class AdvancedTrail extends BaseExample
         }
         for (let i = 0; i < this.ropeSize; i++) 
         {
-            this.points.push(new Point(0, 0));
+            this.points.push(Point.getPoint(0, 0));
         }
         const rope = new SimpleRope(this.trailTexture, this.points);
         rope.blendMode = BlendModesSettings.BLEND_MODES.ADD;
         this.stage.addChild(rope);
         this.app.ticker.add(this.runExample)
+        this.exampleReady();
     }
 
     protected runExample = (delta:number)=>
@@ -95,6 +96,14 @@ export class AdvancedTrail extends BaseExample
     public destructor():void
     {
         super.destructor();
+        if(this.points && this.points.length)
+        {
+            while(this.points.length)
+            {
+                let point:Point = this.points.shift();
+                point.recycle();
+            }
+        }
         this.points = null;
         this.historyY = null;
         this.historyX = null

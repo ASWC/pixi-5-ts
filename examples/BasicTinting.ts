@@ -44,10 +44,7 @@ export class BasicTinting extends BaseExample
             this.stage.addChild(dude);
         }
         const dudeBoundsPadding = 100;
-        this.dudeBounds = new Rectangle(-dudeBoundsPadding,
-            -dudeBoundsPadding,
-            this.sizew + dudeBoundsPadding * 2,
-            this.sizeh + dudeBoundsPadding * 2);
+        this.dudeBounds = Rectangle.getRectangle(-dudeBoundsPadding, -dudeBoundsPadding, this.sizew + dudeBoundsPadding * 2, this.sizeh + dudeBoundsPadding * 2);
         this.app.ticker.add(this.runExample);
         this.exampleReady();
     }

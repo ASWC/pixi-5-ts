@@ -1,6 +1,6 @@
 import { EventDispatcher } from "./EventDispatcher";
 import { Rectangle } from "./Rectangle";
-import { Point } from "./Point";
+import { Point } from "../flash/geom/Point";
 import { Event } from "./Event";
 import { TextureUvs } from "./TextureUvs";
 import { BaseTexture } from "./BaseTexture";
@@ -11,6 +11,7 @@ import { CacheSettings } from './CacheSettings';
 import { DisplaySettings } from './DisplaySettings';
 import { NetworkSettings } from './NetworkSettings';
 import { trace } from "./Logger";
+import { InstanceCounter } from "./InstanceCounter";
 
 export class Texture extends EventDispatcher
 {
@@ -19,7 +20,7 @@ export class Texture extends EventDispatcher
     baseTexture
     valid
     _uvs
-    _frame
+    protected _frame:Rectangle;
     requiresUpdate
     _updateID
     trim
@@ -28,14 +29,35 @@ export class Texture extends EventDispatcher
     _rotate    
     orig
     textureCacheIds
-    constructor(baseTexture:BaseTexture, frame = null, orig = null, trim = null, rotate = null, anchor = null)
+
+    public destructor():void
+    {
+        if(this.defaultAnchor)
+        {
+            this.defaultAnchor.recycle();
+        }
+        this.defaultAnchor = null;
+        if(this.trim)
+        {
+            this.trim.recycle();
+        }
+        this.trim = null;
+        if(this.orig)
+        {
+            this.orig.recycle();
+        }
+        this.orig = null;
+    }
+
+    constructor(baseTexture:BaseTexture, frame:Rectangle = null, orig = null, trim = null, rotate = null, anchor = null)
     {
         super();
+        // InstanceCounter.count(this)
         this.noFrame = false;
         if (!frame)
         {
             this.noFrame = true;
-            frame = new Rectangle(0, 0, 1, 1);
+            frame = Rectangle.getRectangle(0, 0, 1, 1);
         }
         if (baseTexture instanceof Texture)
         {
@@ -107,7 +129,12 @@ export class Texture extends EventDispatcher
         {
             if (this.noFrame)
             {
-                frame = new Rectangle(0, 0, baseTexture.width, baseTexture.height);
+                if(frame)
+                {
+                    frame.recycle();
+                }
+                InstanceCounter.addCall("Rectangle.getRectangle", "Texture")
+                frame = Rectangle.getRectangle(0, 0, baseTexture.width, baseTexture.height);
                 // if there is no frame we should monitor for any base texture changes..
                 baseTexture.addEventListener("update", this.onBaseTextureUpdated)
                 // baseTexture.on('update', this.onBaseTextureUpdated, this);
@@ -129,11 +156,11 @@ export class Texture extends EventDispatcher
          */
         if(anchor)
         {
-            this.defaultAnchor = new Point(anchor.x, anchor.y)
+            this.defaultAnchor = Point.getPoint(anchor.x, anchor.y)
         }
         else
         {
-            this.defaultAnchor = new Point(0, 0)
+            this.defaultAnchor = Point.getPoint(0, 0)
         }
         /**
          * Update ID is observed by sprites and TextureMatrix instances.
@@ -170,13 +197,13 @@ export class Texture extends EventDispatcher
      */
     onBaseTextureUpdated = (baseTexture)=>
     {
-        trace("onBaseTextureUpdated")
         this._updateID++;
 
         // TODO this code looks confusing.. boo to abusing getters and setters!
         if (this.noFrame)
         {
-            this.frame = new Rectangle(0, 0, baseTexture.width, baseTexture.height);
+            InstanceCounter.addCall("Rectangle.getRectangle", "Texture onBaseTextureUpdated")
+            this.frame = Rectangle.getRectangle(0, 0, baseTexture.width, baseTexture.height);
         }
         else
         {
@@ -216,10 +243,21 @@ export class Texture extends EventDispatcher
 
             this.baseTexture = null;
         }
-
+        if(this._frame)
+        {
+            this._frame.recycle();
+        }
         this._frame = null;
         this._uvs = null;
+        if(this.trim)
+        {
+            this.trim.recycle();
+        }
         this.trim = null;
+        if(this.orig)
+        {
+            this.orig.recycle();
+        }
         this.orig = null;
 
         this.valid = false;
@@ -434,18 +472,13 @@ export class Texture extends EventDispatcher
         return null;
     };
 
-    /**
-     * The frame specifies the region of the base texture that this texture uses.
-     * Please call `updateUvs()` after you change coordinates of `frame` manually.
-     *
-     * @member {PIXI.Rectangle}
-     */
-    get frame ()
+    
+    public get frame():Rectangle
     {
         return this._frame;
     };
 
-    set frame (frame) // eslint-disable-line require-jsdoc
+    public set frame(frame:Rectangle)
     {
         this._frame = frame;
 

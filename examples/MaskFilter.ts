@@ -51,7 +51,7 @@ export class MaskFilter extends BaseExample
             .drawCircle(radius + blurSize, radius + blurSize, radius)
             .endFill();
         circle.filters = [new BlurFilter(blurSize)];
-        const bounds = new Rectangle(0, 0, (radius + blurSize) * 2, (radius + blurSize) * 2);
+        const bounds = Rectangle.getRectangle(0, 0, (radius + blurSize) * 2, (radius + blurSize) * 2);
         const texture = this.app.renderer.generateTexture(circle, WebGLSettings.SCALE_MODES.NEAREST, 1, bounds);
         this.focus = new Sprite(texture);
         this.stage.addChild(this.focus);

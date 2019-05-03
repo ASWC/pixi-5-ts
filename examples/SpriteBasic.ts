@@ -43,6 +43,7 @@ export class SpriteBasic extends BaseExample
     {
         super.destructor();
         this.app.ticker.remove(this.runExample, null);
-        this.bunny.destroy(null);
+        this.bunny.destructor();
+        this.bunny = null;
     }
 }

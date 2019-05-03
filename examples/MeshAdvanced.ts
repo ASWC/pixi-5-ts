@@ -5,7 +5,7 @@ import { BaseTexture } from "../raw-pixi-ts/BaseTexture";
 import { Event } from "../raw-pixi-ts/Event";
 import { ResourceLoader } from "../raw-pixi-ts/ResourceLoader";
 import { URLRequest } from "../raw-pixi-ts/URLRequest";
-import { Point } from "../raw-pixi-ts/Point";
+import { Point } from "../flash/geom/Point";
 import { SimpleRope } from "../raw-pixi-ts/SimpleRope";
 import { Graphics } from "../raw-pixi-ts/Graphics";
 
@@ -63,7 +63,7 @@ export class MeshAdvanced extends BaseExample
         this.points = [];
         for (let i = 0; i < 25; i++) 
         {
-            this.points.push(new Point(i * this.ropeLength, 0));
+            this.points.push(Point.getPoint(i * this.ropeLength, 0));
         }
         const strip = new SimpleRope(this.planeTxt, this.points);
         strip.x = 20;
@@ -85,6 +85,14 @@ export class MeshAdvanced extends BaseExample
         this.planeTxt = null
         this.g.destroy(null);
         this.g = null
+        if(this.points && this.points.length)
+        {
+            while(this.points.length)
+            {
+                let point:Point = this.points.shift();
+                point.recycle();
+            }
+        }
         this.points = null;
     }
 }

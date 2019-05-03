@@ -3,7 +3,7 @@ import { Bounds } from "./Bounds";
 import { GraphicsData } from './GraphicsData';
 import { BaseTexture } from "./BaseTexture";
 import { BatchDrawCall } from "./BatchDrawCall";
-import { Point } from "./Point";
+import { Point } from "../flash/geom/Point";
 import { ShapeSettings } from './ShapeSettings';
 import { DrawModeSettings } from './DrawModeSettings';
 import { ColorSettings } from './ColorSettings';
@@ -446,8 +446,6 @@ export class GraphicsGeometry extends BatchGeometry
 				var data:GraphicsData = this.graphicsData[i];
 				
 
-				// reveal(data.fillStyle.texture.baseTexture.resource);
-				// reveal(data.lineStyle.texture.baseTexture.resource);
 
                 if (data.fillStyle && !data.fillStyle.texture.baseTexture.valid) 
                 { 
@@ -481,7 +479,7 @@ export class GraphicsGeometry extends BatchGeometry
 			
 
 		var currentTexture = batchPart.style.texture.baseTexture;
-		// reveal(currentTexture);
+		
 
 
 		var currentColor = batchPart.style.color + batchPart.style.alpha;
@@ -490,7 +488,7 @@ export class GraphicsGeometry extends BatchGeometry
 
 		this.batches.push(batchPart);
 		
-		// reveal(this.batches);
+		
 
         
 
@@ -500,12 +498,10 @@ export class GraphicsGeometry extends BatchGeometry
             this.shapeIndex++;
 
 			var data$1 = this.graphicsData[i$1];
-			// reveal(data$1);
 
 			var command = GraphicsGeometry.getFillCommand(data$1.type)
 			
 
-			// reveal(command)
 
             var fillStyle = data$1.fillStyle;
             var lineStyle = data$1.lineStyle;
@@ -520,8 +516,7 @@ export class GraphicsGeometry extends BatchGeometry
             if (data$1.matrix)
             {
 				this.transformPoints(data$1.points, data$1.matrix);
-				// reveal(data$1.points)
-				// 	reveal(data$1.matrix)
+				
             }
 
             for (var j = 0; j < 2; j++)
@@ -1235,8 +1230,10 @@ export class GraphicsGeometry extends BatchGeometry
 	    var style = graphicsData.lineStyle;
 
 	    // get first and last point.. figure out the middle!
-	    var firstPoint = new Point(points[0], points[1]);
-	    var lastPoint = new Point(points[points.length - 2], points[points.length - 1]);
+		var firstPoint = Point.getPoint(points[0], points[1]);
+		
+
+	    var lastPoint = Point.getPoint(points[points.length - 2], points[points.length - 1]);
 	    var closedShape = shape.type !== ShapeSettings.SHAPES.POLY || shape.closeStroke;
 	    var closedPath = firstPoint.x === lastPoint.x && firstPoint.y === lastPoint.y;
 
@@ -1414,7 +1411,15 @@ export class GraphicsGeometry extends BatchGeometry
 	        indices.push(indexStart, indexStart + 1, indexStart + 2);
 
 	        indexStart++;
-	    }
+		}
+		if(firstPoint)
+		{
+			firstPoint.recycle();
+		}
+		if(lastPoint)
+		{
+			lastPoint.recycle();
+		}
     }
     
     static earcut(data, holeIndices, dim) {

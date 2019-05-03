@@ -3,12 +3,13 @@ import { Transform } from "./Transform";
 import { TextureMatrix } from "./TextureMatrix";
 import { Rectangle } from "./Rectangle";
 import { Texture } from "./Texture";
-import { Point } from "./Point";
+import { Point } from "../flash/geom/Point";
 import { CacheSettings } from './CacheSettings';
+import { trace } from "./Logger";
+import { InstanceCounter } from "./InstanceCounter";
 
 export class TilingSprite extends Sprite
 {
-    static tempPoint$1 = new Point();
     tileTransform
     _canvasPattern
     uvRespectAnchor
@@ -197,16 +198,17 @@ export class TilingSprite extends Sprite
             {
                 if (!this._localBoundsRect)
                 {
-                    this._localBoundsRect = new Rectangle();
+                    InstanceCounter.addCall("Rectangle.getRectangle", "TilingSprite getLocalBounds")
+                    this._localBoundsRect = Rectangle.getRectangle();
                 }
 
                 rect = this._localBoundsRect;
             }
-
+            InstanceCounter.addCall("Rectangle.getRectangle", "TilingSprite getLocalBounds")
             return this._bounds.getRectangle(rect);
         }
 
-        return Sprite.prototype.getLocalBounds.call(this, rect);
+        return super.getLocalBounds(rect);
     };
 
     /**
@@ -217,17 +219,18 @@ export class TilingSprite extends Sprite
      */
     containsPoint (point)
     {
-        this.worldTransform.applyInverse(point, TilingSprite.tempPoint$1);
+        let defaultpoint:Point = Point.DEFAULT;
+        this.worldTransform.applyInverse(point, defaultpoint);
 
         var width = this._width;
         var height = this._height;
         var x1 = -width * this.anchor._x;
 
-        if (TilingSprite.tempPoint$1.x >= x1 && TilingSprite.tempPoint$1.x < x1 + width)
+        if (defaultpoint.x >= x1 && defaultpoint.x < x1 + width)
         {
             var y1 = -height * this.anchor._y;
 
-            if (TilingSprite.tempPoint$1.y >= y1 && TilingSprite.tempPoint$1.y < y1 + height)
+            if (defaultpoint.y >= y1 && defaultpoint.y < y1 + height)
             {
                 return true;
             }

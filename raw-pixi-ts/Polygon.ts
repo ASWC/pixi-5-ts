@@ -1,4 +1,4 @@
-import { Point } from "./Point";
+import { Point } from "../flash/geom/Point";
 
 import { ShapeSettings } from './ShapeSettings';
 

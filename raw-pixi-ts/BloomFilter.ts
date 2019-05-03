@@ -1,6 +1,6 @@
 import { Filter } from "./Filter";
 import { DisplaySettings } from "./DisplaySettings";
-import { Point } from "./Point";
+import { Point } from "../flash/geom/Point";
 import { BlurFilterPass } from "./BlurFilterPass";
 import { BlendModesSettings } from "./BlendModesSettings";
 import { AlphaFilter } from "./AlphaFilter";

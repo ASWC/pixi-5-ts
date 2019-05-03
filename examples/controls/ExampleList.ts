@@ -4,7 +4,6 @@ import { BaseExample } from "../BaseExample";
 import { List } from "../../fl-package/list/List";
 import { Graphics } from "../../raw-pixi-ts/Graphics";
 import { MouseEvent } from '../../raw-pixi-ts/MouseEvent';
-import { trace } from "../../raw-pixi-ts/Logger";
 import { Event } from '../../raw-pixi-ts/Event';
 import { InteractionData } from '../../raw-pixi-ts/InteractionData';
 

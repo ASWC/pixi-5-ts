@@ -2,7 +2,7 @@ import { Container } from './Container';
 import { State } from './State';
 import { Polygon } from './Polygon';
 import { MeshBatchUvs } from './MeshBatchUvs';
-import { Point } from './Point';
+import { Point } from '../flash/geom/Point';
 import { DrawModeSettings } from './DrawModeSettings';
 import { BlendModesSettings } from './BlendModesSettings';
 import { DisplaySettings } from './DisplaySettings';
@@ -10,7 +10,6 @@ import { DisplaySettings } from './DisplaySettings';
 export class Mesh extends Container
 {
     static tempPolygon = new Polygon();
-    static tempPoint$2 = new Point();
     /**
 	 * The maximum number of vertices to consider batchable. Generally, the complexity
 	 * of the geometry.
@@ -431,7 +430,8 @@ export class Mesh extends Container
             return false;
         }
 
-        this.worldTransform.applyInverse(point, Mesh.tempPoint$2);
+        let defaultpoint:Point = Point.DEFAULT;
+        this.worldTransform.applyInverse(point, defaultpoint);
 
         var vertices = this.geometry.getAttribute('aVertexPosition').data;
 
@@ -453,7 +453,7 @@ export class Mesh extends Container
             points[4] = vertices[ind2];
             points[5] = vertices[ind2 + 1];
 
-            if (Mesh.tempPolygon.contains(Mesh.tempPoint$2.x, Mesh.tempPoint$2.y))
+            if (Mesh.tempPolygon.contains(defaultpoint.x, defaultpoint.y))
             {
                 return true;
             }

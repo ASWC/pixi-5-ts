@@ -1,14 +1,16 @@
 import { System } from "./System";
 import { Rectangle } from "./Rectangle";
+import { trace } from "./Logger";
+import { InstanceCounter } from "./InstanceCounter";
 
 export class RenderTextureSystem extends System
 {
 
-	static tempRect = new Rectangle();
+	// static tempRect = new Rectangle();
     clearColor
     current
-    destinationFrame
-    sourceFrame
+    public destinationFrame:Rectangle;
+    public sourceFrame:Rectangle;
     defaultMaskStack
     constructor(renderer)
     {
@@ -40,14 +42,24 @@ export class RenderTextureSystem extends System
          * @member {PIXI.Rectangle}
          * @readonly
          */
-        this.sourceFrame = new Rectangle();
+        InstanceCounter.addCall("Rectangle.getRectangle", "RendertextureSystem")
+        this.sourceFrame = Rectangle.getRectangle();
 
         /**
          * Destination frame
          * @member {PIXI.Rectangle}
          * @readonly
          */
-        this.destinationFrame = new Rectangle();
+        InstanceCounter.addCall("Rectangle.getRectangle", "RendertextureSystem")
+        this.destinationFrame = Rectangle.getRectangle();
+    }
+
+    public destructor():void
+    {
+        this.sourceFrame.recycle();
+        this.destinationFrame.recycle();
+        this.sourceFrame = null;
+        this.destinationFrame = null;
     }
     /**
      * Bind the current render texture
@@ -73,10 +85,11 @@ export class RenderTextureSystem extends System
 
             if (!destinationFrame)
             {
-                RenderTextureSystem.tempRect.width = baseTexture.realWidth;
-                RenderTextureSystem.tempRect.height = baseTexture.realHeight;
-
-                destinationFrame = RenderTextureSystem.tempRect;
+                // InstanceCounter.addCall("Rectangle.getRectangle", "RendertextureSystem bind")
+                let temprect:Rectangle = Rectangle.DEFAULT;
+                temprect.width = baseTexture.realWidth;
+                temprect.height = baseTexture.realHeight;
+                destinationFrame = temprect;
             }
 
             if (!sourceFrame)
@@ -87,6 +100,8 @@ export class RenderTextureSystem extends System
             this.renderer.framebuffer.bind(baseTexture.framebuffer, destinationFrame);
 
             this.renderer.projection.update(destinationFrame, sourceFrame, resolution, false);
+            
+
             this.renderer.stencil.setMaskStack(baseTexture.stencilMaskStack);
         }
         else
@@ -97,22 +112,22 @@ export class RenderTextureSystem extends System
             // thing they can be avoided..
             if (!destinationFrame)
             {
-                RenderTextureSystem.tempRect.width = renderer.width;
-                RenderTextureSystem.tempRect.height = renderer.height;
 
-                destinationFrame = RenderTextureSystem.tempRect;
+                // InstanceCounter.addCall("Rectangle.getRectangle", "RendertextureSystem bind")
+
+                let tempRect:Rectangle = Rectangle.DEFAULT;
+                tempRect.width = renderer.width;
+                tempRect.height = renderer.height;
+                destinationFrame = tempRect;
             }
-
             if (!sourceFrame)
             {
                 sourceFrame = destinationFrame;
             }
-
             renderer.framebuffer.bind(null, destinationFrame);
-
-            // TODO store this..
             this.renderer.projection.update(destinationFrame, sourceFrame, resolution, true);
             this.renderer.stencil.setMaskStack(this.defaultMaskStack);
+           
         }
 
         this.sourceFrame.copyFrom(sourceFrame);

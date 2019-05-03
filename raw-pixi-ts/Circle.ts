@@ -1,6 +1,8 @@
 
 import { Rectangle } from "./Rectangle";
 import { ShapeSettings } from './ShapeSettings';
+import { trace } from "./Logger";
+import { InstanceCounter } from "./InstanceCounter";
 
 
 export class Circle
@@ -85,7 +87,8 @@ export class Circle
 	*/
 	getBounds  ()
 	{
-	    return new Rectangle(this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2);
+		InstanceCounter.addCall("Rectangle.getRectangle", "Circle getBounds")
+	    return Rectangle.getRectangle(this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2);
 	};
 }
 

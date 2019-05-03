@@ -8,7 +8,6 @@ import { BaseTexture } from "../raw-pixi-ts/BaseTexture";
 import { Sprite } from "../raw-pixi-ts/Sprite";
 import { URLLoader } from "../raw-pixi-ts/URLLoader";
 import { Filter } from "../raw-pixi-ts/Filter";
-import { trace } from "../raw-pixi-ts/Logger";
 
 
 export class FilterCustom extends BaseExample

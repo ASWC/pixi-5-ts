@@ -7,7 +7,7 @@ import { Rectangle } from "./Rectangle";
 import { Matrix } from "./Matrix";
 import { UniformGroup } from "./UniformGroup";
 import { Shader } from "./Shader";
-import { Point } from "./Point";
+import { Point } from "../flash/geom/Point";
 import { AbstractRenderer } from "./AbstractRenderer";
 import { Polygon } from "./Polygon";
 import { Ellipse } from "./Ellipse";
@@ -23,6 +23,8 @@ import { MathSettings } from './MathSettings';
 import { BlendModesSettings } from './BlendModesSettings';
 import { Renderer } from './Renderer';
 import { ColorSettings } from "./ColorSettings";
+import { trace } from "./Logger";
+import { InstanceCounter } from "./InstanceCounter";
 
 export class Graphics extends Container
 {
@@ -47,15 +49,6 @@ export class Graphics extends Container
     dirty
     clearDirty
     _webGL
-
-    	/**
-	 * Temporary point to use for containsPoint
-	 *
-	 * @static
-	 * @private
-	 * @member {PIXI.Point}
-	 */
-    static _TEMP_POINT = new Point();
     
     constructor(geometry = null)
     {
@@ -676,7 +669,8 @@ export class Graphics extends Container
      */
     drawRect  (x, y, width, height)
     {
-        return this.drawShape(new Rectangle(x, y, width, height));
+        InstanceCounter.addCall("Rectangle.getRectangle", "Graphics drawRect")
+        return this.drawShape(Rectangle.getRectangle(x, y, width, height));
     };
 
     /**
@@ -1032,9 +1026,9 @@ export class Graphics extends Container
      */
     containsPoint (point)
     {
-        this.worldTransform.applyInverse(point, Graphics._TEMP_POINT);
-
-        return this.geometry.containsPoint(Graphics._TEMP_POINT);
+        let defaultpoint:Point = Point.DEFAULT;
+        this.worldTransform.applyInverse(point, defaultpoint);
+        return this.geometry.containsPoint(defaultpoint);
     };
 
     /**
@@ -1087,7 +1081,7 @@ export class Graphics extends Container
         
 
         var wt = this.transform.worldTransform;
-        // reveal(wt)
+        
         var a = wt.a;
         var b = wt.b;
         var c = wt.c;

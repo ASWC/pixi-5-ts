@@ -5,7 +5,7 @@ import { Texture } from "./Texture";
 import { DisplaySettings } from './DisplaySettings';
 import { UtilsSettings } from './UtilsSettings';
 import { Rectangle } from "./Rectangle";
-import { Point } from "./Point";
+import { Point } from "../flash/geom/Point";
 import { FlashBaseObject } from "./FlashBaseObject";
 import { NumberDic } from "./Dictionary";
 import { FontManager, BitmapFont } from "./FontManager";
@@ -97,7 +97,7 @@ export class BitmapText extends Container
         {
             scale = 1;
         }
-        let pos:Point = new Point();
+        let pos:Point = Point.getPoint();
         let chars:DataGlipth[] = [];
         let lineWidths:number[] = [];
         let text:string = this._text.replace(/(?:\r\n|\r)/g, '\n') || ' ';
@@ -144,7 +144,9 @@ export class BitmapText extends Container
             glipthdata.texture = charData.texture;
             glipthdata.line = line;
             glipthdata.charCode = charCode;
-            glipthdata.position = new Point(pos.x + charData.xOffset + (this._letterSpacing / 2), pos.y + charData.yOffset);
+
+            glipthdata.position = Point.getPoint(pos.x + charData.xOffset + (this._letterSpacing / 2), pos.y + charData.yOffset);
+
             chars.push(glipthdata);
             pos.x += charData.xAdvance + this._letterSpacing;
             lastLineWidth = pos.x;
@@ -224,6 +226,7 @@ export class BitmapText extends Container
             }
         }
         this._maxLineHeight = maxLineHeight * scale;
+        pos.recycle();
     };
 
     public updateTransform():void
